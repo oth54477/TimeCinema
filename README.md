@@ -30,6 +30,10 @@
 </table>
 
 ## git
+---
+```jsx
+git commit -m "Feat(F002): ~~~"
+```
 | Type 키워드 | 사용 시점 |
 | --- | --- |
 | feat | 새로운 기능 추가 |
@@ -47,6 +51,3 @@
 | add | 파일 혹은 폴더를 추가만 한 경우 |
 | remove | 파일을 삭제만 한 경우 |
 
-```jsx
-git commit -m "Feat(F002): ~~~"
-```
