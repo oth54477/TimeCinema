@@ -1,0 +1,52 @@
+{% extends 'base.html' %}
+
+{% block content %}
+<h1>추천 영화</h1>
+  <hr>
+  <div class="container">
+    <section class="row d-flex justify-content-around flex-wrap">
+      <center><h1>BEST</h1></center>
+      <article class="d-inline-box col-sm-6 col-lg-4 col-xl-3 m-2">
+          <div class="flip">
+            <div class="front card2">
+              <a style="text-decoration: none" class="text-secondary" href="{% url 'movies:detail' best_movie.pk %}">
+                <img src="https://image.tmdb.org/t/p/original{{ best_movie.poster_path }}" class="card-img-top" alt="...">
+              </a>
+              <div class="card-body">
+                <center>
+                  <a style="text-decoration: none" class="text-secondary" href="{% url 'movies:detail' best_movie.pk %}"><h3>{{ best_movie.title }}</h3></a>
+                </center>
+              </div>
+            </div>
+            <div class="back card2">
+              <center>
+                <p class="card-text">{{ best_movie.description }}</p>
+              </center>
+            </div>
+          </div>
+        </article>
+        <hr>
+      {% for movie in movies %}
+        <article class="d-inline-box col-sm-6 col-lg-4 col-xl-3 m-2">
+          <div class="flip">
+            <div class="front card2">
+              <a style="text-decoration: none" class="text-secondary" href="{% url 'movies:detail' movie.pk %}">
+                <img src="https://image.tmdb.org/t/p/original{{movie.poster_path}}" class="card-img-top" alt="...">
+              </a>
+              <div class="card-body">
+                <center>
+                  <a style="text-decoration: none" class="text-secondary" href="{% url 'movies:detail' movie.pk %}"><h3>{{ movie.title }}</h3></a>
+                </center>
+              </div>
+            </div>
+            <div class="back card2">
+              <center>
+                <p class="card-text">{{ movie.description }}</p>
+              </center>
+            </div>
+          </div>
+        </article>
+      {% endfor %}
+    </section>
+  </div>
+{% endblock %}
