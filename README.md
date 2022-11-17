@@ -32,7 +32,9 @@
 ## git
 ---
 ```jsx
-local branch, remote branch 연동 : git branch --set-upstream-to origin/<브랜치 이름> 
+local branch, remote branch 연동: 
+`git branch --set-upstream-to origin/<브랜치 이름>` 
+
 git commit -m "Feat(F002): ~~~"
 ```
 | Type 키워드 | 사용 시점 |
