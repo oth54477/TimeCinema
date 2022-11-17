@@ -1,14 +1,16 @@
 <template>
-  <section>
-    <span><span></span></span>
-    <div class="wrap">
-      <a href="#" @click.prevent="goToDetail(movies[0].id)"><div></div></a>
-      <a href="#" @click.prevent="goToDetail(movies[1].id)"><div></div></a>
-      <a href="#" @click.prevent="goToDetail(movies[2].id)"><div></div></a>
-      <a href="#" @click.prevent="goToDetail(movies[3].id)"><div></div></a>
-      <a href="#" ><div></div></a>
-    </div>
-  </section>
+  <transition name="fade">
+    <section>
+      <span><span></span></span>
+      <div class="wrap">
+        <a href="#" @click.prevent="goToDetail(movies[0].id)"><div></div></a>
+        <a href="#" @click.prevent="goToDetail(movies[1].id)"><div></div></a>
+        <a href="#" @click.prevent="goToDetail(movies[2].id)"><div></div></a>
+        <a href="#" @click.prevent="goToDetail(movies[3].id)"><div></div></a>
+        <a href="#" ><div></div></a>
+      </div>
+    </section>
+  </transition>
 </template>
 
 <script>
@@ -52,6 +54,11 @@ body{background:#E3DFD2;box-shadow: inset 0 0 20vmin 0 #585247;}
   opacity:0;
   transition:transform .5s, opacity .5s;
 }
+
+.fade-enter-active {
+  transition: opacity 0.5s ease-out;
+}
+
 a{
   position:absolute;  
   left:0; top:0;

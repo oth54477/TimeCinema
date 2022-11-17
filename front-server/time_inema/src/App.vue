@@ -3,10 +3,14 @@
     <!-- <button @click="load">load</button> -->
     
     <div class="bigBox" v-if="isLoading">
+      <h1>Time Cinema</h1>
       <LoadingPage class="loading" />
     </div>
     <MenuBar class="menuBar"/>
-    <router-view/>
+    <transition name="slide-fade" mode="out-in">
+      <router-view/>
+    </transition>
+
   </div>
 </template>
 
@@ -60,9 +64,40 @@ export default {
 
 <style>
 body {
-  background-color: rgba(248, 242, 230, 100);
+  /* background-color: rgba(248, 242, 230, 100); */
+  /* background-color: #1c1c1c; */
+  background-color: #eae9e4;
+  /* background-image: url('https://www.cinecasero.uy/img/old.webp'); */
+  
   height: 100%;
   min-height: 100vh;
+  position: relative;
+}
+
+/* body::after {
+  content: "";
+  position: fixed;
+  background-image: url('https://www.cinecasero.uy/img/noise-full.png');
+  background-repeat: repeat;
+
+  opacity: 0.1;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+} */
+
+body::before {
+  content: "";
+  position: fixed;
+  background-image: url('https://www.cinecasero.uy/img/noise-full.png');
+  background-repeat: repeat;
+
+  opacity: 0.025;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
 }
 
 #app {
@@ -76,6 +111,20 @@ body {
   position: relative;
 } 
 
+#app::before {
+  content: "";
+  position: fixed;
+  background-image: url('https://www.cinecasero.uy/img/old.webp');
+  background-repeat: repeat;
+
+  opacity: 0.1;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  
+}
+
 
 
 
@@ -83,13 +132,19 @@ body {
 .bigBox {
   position: relative;
   display: flex;
+  flex-direction: column;
   justify-content: center;
   align-items: center;
+
   top: 0px;
   left: 0px;
   width: 100%;
   height: 100%;
   min-height: 100vh;
+  font-family: ivymode, sans-serif;
+  font-style: normal;
+  font-weight: 600;
+  font-size: 2em;
 }
 
 .loading {
@@ -142,4 +197,33 @@ nav a {
 nav a.router-link-exact-active {
   color: #42b983;
 }
+
+.fade-enter {
+  opacity: 0;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s ease-out;
+}
+
+.fade-leave-to {
+  opacity: 0;
+}
+
+.slide-fade-enter {
+  transform: translateX(10px);
+  opacity: 0;
+}
+
+.slide-fade-enter-active,
+.slide-fade-leave-active {
+  transition: all 1s ease;
+}
+
+.slide-fade-leave-to {
+  transform: translateX(-10px);
+  opacity: 0;
+}
+
 </style>
