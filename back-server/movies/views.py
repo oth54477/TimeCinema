@@ -9,6 +9,7 @@ from .serializers import MovieListSerializer, MovieSerializer
 from rest_framework.decorators import api_view
 from rest_framework import status
 
+import datetime
 
 # Create your views here.
 @require_safe
@@ -23,9 +24,28 @@ def index(request):
 
 @api_view(['GET'])
 def movie_list(request):
-    movies = get_list_or_404(Movie)
+    movies_list = []
+    start_date = datetime.date(2022, 7, 1)
+    end_date = datetime.date(2022, 7, 31)
+    movies = Movie.objects.filter(release_date__range=(start_date, end_date))
     serializer = MovieListSerializer(movies, many=True)
-    return Response(serializer.data)
+    movies_list.append(serializer.data)
+    start_date = datetime.date(2022, 8, 1)
+    end_date = datetime.date(2022, 8, 31)
+    movies = Movie.objects.filter(release_date__range=(start_date, end_date))
+    serializer = MovieListSerializer(movies, many=True)
+    movies_list.append(serializer.data)
+    start_date = datetime.date(2022, 9, 1)
+    end_date = datetime.date(2022, 9, 30)
+    movies = Movie.objects.filter(release_date__range=(start_date, end_date))
+    serializer = MovieListSerializer(movies, many=True)
+    movies_list.append(serializer.data)
+    start_date = datetime.date(2022, 10, 1)
+    end_date = datetime.date(2022, 10, 31)
+    movies = Movie.objects.filter(release_date__range=(start_date, end_date))
+    serializer = MovieListSerializer(movies, many=True)
+    movies_list.append(serializer.data)
+    return Response(movies_list)
 
 
 
