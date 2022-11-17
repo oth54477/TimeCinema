@@ -3,7 +3,7 @@
     <!-- <button @click="load">load</button> -->
     
     <div class="bigBox" v-if="isLoading">
-      <h1>Time Cinema</h1>
+      
       <LoadingPage class="loading" />
     </div>
     <MenuBar class="menuBar"/>
@@ -65,8 +65,8 @@ export default {
 <style>
 body {
   /* background-color: rgba(248, 242, 230, 100); */
-  /* background-color: #1c1c1c; */
-  background-color: #eae9e4;
+  background-color: #1c1c1c;
+  /* background-color: #eae9e4; */
   /* background-image: url('https://www.cinecasero.uy/img/old.webp'); */
   
   height: 100%;

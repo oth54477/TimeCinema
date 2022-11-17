@@ -2,10 +2,11 @@
   <div class="container">
     <div class="box">
       <div class="outter">
+        <h1>Time Cinema</h1>
         <div class="inner">
           <div class="clock"></div>
-          <h1>Loading...</h1>
         </div>
+        <h1>Loading...</h1>
       </div>
     </div>
   </div>
@@ -42,22 +43,41 @@ export default {
 } */
 
 .box{
-  display: inline-block;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  /* position: relative; */
+  /* display: inline-block; */
   /* display: flex; */
   /* justify-content: center; */
   /* align-items: center; */
   height: 100%;
   /* width: 33.3%; */
   width: 100%;
-  position: relative;
   /*margin:0 -4px -5px -2px;*/
   transition: all .2s ease;
 }
 
 .outter {
   display: flex;
-  justify-content: center;
+  flex-direction: column;
+  justify-content: space-around;
   align-items: center;
+  height: 100%;
+  width: 100%;
+  /* position: relative; */
+}
+
+.outter h1 {
+  /* font-family: Ivy Mode,serif;
+  font-style: normal; */
+  /* font-weight: 600; */
+  /* font-size: 2em; */
+  /* height: 100px; */
+  color: #eae9e4;
+  font-size: 4vw;
+  font-family: "Ivy Mode",serif;
+  font-weight: 300;
 }
 
 .inner {
@@ -65,20 +85,21 @@ export default {
   flex-direction: column;
   justify-content: center;
   align-items: center;
+  
 }
 .box2 {
   height: 100%;
   width: 100%;
 }
 .box h1{
-  color: #777;
-  font-family:  Lato,"Helvetica Neue" ;
-  font-weight: 300;
-  position: absolute;
-  font-size: 20px;
+  /* color: #777; */
+  /* font-family:  Lato,"Helvetica Neue" ; */
+  /* font-weight: 300; */
+  /* position: absolute; */
+  /* font-size: 20px; */
   width: 100%;
   height: 25px;
-  text-align: center;
+  /* text-align: center; */
   bottom: 0px;
   margin: 0;
   top:160px;
@@ -133,24 +154,26 @@ export default {
 
 .clock{
   border-radius: 1000px;
-  border: 10px solid #fff;
+  /* border: 10px solid #fff; */
+  border: 10px solid #eae9e4;
   height: 300px;
   width: 300px;
   position: relative;
 
   /* top: 28%; */
-  top: 110px;
-  top: -webkit-calc(50% - 43px);
-  top: calc(50% - 43px);
+  /* top: 110px; */
+  /* top: -webkit-calc(50% - 43px); */
+  /* top: calc(50% - 43px); */
   /* left: 35%; */
-  left: 110px;
-  left: -webkit-calc(50% - 43px);
-  left: calc(50% - 43px);
+  /* left: 110px; */
+  /* left: -webkit-calc(50% - 43px); */
+  /* left: calc(50% - 43px); */
 }
 .clock:after{
   content: "";
   position: absolute;
-  background-color: #fff;
+  /* background-color: #fff; */
+  background-color: #eae9e4;
   top: 2px;
   left: 48%;
   height: 150px;
@@ -175,7 +198,8 @@ export default {
 .clock:before{
   content: "";
   position: absolute;
-  background-color: #fff;
+  /* background-color: #fff; */
+  background-color: #eae9e4;
   top: 2px;
   left: 48%;
   height: 150px;
