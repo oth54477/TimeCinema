@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<h1>DETAIL</h1>
+  <hr>
+  <br>
+  <div class="card rounded mx-auto d-block" style="width: 50rem;">
+    <img src="https://image.tmdb.org/t/p/original{{movie.poster_path}}" class="card-img-top" alt="...">
+    <div class="card-body">
+      <h3>{{ movie.title }}</h3>
+      <br>
+      <br>
+      <p>Release Dates : {{ movie.release_date }}</p>
+      <p>Popularity : {{movie.popularity}}</p>
+      <p>Vote count : {{movie.vote_count}}</p>
+      <p>Vote average : {{movie.vote_average}}</p>
+      <p>Overview : {{movie.overview}}</p>
+      <p>Genre :{% for genre in movie.genre_ids.all %}<span> {{ genre.name }} </span>{% endfor %}</p>
+    </div>
+  </div>
+  <a href="{% url 'movies:index' %}">뒤로가기</a>
+  <br>
+  <br>
+  <br>
+
+{% endblock %}

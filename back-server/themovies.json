@@ -1,0 +1,383 @@
+[{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{"adult": false,
+"genre_ids": [
+    28,
+    12,
+    878
+],
+"movie_id": 505642,
+"original_language": "en",
+"original_title": "Black Panther: Wakanda Forever",
+"overview": "국왕이자 블랙 팬서인 티찰라의 죽음 이후 수많은 강대국으로부터 위협을 받게 된 와칸다. 라몬다, 슈리 그리고 나키아, 오코예, 음바쿠는 각자 사명감을 갖고 와칸다를 지키기 위해 외로운 싸움을 이어간다. 한편, 비브라늄의 패권을 둘러싼 미스터리한 음모와 함께 깊은 해저에서 모습을 드러낸 최강의 적 네이머와 탈로칸의 전사들은 와칸다를 향해 무차별 공격을 퍼붓기 시작하는데…",
+"popularity": 4392.866,
+"poster_path": "/mEf7JUktBcr229QSXeEN6TbV6I2.jpg",
+"release_date": "2022-11-09",
+"title": "블랙 팬서: 와칸다 포에버",
+"vote_average": 7.6}},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{"adult": false,
+"genre_ids": [
+  28,
+  14,
+  878
+],
+"movie_id": 436270,
+"original_language": "en",
+"original_title": "Black Adam",
+"overview": "기원전 가장 번성하고 위대한 고대 국가였지만 현재는 국제 군사 조직 인터갱의 독재 국가로 전락한 칸다크. 인터갱의 눈을 피해 고대 유물을 찾던 '아드리아나'는 우연히 5000년 동안 잠들어 있던 '블랙 아담'을 깨우게 된다.  엄청난 괴력과 스피드, 방탄 능력과 자유자재의 고공비행, 번개를 쏘는 능력까지. 온몸이 무기인 '블랙 아담'은 자신의 앞을 막아서는 인터갱들을 모조리 쓸어버리고 칸다크 국민들은 이에 열광한다. 한편, 그의 폭주를 막기 위해 호크맨, 닥터 페이트, 아톰 스매셔, 사이클론으로 구성된 히어로 군단 '저스티스 소사이어티'가 칸다크에 나타나는데...",
+"popularity": 3164.736,
+"poster_path": "/mEdMHGy1FfCUc7PskFO0tibm8jp.jpg",
+"release_date": "2022-10-19",
+"title": "블랙 아담",
+"vote_average": 6.9,
+"vote_count": 1093
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+"adult": false,
+"genre_ids": [
+    27,
+    53
+],
+"movie_id": 663712,
+"original_language": "en",
+"original_title": "Terrifier 2",
+"overview": "",
+"popularity": 2492.377,
+"poster_path": "/b6IRp6Pl2Fsq37r9jFhGoLtaqHm.jpg",
+"release_date": "2022-10-06",
+"title": "테리파이어 2",
+"vote_average": 7,
+"vote_count": 597
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+"adult": false,
+"genre_ids": [
+    9648,
+    12,
+    80
+],
+"movie_id": 829280,
+"original_language": "en",
+"original_title": "Enola Holmes 2",
+"overview": "탐정이 된 후 첫 번째 사건을 수임한 에놀라. 하지만 실종된 소녀의 미스터리를 풀기 위해서는 친구들의 도움이 필요하다. 어쩌면 오빠 셜록의 도움까지도.",
+"popularity": 2446.024,
+"poster_path": "/S6fDnntDjduIWuLW2GcqFasobD.jpg",
+"release_date": "2022-11-04",
+"title": "에놀라 홈즈 2",
+"vote_average": 7.8,
+"vote_count": 853
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+  "genre_ids": [
+      27,
+      28,
+      35
+  ],
+  "movie_id": 675054,
+  "original_language": "es",
+  "original_title": "MexZombies",
+  "overview": "",
+  "popularity": 2076.848,
+  "poster_path": "/85zufUxhD97k2s5Bu2u101Qd8Sg.jpg",
+  "release_date": "2022-10-26",
+  "title": "MexZombies",
+  "vote_average": 7.3,
+  "vote_count": 74
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+  "genre_ids": [
+      27,
+      9648,
+      53
+  ],
+  "movie_id": 882598,
+  "original_language": "en",
+  "original_title": "Smile",
+  "overview": "기괴한 미소를 지으며 자신의 눈 앞에서 목숨을 끊는 환자를 목격한 정신과 의사 ‘로즈’. 그날 이후로 ‘로즈’의 일상에 설명할 수 없는 끔찍한 일들이 잇따라 발생한다. 일상을 덮친 공포에 발버둥치던 ‘로즈’는 이전에도 자신과 같은 일을 겪은 사람들이 있었고 그들 모두 끔찍한 죽음을 피할 수 없었다는 사실을 알게 된다. 시시각각 다가오는 죽음에서 벗어나기 위해 사투를 벌이던 로즈는 잊고 싶던 과거와 마주하게 되는데…",
+  "popularity": 2442.625,
+  "poster_path": "/8ncuVFt4e0M2NTTsoPtbxfWN5dO.jpg",
+  "release_date": "2022-09-23",
+  "title": "스마일",
+  "vote_average": 6.7,
+  "vote_count": 519
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+          "genre_ids": [
+              10752,
+              18,
+              28
+          ],
+          "movie_id": 49046,
+          "original_language": "de",
+          "original_title": "Im Westen nichts Neues",
+          "overview": "제1차 세계대전 당시 서부전선에서 싸운 독일군 청년의 강렬한 이야기.  젊은 사병과 전우들은 참호 속에서 사투를 벌이며,  처음 전쟁에 대해 느꼈던 환상과 도취감이  어떻게 절망과 공포로 변해가는지를 생생하게 체험한다.",
+          "popularity": 1760.871,
+          "poster_path": "/sNsmI4vQ1A6VG52dquTFx8oNTWk.jpg",
+          "release_date": "2022-10-07",
+          "title": "서부 전선 이상 없다",
+          "vote_average": 7.8,
+          "vote_count": 768
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+          "genre_ids": [
+              28,
+              14
+          ],
+          "movie_id": 732459,
+          "original_language": "en",
+          "original_title": "Blade of the 47 Ronin",
+          "overview": "",
+          "popularity": 1481.229,
+          "poster_path": "/kjFDIlUCJkcpFxYKtE6OsGcAfQQ.jpg",
+          "release_date": "2022-10-25",
+          "title": "47 로닌의 검",
+          "vote_average": 6.9,
+          "vote_count": 72
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+          "genre_ids": [
+              53
+          ],
+          "movie_id": 985939,
+          "original_language": "en",
+          "original_title": "Fall",
+          "overview": "내려갈 길이 끊겨버린 600미터 TV 타워 위에서  두 명의 친구가 살아남기 위해 펼치는 사상 최초의 고공 서바이벌 여기에서",
+          "popularity": 1335.168,
+          "poster_path": "/8huJowZK1t7MNLEKo3dgLAxmiLW.jpg",
+          "release_date": "2022-08-11",
+          "title": "폴: 600미터",
+          "vote_average": 7.3,
+          "vote_count": 1739
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+          "genre_ids": [
+              27,
+              53
+          ],
+          "movie_id": 760161,
+          "original_language": "en",
+          "original_title": "Orphan: First Kill",
+          "overview": "엄청난 비밀을 숨긴 사이코패스가 에스토니아의 정신병동을 탈출, 부유한 가족의 실종된 딸 ‘에스더’로 사칭해 미국에 온다. 재회의 기쁨도 잠시, 어딘지 낯선 딸의 정체를 눈치챈 엄마는 가족을 지키기 위해 에스더와 맞서는데...  누구도 상상 못한 충격적인 반전이 기다린다!",
+          "popularity": 1338.818,
+          "poster_path": "/vKIhsEVEtLTwTkmLSDNi230Zr3Q.jpg",
+          "release_date": "2022-07-27",
+          "title": "오펀: 천사의 탄생",
+          "vote_average": 6.8,
+          "vote_count": 1291
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+          "genre_ids": [
+              53
+          ],
+          "movie_id": 979924,
+          "original_language": "en",
+          "original_title": "On the Line",
+          "overview": "진행자가 전화를 받는데, 이 전화에서 정체를 알 수 없는 사람이  쇼맨의 온 가족을 죽이겠다고 협박합니다. 사랑하는 사람들을 구하기 위해  라디오 진행자는 생존 게임을 해야 할 것이고  이길 수 있는 유일한 방법은 범인의 신원을 알아내는 것입니다.",
+          "popularity": 1753.333,
+          "poster_path": "/jVmWI8PqoVTHCnrLYAcyrclzeY0.jpg",
+          "release_date": "2022-10-31",
+          "title": "온 더 라인",
+          "vote_average": 6.6,
+          "vote_count": 103
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+          "genre_ids": [
+              9648,
+              14,
+              53
+          ],
+          "movie_id": 856245,
+          "original_language": "es",
+          "original_title": "Matar a la Bestia",
+          "overview": "열일곱 살 에밀리아는 이모 이네스의 호스텔에 도착하는데, 그곳에는 위험한 야수가 어슬렁거린다는 소문이 돌고 있다. 성(性)에 눈을 뜨기 위한 여정을 떠난 에밀리아는 야수를 죽이기 위해 자신의 과거와 맞서야만 한다.",
+          "popularity": 1243.353,
+          "poster_path": "/epmWB73CmhoNkHXTf9aAiMhJLhN.jpg",
+          "release_date": "2022-04-28",
+          "title": "투 킬 더 비스트",
+          "vote_average": 5.9,
+          "vote_count": 14
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+          "genre_ids": [
+              80,
+              18
+          ],
+          "movie_id": 1033107,
+          "original_language": "en",
+          "original_title": "Wild Is the Wind",
+          "overview": "젊은 여성이 잔인하게 살해된 채 발견되면서 부패 경찰 두 명이 사건 수사에 착수한다. 그와 함께, 인종차별이 만연한 소도시에서는 사람들의 갈등이 극에 달하는데.",
+          "popularity": 987.668,
+          "poster_path": "/rITxQBtnMpneZf8QzH1dqONQocx.jpg",
+          "release_date": "2022-10-28",
+          "title": "와일드 이즈 더 윈드",
+          "vote_average": 5.8,
+          "vote_count": 30
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+          "genre_ids": [
+              28,
+              80,
+              53
+          ],
+          "movie_id": 944864,
+          "original_language": "nl",
+          "original_title": "The Takeover",
+          "overview": "개인정보 탈취 음모를 발견한 뒤 살인 누명을 쓰게 된 화이트 해커. 경찰로부터 도주 중인 그녀가 자신을 협박하는 범죄자들의 정체를 밝히기 위해 싸운다.",
+          "popularity": 1010.163,
+          "poster_path": "/fNbsrrNSuSkfo3FyDNPp9DGkhgX.jpg",
+          "release_date": "2022-11-01",
+          "title": "테이크오버",
+          "vote_average": 5.7,
+          "vote_count": 63
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+          "genre_ids": [
+              14,
+              35,
+              10751
+          ],
+          "movie_id": 642885,
+          "original_language": "en",
+          "original_title": "Hocus Pocus 2",
+          "overview": "누군가가 검은 불꽃 초에 불을 붙여 17세기에 활동했던 자매들을 되살린 지도 29년이 흘렀다. 이제 자매들은 원수를 갚으려 한다. 핼러윈 전날의 동이 터오기 전에 세일럼에서 대혼란을 일으키려는 마녀들을 막아설 사람은 세 고등학생뿐이다.",
+          "popularity": 984.99,
+          "poster_path": "/xpDdvIaTHn38F17pPseL1MQI05B.jpg",
+          "release_date": "2022-09-27",
+          "title": "호커스 포커스 2",
+          "vote_average": 7.5,
+          "vote_count": 1098
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+          "genre_ids": [
+              27,
+              53
+          ],
+          "movie_id": 830788,
+          "original_language": "en",
+          "original_title": "The Invitation",
+          "overview": "가족이 없는 이비는 우연히 DNA 검사를 받기로 결정한 후, 그녀가  몰랐던 먼 친척이 있음을 발견한다. 새로운 친척의 초대를 받은 이비는 멋진 영국 시골 결혼식에 참석을 하게 된다. 대저택의 영주인 월터를 만나게 되면서 그녀가 몰랐던 자신의 끔찍한 배경과 가족의 과거에 대한 어둡고 뒤틀린 비밀을 알게 되는데...",
+          "popularity": 871.864,
+          "poster_path": "/jcTq6gIskCsHlKDvCKKouEfiU66.jpg",
+          "release_date": "2022-08-24",
+          "title": "디 인비테이션",
+          "vote_average": 6.4,
+          "vote_count": 321
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+          "genre_ids": [
+              28,
+              80,
+              53
+          ],
+          "movie_id": 896485,
+          "original_language": "fr",
+          "original_title": "Overdose",
+          "overview": "툴루즈 경찰서의 사라 벨라이슈 경감은 파리에서 온 리샤르 크로스 반장의 지휘하에 긴밀하게 얽힌 두 10대의 살인 사건을 수사한다. 상반되는 수사 방식에도 범인을 찾기 위해 어쩔 수 없이 합동 수사를 벌여야 하는 사라와 리샤르는 스페인과 프랑스에서 시간에 쫓기는 싸움을 벌인다.",
+          "popularity": 1280.408,
+          "poster_path": "/9RvM4wawLRlX608FgZr9kL8CLmy.jpg",
+          "release_date": "2022-11-04",
+          "title": "오버도즈",
+          "vote_average": 6.6,
+          "vote_count": 68
+}
+},
+{"model": "movies.movie",
+"pk": 1,
+"fields": 
+{
+  "adult": false,
+          "genre_ids": [
+              14,
+              28,
+              35
+          ],
+          "movie_id": 616037,
+          "original_language": "en",
+          "original_title": "Thor: Love and Thunder",
+          "overview": "이너피스를 위해 자아 찾기 여정을 떠난 천둥의 신 토르. 그러나 우주의 모든 신들을 몰살하려는 신 도살자 고르의 등장으로 토르의 안식년 계획은 산산조각 나 버린다. 토르는새로운 위협에 맞서기 위해 킹 발키리, 코르그, 그리고 전 여자친구 제인과 재회하게 되고, 그녀가 묠니르를 휘두르는 마이티 토르가 되어 나타나 모두를 놀라게 한다. 이제 팀 토르는 고르의 복수에 얽힌 미스터리를 밝히고 더 큰 전쟁을 막기 위한 전 우주적 스케일의 모험을 시작하는데...",
+          "popularity": 980.966,
+          "poster_path": "/un8ZDtx2SMwNwXRYy65aItnNjab.jpg",
+          "release_date": "2022-07-06",
+          "title": "토르: 러브 앤 썬더",
+          "vote_average": 6.7,
+          "vote_count": 4650
+}
+}
+]

@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+{% block content %}
+  <h1>Community</h1>
+  <hr>
+  {% for article in articles %}
+    <p>작성자 : <a href="{% url 'accounts:profile' article.user.username %}">{{ article.user }}</a></p>
+    <p>글 번호: {{ article.pk }}</p>
+    <p>글 제목: {{ article.title }}</p>
+    <p>글 내용: {{ article.content }}</p>
+    <form class="likeform" action="#" data-article-pk={{article.pk}}>
+      {% csrf_token %}
+      {% if user in article.like_users.all %}
+        <button id="likebutton" class="btn btn-secondary">좋아요 취소</button>
+      {% else %}
+        <button id="likebutton" class="btn btn-danger">좋아요</button>
+      {% endif %}
+    </form>
+    <p>
+      <span class="like_count_{{article.pk}}">{{ article.like_users.all|length }}</span> 명이 이 글을 좋아합니다.
+    </p>
+    <a href="{% url 'community:detail' article.pk %}">[detail]</a>
+    <hr>
+  {% endfor %}
+{% endblock %}
+{% block script %}
+    <script>
+      const formTag = document.querySelectorAll(".likeform")
+      const csrftoken = document.querySelector('[name=csrfmiddlewaretoken]').value
+
+      formTag.forEach(function (eachform) {
+        eachform.addEventListener("submit", function (event) {
+        event.preventDefault()
+        const articlePk = event.target.dataset.articlePk
+
+        axios({
+          method: 'post',
+          url:`/community/${articlePk}/like/`,
+          headers: {'X-CSRFToken': csrftoken}
+        })
+          .then((response) => {
+            const likeButton = event.target.querySelector('button[id=likebutton]')
+            const likeCount = document.querySelector(`.like_count_${articlePk}`)
+            likeCount.innerText = response.data.like_user_count
+            if (response.data.is_like){
+              likeButton.innerText = '좋아요 취소'
+              likeButton.classList.toggle('btn-danger')
+              likeButton.classList.toggle('btn-secondary')
+            }
+            else {
+              likeButton.innerText = '좋아요'
+              likeButton.classList.toggle('btn-danger')
+              likeButton.classList.toggle('btn-secondary')
+            }
+          })
+          .catch(() => {
+            alert("로그인이 필요한 기능입니다")
+            window.location.href = "/accounts/login/"
+          })
+      })})
+
+    </script>
+{% endblock script %}
