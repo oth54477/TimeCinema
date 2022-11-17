@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
+import _ from 'lodash'
 
 Vue.use(Vuex)
 
@@ -18,7 +19,21 @@ export default new Vuex.Store({
       while (now - start < sec * 1000) {
           now = Date.now();
       }
-    }
+    },
+    timeLinePoster(state) {
+      const movies = state.movies
+      const posters = {
+        period: _.sample(movies),
+        past: _.sample(movies),
+        now: _.sample(movies),
+        future: _.sample(movies),
+      }
+      return posters
+    },
+    randomPoster(state) {
+      const movies = state.movies
+      return _.sample(movies)
+    },
   },
   mutations: {
     LOADING_START(state) {

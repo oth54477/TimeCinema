@@ -23,7 +23,7 @@ const routes = [
     component: MovieDetailView
   },
   {
-    path: '/recommend/:decade',
+    path: '/recommend/:times',
     name: 'recommend',
     component: RecommendView
   },
