@@ -1,4 +1,4 @@
-"""TimeCinema URL Configuration
+"""CRUD URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.2/topics/http/urls/
@@ -14,8 +14,11 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path('community/', include('community.urls')),
+    path('accounts/', include('accounts.urls')),
+    path('movies/', include('movies.urls')),
 ]
