@@ -14,16 +14,29 @@ from rest_framework import status
 
 from rest_framework.permissions import IsAuthenticated
 
+from .serializers import ArticleListSerializer, ArticleSerializer, CommentSerializer
+
 
 # @api_view(['GET', 'POST'])
 # @permission_classes([IsAuthenticated])
 @require_GET
 def index(request):
-    articles = Article.objects.order_by("-pk")
-    context = {
-        "articles": articles,
-    }
-    return render(request, "community/index.html", context)
+    article = Article.objects.all()
+    if article:
+        serializer = ArticleListSerializer(article)
+        return Response(serializer.data)
+    return JsonResponse({})
+
+
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def comment_create(request, article_pk):
+    # article = Article.objects.get(pk=article_pk)
+    article = get_object_or_404(Article, pk=article_pk)
+    serializer = CommentSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(article=article)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @require_http_methods(["GET", "POST"])
