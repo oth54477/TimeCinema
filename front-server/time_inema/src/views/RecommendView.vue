@@ -1,170 +1,233 @@
 <template>
-  <transition name="fade">
-    <section>
-      <span><span></span></span>
-      <div class="wrap">
-        <a href="#" @click.prevent="goToDetail(movies[0].id)"><div></div></a>
-        <a href="#" @click.prevent="goToDetail(movies[1].id)"><div></div></a>
-        <a href="#" @click.prevent="goToDetail(movies[2].id)"><div></div></a>
-        <a href="#" @click.prevent="goToDetail(movies[3].id)"><div></div></a>
-        <a href="#" ><div></div></a>
+  <div>
+    <MyModal v-if="modal" :id="randomPoster[Index].movie_id" :times="$route.params.times" @close="closeModal"/>
+    <section class="recommendBody">
+      <div class="recommendMovies">
+  
+        <div class="movieCard" @click="goToDetail(0)">
+          <div class="movieCardImg">
+            <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[0]?.poster_path}`">
+          </div>
+        </div>
+  
+        <div class="movieCard" @click="goToDetail(1)">
+          <div class="movieCardImg">
+            <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[1]?.poster_path}`">
+          </div>
+        </div>
+  
+        <div class="movieCard" @click="goToDetail(2)">
+          <div class="movieCardImg">
+            <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[2]?.poster_path}`">
+          </div>
+        </div>
+  
+        <div class="movieCard" @click="goToDetail(3)">
+          <div class="movieCardImg">
+            <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[3]?.poster_path}`">
+          </div>
+        </div>
+  
+        <div class="movieCard" @click="goToDetail(4)">
+          <div class="movieCardImg">
+            <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[4]?.poster_path}`">
+          </div>
+        </div>
+  
+        <div class="movieCard" @click="goToDetail(5)">
+          <div class="movieCardImg">
+            <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[5]?.poster_path}`">
+          </div>
+        </div>
+  
       </div>
     </section>
-  </transition>
+  </div>
 </template>
 
+
 <script>
+import MyModal from '@/components/MyModal'
+import _ from 'lodash'
+
 export default {
   name: 'RecommendView',
+  components: {
+    MyModal,
+  },
+  computed: {
+    randomPoster() {
+      const movies = this.$store.getters.randomPoster
+      const times = this.$route.params.times
+      const idx = this.$store.state.timesTable[times]
+      return _.sampleSize(movies[idx], 6)
+    }
+  },
   data() {
     return {
-      movies: [
-        {
-          id: 1
-        },
-        {
-          id: 2
-        },
-        {
-          id: 3
-        },
-        {
-          id: 4
-        }
-      ]
+      modal: false,
+      Index: null
     }
   },
   methods: {
-    goToDetail(id) {
-      this.$router.push({ name: 'detail', params: { id: id } })
+    goToDetail(movieIndex) {
+      this.Index = movieIndex
+      // this.$router.push({ name: 'detail', params: { id: this.randomPoster[movieIndex].movie_id, times: this.$route.params.times } })
+      this.modal = true
+    },
+    openModal() {
+      this.modal = true
+    },
+    closeModal() {
+      this.modal = false
     },
   },
 }
 </script>
 
 <style scoped>
-body,html{margin:0;padding:0;height:100%;}
-body{background:#E3DFD2;box-shadow: inset 0 0 20vmin 0 #585247;}
-.wrap{
-  position:relative;
-  width:80vmin; height:80vmin;
-  margin:0 auto;
-  background:inherit;
-  transform:scale(0.2) translatez(0px);
-  opacity:0;
-  transition:transform .5s, opacity .5s;
+.recommendBody {
+  padding: 2rem 15rem;
 }
 
-.fade-enter-active {
-  transition: opacity 0.5s ease-out;
+.recommendMovies {
+  display: grid;
+  grid-template-rows: 5fr 1fr 5fr;
+  grid-template-columns: 10fr 1fr 10fr 1fr 10fr;
+
+  /* grid-template-areas: "card1 . card2 . card3"
+  "none none none none none"
+  "card4 . card5 . card6"; */
 }
 
-a{
-  position:absolute;  
-  left:0; top:0;
-  width:47.5%; height:47.5%;
-  overflow:hidden;
-  transform:scale(.5) translateZ(0px);
-  background:#585247;
+
+.recommendBody div:nth-child(1) {
+  /* grid-area: card1; */
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  transform: translate3d(-1.8911px, -29.0084px, 0px) rotate(-3.72973deg);
 }
-a div{
-  height:100%;
-  background-size:cover;
-  opacity:.5;
-  transition:opacity .5s;
-  border-radius:inherit;
+
+.recommendBody div:nth-child(2) {
+  /* grid-area: card2; */
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  transform: translate3d(2.5019px, -28.3854px, 0px) rotate(2.96006deg);
+}
+
+.recommendBody div:nth-child(3) {
+  /* grid-area: card3; */
+  grid-column-start: 5;
+  grid-column-end: 6;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  transform: translate3d(-2.2785px, -38.693px, 0px) rotate(-3.36979deg);
+}
+
+.recommendBody div:nth-child(4) {
+  /* grid-area: card4; */
+  grid-column-start: 1;
+  grid-column-end: 2;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  transform: translate3d(1.576px, -24.1737px, 0px) rotate(3.72973deg);
+}
+
+.recommendBody div:nth-child(5) {
+  /* grid-area: card5; */
+  grid-column-start: 3;
+  grid-column-end: 4;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  transform: translate3d(3.6715px, 43.4502px, 0px) rotate(-4.83002deg);
+}
+
+.recommendBody div:nth-child(6) {
+  /* grid-area: card6; */
+  grid-column-start: 5;
+  grid-column-end: 6;
+  grid-row-start: 3;
+  grid-row-end: 4;
+  transform: translate3d(2.1978px, -48.4001px, 0px) rotate(2.59983deg);
+}
+
+img {
+  height: 100%;
   width: 100%;
 }
-a:nth-child(1){
-  /* border-radius:40vmin 0 0 0; */
-  position: fixed;
-  top: 0px;
-  left: 0px;
+
+.movieCard:hover img {
+  filter: grayscale(0) brightness(1);
+
+}
+
+.movieCard{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
   width: 100%;
-  height: 50%;
-  transform-origin: 110% 110%;
-  transition:transform .4s .15s;
+  border-radius: 1rem;
+  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  position: relative;
+  
+  
+
 }
-a:nth-child(1) div{
-  background-image:url('https://www.themoviedb.org/t/p/w500_and_h282_face/4kGkU6feaU8L46c7AtiCl2KIgga.jpg');
+
+.movieCard:before {
+    content: "";
+    position: absolute;
+    top: 35%;
+    right: -25%;
+    border-radius: 1rem;
+    /* background-color: red; */
+    /* background-color: #525252; */
+    opacity: .3;
+    filter: blur(28px);
+    width: 50%;
+    height: 50%;
+    z-index: -1;
 }
-a:nth-child(2){
-  /* border-radius:0 40vmin 0 0; */
+
+.movieCardImg {
+  display: flex;
+  justify-content: center;
+  align-items: center;  
+  height: 25rem;
+  width: 17rem;
+  border-radius: 1rem;
+  overflow: hidden;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  position: relative;
+}
+
+.movieCardImg img {
+  display: block;
+  filter: grayscale(1) brightness(0.7);
   width: 100%;
-  left:52.5%;
-  transform-origin: -10% 110%;
-  transition:transform .4s .2s;
+  height: 100%;
+  object-fit: cover;
+  object-position: center;
+  transition: filter 1s cubic-bezier(0.215, 0.61, 0.355, 1);
 }
-a:nth-child(2) div{
-  background-image:url('https://www.themoviedb.org/t/p/w500_and_h282_face/4kGkU6feaU8L46c7AtiCl2KIgga.jpg');
-}
-a:nth-child(3){
-  border-radius:0 0 0 40vmin;
-  top:52.5%;
-  transform-origin: 110% -10%;
-  transition:transform .4s .25s;
-}
-a:nth-child(3) div{
-  background-image:url('https://farm7.staticflickr.com/6092/6227418584_d5883b0948.jpg');
-}
-a:nth-child(4){
-  border-radius:0 0 40vmin 0;
-  top:52.5%; left:52.5%;
-  transform-origin: -10% -10%;
-  transition:transform .4s .3s;
-}
-a:nth-child(4) div{
-  background-image: url('https://farm8.staticflickr.com/7187/6895047173_d4b1a0d798.jpg');
-}
-a:nth-child(5){
-  width:55%;height:55%;
-  left:22.5%; top:22.5%;
-  border-radius:50vmin;
-  box-shadow:0 0 0 5vmin #E3DFD2;
-  transform:scale(1);
-}
-a:nth-child(5) div{
-  background-image: url('https://farm4.staticflickr.com/3766/12953056854_b8cdf14f21.jpg');
-}
-span{
-  position:relative;
-  display:block;
-  margin:0 auto;
-  top:45vmin;
-  width:10vmin; height:10vmin;
-  border-radius:100%;
-  background:#585247;
-  transform:translateZ(0px);
-}
-span span{
-  position:absolute;
-  width:60%;height:3px;
-  background:#ACA696;
-  left:20%; top:50%;
-  border-radius:0;
-}
-span span:after, span span:before{
-  content:'';
-  position:absolute;
-  left:0; top:-1.5vmin;
-  width:100%; height:100%;
-  background:inherit;
-}
-span span:after{
-  top:1.5vmin;
-}
-span:hover + .wrap, .wrap:hover{
-  transform:scale(.8) translateZ(0px);
-  opacity:1;
-}
-span:hover + .wrap a, .wrap:hover a{
-  transform:scale(1.5) translatez(0px);
-}
-span:hover + .wrap a:nth-child(5), .wrap:hover a:nth-child(5){
-  transform:scale(1) translatez(0px);
-}
-a:hover div{
-  opacity:1;
-  transform:translatez(0px);
+
+.movieCardImg:after {
+    transition: opacity .5s cubic-bezier(0.215, 0.61, 0.355, 1);
+    opacity: 0;
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(0deg, rgba(0, 0, 0, 0.8) 0%, rgba(0, 0, 0, 0) 100%);
 }
 </style>
