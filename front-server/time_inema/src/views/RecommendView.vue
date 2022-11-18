@@ -1,83 +1,86 @@
 <template>
-  <section class="recommendBody">
-    <div class="recommendMovies">
-
-      <div class="movieCard" @click="goToDetail(0)">
-        <div class="movieCardImg">
-          <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[0]?.poster_path}`">
+  <div>
+    <MyModal v-if="modal" :id="randomPoster[Index].movie_id" :times="$route.params.times" @close="closeModal"/>
+    <section class="recommendBody">
+      <div class="recommendMovies">
+  
+        <div class="movieCard" @click="goToDetail(0)">
+          <div class="movieCardImg">
+            <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[0]?.poster_path}`">
+          </div>
         </div>
-      </div>
-
-      <div class="movieCard" @click="goToDetail(1)">
-        <div class="movieCardImg">
-          <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[1]?.poster_path}`">
+  
+        <div class="movieCard" @click="goToDetail(1)">
+          <div class="movieCardImg">
+            <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[1]?.poster_path}`">
+          </div>
         </div>
-      </div>
-
-      <div class="movieCard" @click="goToDetail(2)">
-        <div class="movieCardImg">
-          <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[2]?.poster_path}`">
+  
+        <div class="movieCard" @click="goToDetail(2)">
+          <div class="movieCardImg">
+            <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[2]?.poster_path}`">
+          </div>
         </div>
-      </div>
-
-      <div class="movieCard" @click="goToDetail(3)">
-        <div class="movieCardImg">
-          <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[3]?.poster_path}`">
+  
+        <div class="movieCard" @click="goToDetail(3)">
+          <div class="movieCardImg">
+            <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[3]?.poster_path}`">
+          </div>
         </div>
-      </div>
-
-      <div class="movieCard" @click="goToDetail(4)">
-        <div class="movieCardImg">
-          <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[4]?.poster_path}`">
+  
+        <div class="movieCard" @click="goToDetail(4)">
+          <div class="movieCardImg">
+            <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[4]?.poster_path}`">
+          </div>
         </div>
-      </div>
-
-      <div class="movieCard" @click="goToDetail(5)">
-        <div class="movieCardImg">
-          <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[5]?.poster_path}`">
+  
+        <div class="movieCard" @click="goToDetail(5)">
+          <div class="movieCardImg">
+            <img :src="`https://www.themoviedb.org/t/p/original${randomPoster[5]?.poster_path}`">
+          </div>
         </div>
+  
       </div>
-
-    </div>
-  </section>
+    </section>
+  </div>
 </template>
 
 
 <script>
+import MyModal from '@/components/MyModal'
 import _ from 'lodash'
 
 export default {
   name: 'RecommendView',
+  components: {
+    MyModal,
+  },
   computed: {
     randomPoster() {
       const movies = this.$store.getters.randomPoster
       const times = this.$route.params.times
-      let randomMovies = null
-      console.log('123', times)
-      if (times === 'period') {
-        randomMovies =  _.sampleSize(movies[0], 6)
-      } else if (times === 'past') {
-        randomMovies = _.sampleSize(movies[1], 6)
-      } else if (times === 'now') {
-        randomMovies = _.sampleSize(movies[2], 6)
-      } else {
-        randomMovies = _.sampleSize(movies[3], 6)
-      }
-      console.log(randomMovies)
-      return randomMovies
+      const idx = this.$store.state.timesTable[times]
+      return _.sampleSize(movies[idx], 6)
     }
   },
   data() {
     return {
-
+      modal: false,
+      Index: null
     }
   },
   methods: {
     goToDetail(movieIndex) {
-      console.log(movieIndex)
-      console.log(this.randomPoster[movieIndex].movie_id)
-      this.$router.push({ name: 'detail', params: { id: this.randomPoster[movieIndex].movie_id } })
-    }
+      this.Index = movieIndex
+      // this.$router.push({ name: 'detail', params: { id: this.randomPoster[movieIndex].movie_id, times: this.$route.params.times } })
+      this.modal = true
+    },
+    openModal() {
+      this.modal = true
+    },
+    closeModal() {
+      this.modal = false
+    },
   },
 }
 </script>

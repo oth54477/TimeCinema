@@ -29,14 +29,16 @@
       <div class="btn-app">
         <div class="fa fa-soundcloud"></div>
       </div>
-      <div class="btn-app">
+      <div class="btn-app" @click="goTo('signup')">
         <div class="fa fa-graduation-cap"></div>
       </div>
-      <div class="btn-app">
-        <div class="fa fa-image"></div>
+      <div class="btn-app" @click="goTo('login')" style="color:white">
+        <!-- <div class="fa fa-solid fa-right-to-bracket" style="--fa-primary-color: gold;"></div> -->
+        <div><i class="fa fa-discord"></i></div>
       </div>
-      <div class="btn-app" @click="goToTime">
-        <div class="fa fa-vine"></div>
+      <div class="btn-app" @click="goTo('time')">
+        <!-- <div class="fa fa-vine"></div> -->
+        <div><i class="fa fa-vine"></i></div>
       </div>
     </div>
     
@@ -56,8 +58,8 @@ export default {
     clickMenu() {
       this.isClicked = !this.isClicked
     },
-    goToTime() {
-      this.$router.push({ name: 'time' })
+    goTo(routeName) {
+      this.$router.push({ name: routeName })
       this.isClicked = !this.isClicked
     }
   },
@@ -65,6 +67,21 @@ export default {
 </script>
 
 <style scoped lang="scss">
+// style attribute {
+//     --button-hover-background: var(--example-color-alt);
+//     --button-color: var(--white);
+//     --button-background: var(--example-color-alt);
+//     --button-margin-bottom: 0;
+// }
+// .fa-right-to-bracket {
+// 	--fa-inverse:$red
+
+// }
+
+.fa-right-to-bracket:before {
+    content: "\f2f6";
+}
+
 // this -- well, because this.
 * {
 	box-sizing:border-box;
@@ -120,6 +137,14 @@ body {
 		transition:0.4s;
 	}
 	
+	// .fa-right-to-bracket {
+	// 	color:#fff;
+	// 	font-size:2em;
+	// 	display:table-cell;
+	// 	vertical-align:middle;
+	// 	transition:0.4s;
+	// }
+
 	// Twist the plus so it looks like a close 'x'
 	&.open .fa {
 		transform:rotate(135deg);

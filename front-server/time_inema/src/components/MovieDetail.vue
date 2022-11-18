@@ -22,14 +22,18 @@
 
 <script>
 export default {
-  name: 'MovieDetailView',
+  name: 'MovieDetail',
+  props: {
+    id: Number,
+    times: String,
+  },
   computed: {
-    id() {
-      return this.$route.params.id
-    },
-    times() {
-      return this.$route.params.times
-    },
+    // id() {
+    //   return this.$route.params.id
+    // },
+    // times() {
+    //   return this.$route.params.times
+    // },
     movies() {
       return this.$store.state.movies
     },
