@@ -15,3 +15,11 @@
 
 ## axios를 로컬끼리 통신하려니 cors에러가 난다
 
+```python
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:8080",
+]
+
+CORS_ALLOW_ALL_ORIGINS = True
+
+```
