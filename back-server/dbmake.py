@@ -24,7 +24,7 @@ class URLMaker:
             return None
 
     def get_genre_url(self):
-        url = f'{URLMaker.url}/genre/movie/list?api_key={self.key}'
+        url = f'{URLMaker.url}/genre/movie/list?api_key={self.key}&language=ko-KR'
         return url
 
 TMDB_KEY = '05c7e80b2d8878d5eaf42501024385e9'
@@ -49,14 +49,14 @@ def create_genre_data():
         }
         genre_data.append(tmp)
 
-    with open('genres.json', 'w') as f:
-        json.dump(genre_data, f, indent=4)
+    with open('genres.json', 'w', encoding="utf8") as f:
+        json.dump(genre_data, f, indent=2, ensure_ascii = False)
 
 def create_movie_data():
-    with open('genres.json', 'r+') as f:
+    with open('genres.json', 'r+', encoding="utf8") as f:
         movie_data = json.load(f)
 
-    for page in range(1, 20):
+    for page in range(1, 31):
         raw_data = requests.get(url.get_movie_url(page=page))
         json_data = raw_data.json()
         movies = json_data.get('results')
@@ -73,17 +73,20 @@ def create_movie_data():
             # movie.pop('popularity')
             movie.pop('backdrop_path')
             movie.pop('video')
+            # movie.pop('vote_count')
+            movie['movie_id'] = movie.pop('id')
             # movie['like_users'] = []
             tmp = {
                 'model': 'movies.movie',
-                'pk': movie.pop('id'),
+                'pk': 1,
                 'fields': movie,
             }
             movie_data.append(tmp)
             print(tmp)
 
     with open('movies.json', 'w', encoding="utf8") as f:
-        json.dump(movie_data, f, indent=4, ensure_ascii = False)
+        json.dump(movie_data, f, indent=2, ensure_ascii = False)
 
-# create_genre_data()
+create_genre_data()
 create_movie_data()
+

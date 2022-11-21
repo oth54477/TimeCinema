@@ -10,6 +10,8 @@ from rest_framework.decorators import api_view
 from rest_framework import status
 from .forms import CommentForm
 
+from django.conf import settings
+
 import datetime
 
 # Create your views here.
@@ -63,12 +65,13 @@ def movie_detail(request, movie_pk):
 
 
 @api_view(["POST"])
-def comment_create(request, movie_pk):
+def comment_create(request, movie_pk, user_pk):
     # article = Article.objects.get(pk=article_pk)
     movie = get_object_or_404(Movie, pk=movie_pk)
+    user = get_object_or_404(settings.AUTH_USER_MODEL, pk=user_pk)
     serializer = MovieCommentSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(movie=movie)
+        serializer.save(movie=movie, user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 

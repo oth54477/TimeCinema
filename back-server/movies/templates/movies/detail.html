@@ -16,6 +16,7 @@
     <p>Vote count : {{movie.vote_count}}</p>
     <p>Vote average : {{movie.vote_average}}</p>
     <p>Overview : {{movie.overview}}</p>
+    <p>Original language : {{movie.original_language}}</p>
     <p>Genre :{% for genre in movie.genre_ids.all %}<span> {{ genre.name }} </span>{% endfor %}</p>
   </div>
 </div>
