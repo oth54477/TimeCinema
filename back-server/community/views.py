@@ -7,35 +7,53 @@ from django.http import JsonResponse
 from django.http import JsonResponse, HttpResponse
 from rest_framework.response import Response
 from django.core import serializers
+
 # from .serializers import ActorSerializer, MovieList2Serializer, MovieSerializer, ReviewSerializer, ActorListSerializer, ReviewListSerializer
-from rest_framework.decorators import api_view
+from rest_framework.decorators import api_view, permission_classes
 from rest_framework import status
 
+from rest_framework.permissions import IsAuthenticated
 
+from .serializers import ArticleListSerializer, ArticleSerializer, CommentSerializer
+
+
+# @api_view(['GET', 'POST'])
+# @permission_classes([IsAuthenticated])
 @require_GET
 def index(request):
-    articles = Article.objects.order_by('-pk')
-    context = {
-        'articles': articles,
-    }
-    return render(request, 'community/index.html', context)
+    article = Article.objects.all()
+    if article:
+        serializer = ArticleListSerializer(article)
+        return Response(serializer.data)
+    return JsonResponse({})
 
 
-@require_http_methods(['GET', 'POST'])
+@api_view(["POST"])
+@permission_classes([IsAuthenticated])
+def comment_create(request, article_pk):
+    # article = Article.objects.get(pk=article_pk)
+    article = get_object_or_404(Article, pk=article_pk)
+    serializer = CommentSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(article=article)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
+@require_http_methods(["GET", "POST"])
 def create(request):
-    if request.method == 'POST':
-        form = ArticleForm(request.POST) 
+    if request.method == "POST":
+        form = ArticleForm(request.POST)
         if form.is_valid():
             article = form.save(commit=False)
             article.user = request.user
             article.save()
-            return redirect('community:detail', article.pk)
+            return redirect("community:detail", article.pk)
     else:
         form = ArticleForm()
     context = {
-        'form': form,
+        "form": form,
     }
-    return render(request, 'community/create.html', context)
+    return render(request, "community/create.html", context)
 
 
 @require_GET
@@ -44,11 +62,11 @@ def detail(request, article_pk):
     comments = article.comment_set.all()
     comment_form = CommentForm()
     context = {
-        'article': article,
-        'comment_form': comment_form,
-        'comments': comments,
+        "article": article,
+        "comment_form": comment_form,
+        "comments": comments,
     }
-    return render(request, 'community/detail.html', context)
+    return render(request, "community/detail.html", context)
 
 
 @require_POST
@@ -60,13 +78,13 @@ def create_comment(request, article_pk):
         comment.article = article
         comment.user = request.user
         comment.save()
-        return redirect('community:detail', article.pk)
+        return redirect("community:detail", article.pk)
     context = {
-        'comment_form': comment_form,
-        'article': article,
-        'comments': article.comment_set.all(),
+        "comment_form": comment_form,
+        "article": article,
+        "comments": article.comment_set.all(),
     }
-    return render(request, 'community/detail.html', context)
+    return render(request, "community/detail.html", context)
 
 
 @require_POST
@@ -81,7 +99,7 @@ def like(request, article_pk):
             article.like_users.add(user)
             is_like = True
         context = {
-            'is_like' : is_like,
-            'like_user_count': article.like_users.count(),
+            "is_like": is_like,
+            "like_user_count": article.like_users.count(),
         }
     return JsonResponse(context)

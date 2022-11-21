@@ -5,9 +5,10 @@ from .models import Movie
 from django.http import JsonResponse, HttpResponse
 from rest_framework.response import Response
 from django.core import serializers
-from .serializers import MovieListSerializer, MovieSerializer
+from .serializers import MovieListSerializer, MovieSerializer, MovieCommentSerializer
 from rest_framework.decorators import api_view
 from rest_framework import status
+from .forms import CommentForm
 
 import datetime
 
@@ -16,13 +17,11 @@ import datetime
 def index(request):
     # movies = get_list_or_404(Movie)
     movies = Movie.objects.all()
-    context = {
-        'movies' : movies
-    }
-    return render(request, 'movies/index.html', context)
+    context = {"movies": movies}
+    return render(request, "movies/index.html", context)
 
 
-@api_view(['GET'])
+@api_view(["GET"])
 def movie_list(request):
     movies_list = []
     start_date = datetime.date(2022, 7, 1)
@@ -48,23 +47,29 @@ def movie_list(request):
     return Response(movies_list)
 
 
-
 @require_safe
 def detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
-    context = {
-        'movie' : movie
-    }
-    return render(request, 'movies/detail.html', context)
+    comment_form = CommentForm()
+    context = {"movie": movie, "comment_form": comment_form}
+    return render(request, "movies/detail.html", context)
 
 
-
-@api_view(['GET'])
+@api_view(["GET"])
 def movie_detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = MovieSerializer(movie)
     return Response(serializer.data)
 
+
+@api_view(["POST"])
+def comment_create(request, movie_pk):
+    # article = Article.objects.get(pk=article_pk)
+    movie = get_object_or_404(Movie, pk=movie_pk)
+    serializer = MovieCommentSerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(movie=movie)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
 @require_safe
@@ -72,9 +77,6 @@ def recommended(request):
     if request.user.is_authenticated:
         best_movie = Movie.objects.all().order_by("-popularity")[0]
         recommended_movies = Movie.objects.all().order_by("-popularity")[1:10]
-        context = {
-            'best_movie' : best_movie,
-            'movies' : recommended_movies
-        }
-        return render(request, 'movies/recommended.html', context)
-    return redirect('accounts:login')
+        context = {"best_movie": best_movie, "movies": recommended_movies}
+        return render(request, "movies/recommended.html", context)
+    return redirect("accounts:login")
