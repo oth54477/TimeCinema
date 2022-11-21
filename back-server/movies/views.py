@@ -1,11 +1,11 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
-from django.views.decorators.http import require_safe
-from .models import Movie
+from django.views.decorators.http import require_safe, require_POST
+from .models import Movie, MovieComment
 
 from django.http import JsonResponse, HttpResponse
 from rest_framework.response import Response
 from django.core import serializers
-from .serializers import MovieListSerializer, MovieSerializer, MovieCommentSerializer
+from .serializers import MovieListSerializer, MovieSerializer, MovieCommentSerializer, MovieCommentReplySerializer
 from rest_framework.decorators import api_view
 from rest_framework import status
 from .forms import CommentForm
@@ -72,6 +72,17 @@ def comment_create(request, movie_pk):
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 
+
+@api_view(["POST"])
+def reply_create(request, comment_pk):
+    # article = Article.objects.get(pk=article_pk)
+    comment = get_object_or_404(MovieComment, pk=comment_pk)
+    serializer = MovieCommentReplySerializer(data=request.data)
+    if serializer.is_valid(raise_exception=True):
+        serializer.save(comment=comment)
+        return Response(serializer.data, status=status.HTTP_201_CREATED)
+
+
 @require_safe
 def recommended(request):
     if request.user.is_authenticated:
@@ -80,3 +91,40 @@ def recommended(request):
         context = {"best_movie": best_movie, "movies": recommended_movies}
         return render(request, "movies/recommended.html", context)
     return redirect("accounts:login")
+
+
+@require_POST
+def movie_like(request, movie_pk):
+    if request.user.is_authenticated:
+        movie = get_object_or_404(Movie, pk=movie_pk)
+        user = request.user
+        if movie.like_users.filter(pk=user.pk).exists():
+            movie.like_users.remove(user)
+            is_like = False
+        else:
+            movie.like_users.add(user)
+            is_like = True
+        context = {
+            "is_like": is_like,
+            "like_user_count": movie.like_users.count(),
+        }
+    return JsonResponse(context)
+
+
+@require_POST
+def movie_watch(request, movie_pk):
+    if request.user.is_authenticated:
+        Movie = get_object_or_404(Movie, pk=movie_pk)
+        user = request.user
+        if Movie.watch_users.filter(pk=user.pk).exists():
+            Movie.watch_users.remove(user)
+            is_watch = False
+        else:
+            Movie.watch_users.add(user)
+            is_watch = True
+        context = {
+            "is_watch": is_watch,
+            "watch_user_count": Movie.watch_users.count(),
+            "watch_user_list": Movie.watch_users.all(),
+        }
+    return JsonResponse(context)
