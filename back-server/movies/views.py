@@ -1,6 +1,7 @@
 from django.shortcuts import render, get_object_or_404, get_list_or_404, redirect
 from django.views.decorators.http import require_safe, require_POST
-from .models import Movie, MovieComment
+from .models import Movie, MovieComment, MovieCommentReply
+from accounts.models import User
 
 from django.http import JsonResponse, HttpResponse
 from rest_framework.response import Response
@@ -61,28 +62,52 @@ def detail(request, movie_pk):
 def movie_detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = MovieSerializer(movie)
+    # print(serializer['comment_set'].value())
+    return Response(serializer.data)
+
+
+
+@api_view(["GET"])
+def comment_list(request, movie_pk):
+    comments = MovieComment.objects.filter(movie=movie_pk)
+    print(comments)
+    serializer = MovieCommentSerializer(comments, many=True)
+    return Response(serializer.data)
+
+
+@api_view(["GET"])
+def reply_list(request, movie_pk, comment_pk):
+    reply = MovieCommentReply.objects.filter(comment=comment_pk)
+    serializer = MovieCommentReplySerializer(reply, many=True)
     return Response(serializer.data)
 
 
 @api_view(["POST"])
-def comment_create(request, movie_pk, user_pk):
+def comment_create(request, movie_pk):
+    print(request.data)
     # article = Article.objects.get(pk=article_pk)
     movie = get_object_or_404(Movie, pk=movie_pk)
-    user = get_object_or_404(settings.AUTH_USER_MODEL, pk=user_pk)
+    print(request.data['user'])
+    user = User.objects.get(pk=request.data['user'])
     serializer = MovieCommentSerializer(data=request.data)
+    print(serializer)
     if serializer.is_valid(raise_exception=True):
         serializer.save(movie=movie, user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+    print(serializer['user'])
 
 
 
 @api_view(["POST"])
-def reply_create(request, comment_pk):
+def reply_create(request, movie_pk, comment_pk):
     # article = Article.objects.get(pk=article_pk)
+    movie = get_object_or_404(Movie, pk=movie_pk)
     comment = get_object_or_404(MovieComment, pk=comment_pk)
+    user = User.objects.get(pk=request.data['user'])
     serializer = MovieCommentReplySerializer(data=request.data)
+    print(serializer)
     if serializer.is_valid(raise_exception=True):
-        serializer.save(comment=comment)
+        serializer.save(comment=comment, movie=movie, user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
 
 

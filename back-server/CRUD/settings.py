@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "accounts",
     "community",
     "movies",
+    "imagekit",
     "rest_framework",
     "dj_rest_auth",
     "rest_framework.authtoken",
