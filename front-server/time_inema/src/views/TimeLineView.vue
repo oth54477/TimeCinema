@@ -36,6 +36,7 @@ export default {
   top: 0px;
   left: 0px;
   transition: transform 1s cubic-bezier(0.76, 0, 0.11, 1.1);
+  background-color: #1c1c1c;
 }
 
 .fade-enter-active {

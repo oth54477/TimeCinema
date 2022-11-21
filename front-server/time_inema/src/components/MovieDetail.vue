@@ -1,18 +1,112 @@
 <template>
   <section class="detail-body">
-    <h1>Detail</h1>
     <div class="movie-detail">
       <div class="poster-img">
-        <img :src="`https://www.themoviedb.org/t/p/original${movie.poster_path}`">
+        <!-- <div class="video-box" data-vbg-autoplay="true" :data-vbg="`https://www.youtube.com/embed/${ this.trailers[0].url }?autoplay=1&mute=1`"></div> -->
+        <!-- <img :src="`https://www.themoviedb.org/t/p/original${movie.poster_path}`"> -->
+        <iframe class="video" frame  :src="`https://www.youtube.com/embed/${ this.trailers[0].url }?autoplay=1&mute=1&loop=1&controls=0&vq=hd1080&rel=0`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" allowfullscreen></iframe>
+        <!-- <div data-vbg="https://www.youtube.com/watch?v=eEpEeyqGlxA"></div> -->
+
       </div>
-      <div class="movie-info">
-        <div>
-          <h2>제목: {{ movie.title }}</h2>
-          <h2>줄거리: {{ movie.overview }}</h2>
-          <h2>장르: {{ movie.genre_ids.map(genre => genre.name) }}</h2>
+      <div class="article">
+        <div class="movie">
+          <div>
+            <img :src="`https://www.themoviedb.org/t/p/original${movie.poster_path}`">
+            <div>
+              <div class="movie-title">
+                <h1 class="title">{{ movie.title }}</h1>
+
+              </div>
+              <div class="user-movie">
+                <div class="movie-stars">
+                  <div 
+                    v-for="index in 5"
+                    :key="index"
+                    @mouseover="starOver(index)"
+                    @mouseleave="starLeave"
+                    @click="starClick(index)"
+                  >
+                    <div v-if="index < score+1"><div class="fa fa-solid fa-star" style="color:yellow;"></div></div>
+                    <div v-if="index >= score+1"><div class="fa fa-solid fa-star"></div></div>
+                  </div>
+                </div>
+
+                <div 
+                  class="like-movie"
+                  @click="heartClick"
+                >
+                  <div
+                    @mouseover="heartOver"
+                    @mouseleave="heartLeave"
+                    v-if="!isheartClicked"
+                    :class="{ movieHeart: isheart, movieHeartNone: !isheart }"
+                  >
+                    <!-- <div v-if="isheart"  class="fa fa-solid fa-heart heart-div"></div> -->
+                    <div  class="fa fa-regular fa-heart heart-div"></div>
+                    <p class="geart-p">좋아하는 항목에 추가</p>
+                  </div>
+                  <div
+                  class="movieHeart" 
+                  v-if="isheartClicked" 
+                  >
+                    <div class="fa fa-solid fa-heart heart-div"></div>
+                    <p class="geart-p">좋아하는 항목에 추가됨</p>
+                  </div>
+                  
+                </div>
+
+
+
+
+
+
+                
+              </div>
+            </div>
+          </div>
+          <div class="movie-info">
+            <div>
+              <p class="content">{{ movie.overview }}</p>
+            </div>
+            <div>
+              <p class="genre">장르: <span v-for="(a, index) in movie.genre_ids.map(genre => genre.name)" :key="index">{{ a }} </span></p>
+            </div>
+          </div>
         </div>
-        <div>
-          <input type="text">
+        <div class="review">
+          <!-- <input type="text"> -->
+          <div>
+            <h1>사용자 리뷰</h1>
+            <p style="margin-left:10px; margin-top: 25px;">{{ reviews.length }}개</p>
+            
+            <!-- <button class="btn-review" @click="clickReview">리뷰 쓰기</button>  -->
+            <div class="fa fa-solid fa-pen-to-square" @click="clickReview"></div>
+          </div>
+          <div v-if="reviews.length === 0" style="margin-bottom:30px;">
+              <h1>첫 리뷰를 남겨주세요!</h1>
+          </div>
+          <div class="review-input" v-if="this.isclickedReview">
+            <div class="stars">
+              <div 
+                    v-for="index in 5"
+                    :key="index"
+                    @mouseover="starOver(index)"
+                    @mouseleave="starLeave"
+                    @click="starClick(index)"
+                  >
+                    <div v-if="index < score+1"><div class="fa fa-solid fa-star" style="color:yellow;"></div></div>
+                    <div v-if="index >= score+1"><div class="fa fa-solid fa-star"></div></div>
+              </div>
+            </div>
+            <div>
+              <textarea name="" id="" cols="100%" rows="10"></textarea>
+            </div>
+            <div class="upload" @click="reviewUpload">
+              <p>작성하기</p>
+              <div class="fa fa-solid fa-upload"></div>
+            </div>
+          </div>
+          <ReviewList :reviews="reviews"/>  
         </div>
       </div>
     </div>
@@ -21,8 +115,14 @@
 </template>
 
 <script>
+import ReviewList from '@/components/ReviewList'
+// import VideoBackgrounds from 'https://unpkg.com/youtube-background@1.0.14/jquery.youtube-background.min.js'
+
 export default {
   name: 'MovieDetail',
+  components: {
+    ReviewList,
+  },
   props: {
     id: Number,
     times: String,
@@ -46,14 +146,64 @@ export default {
       console.log('영화 디테일', movie)
       return movie
     },
+    trailers() {
+      const trailers = this.$store.state.trailers
+      return trailers
+    },
+    reviews() {
+      return this.$store.state.reviews.filter(review => review.movieId === this.id)
+    }
   },
   data() {
     return {
+      score: 0,
+      isheart: false,
+      isheartClicked: false,
+      isStarClicked: false,
+      isclickedReview: false,
     }
   },
   methods: {
-
+    starClick(index) {
+      if (this.score === index) {
+        this.isStarClicked = !this.isStarClicked
+      } else {
+        this.score = index
+      }
+    },
+    starOver(index) {
+      if (!this.isStarClicked) {
+        this.score = index;
+      }
+    },
+    starLeave() {
+      if (!this.isStarClicked) {
+        this.score = 0
+      }
+    },
+    heartClick() {
+      this.isheartClicked = !this.isheartClicked
+    },
+    heartOver() {
+      if (!this.isheartClicked) {
+        this.isheart = true
+      }
+    },
+    heartLeave() {
+      if (!this.isheartClicked) {
+        this.isheart = false
+      }
+    },
+    clickReview() {
+      this.isclickedReview = !this.isclickedReview
+    },
+    reviewUpload() {
+      // 리뷰 업로드
+    },
   },
+  created() {
+    this.$store.dispatch('getTrailer', {id: this.id})
+  }
 }
 </script>
 
@@ -62,37 +212,307 @@ export default {
   padding: 5vh 5vw;
   color: antiquewhite;
   position: relative;
+  padding: 0px;
 }
 
 .movie-detail {
   display: flex;
-  margin-top: 5vh;
+  margin-top: 0px;
+  flex-direction: column;
+  position: fixed;
+  top: 3vh;
+  left: 10vw;
+  right: 10vw;
+  bottom: 0vh;
+  overflow: scroll;
+  border-radius: 10px;
+  background-color: #201f1f;
 }
 
 .poster-img {
-  flex-basis:25%;
-  flex-shrink: 0;
-  margin: 3vh 3vw;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+    flex-basis: 25%;
+    flex-shrink: 0;
+    /* margin: 3vh 3vw; */
+    margin: 0px;
+    display: flex;
+    justify-content: center;
+    height: 40vh;
+    flex-basis: 40vh;
+    /* background-color: black; */
+    align-items: center;
+    /* background-color: balck; */
+    /* background: linear-gradient(180deg, transparent, #201f1f); */
 }
 
-.movie-info {
-  flex-grow: 1;
-  margin: 3vh 3vw;
-  display: flex;
-  flex-direction: column;
-  align-items: start;
+.movie {
+    /* flex-grow: 1; */
+    /* margin: 3vh 3vw; */
+    display: flex;
+    flex-direction: column;
+    /* justify-content: start; */
+    /* align-items: start; */
+    /* position: absolute; */
+    /* top: 40vh; */
+    /* left: 0vw; */
+    height: 100%;
+    width: 90%;
+    margin: 0px;
+    text-align: start;
+    /* padding: 50px; */
+    /* background-color: #201f1f; */
+    z-index: -1;
+    /* background-color: #201f1f; */
+    /* padding-top: 25vh; */
+    color: white;
+    padding: 0vh 2.5vw;
 }
 
 
 
 .poster-img img {
-  /* height: 20rem; */
-  /* width: 15rem; */
-  /* height: 100%; */
-  width: 100%;
+    /* height: 20rem; */
+    /* width: 15rem; */
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    /* width: 100%; */
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: -1;
+    border-radius: 5px;
+}
 
+
+.poster-img iframe {
+    /* height: 20rem; */
+    /* width: 15rem; */
+    height: 100%;
+    object-fit: cover;
+    object-position: top;
+    /* width: 100%; */
+    position: absolute;
+    top: 0px;
+    /* top: -204px; */
+    top: -10vh;
+    /* top: 56.25%; */
+    left: 0px;
+    z-index: -1;
+    border-radius: 5px;
+
+    width: 100%;
+    /* height: 1080px; */
+    offset: 200;
+    
+
+}
+
+.article {
+  flex-grow: 1;
+  margin: 3vh 3vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: start;
+  /* align-items: start; */
+  /* position: absolute; */
+  top: 40vh;
+  left: 0vw;
+  height: 100%;
+  width: 100%;
+  margin: 0px;
+  text-align: start;
+  /* padding: 50px; */
+  /* background-color: #201f1f; */
+  z-index: -1;
+  /* background-color: #201f1f; */
+  /* padding-top: 25vh; */
+  background: linear-gradient(0deg, #201f1f 80%, #201f1f00);
+  color: white;
+  padding: 0vh 2.5vw;
+}
+
+.movie > div > div > .title {
+  font-size: 3rem;
+}
+
+.movie > div:nth-child(1) > div {
+  margin-left: 30px;
+  flex-basis: 100%;
+}
+
+.movie-info {
+  display: flex;
+  flex-direction: row;
+  font-size: 20px;
+  margin: 20px 10px 20px 10px;
+}
+
+.movie-info > div:nth-child(1) {
+  flex-basis: 70%;
+  line-height: 35px;
+
+}
+
+
+.movie-info > div:nth-child(2) {
+  flex-basis: 30%;
+  margin-left: 10px;
+}
+
+.review { 
+  display: flex;
+  /* position: absolute; */
+  /* top: 0px; */
+}
+
+.user-movie {
+  flex-basis: 40%;
+  display: flex;
+  align-items: center;
+  /* margin-bottom: 55px; */
+  justify-content: flex-start;
+}
+
+.movieHeart {
+  height: 4vh;
+  width: 15vw;
+  border: solid 2.5px #454444;
+  background-color: #454444;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.movieHeartNone {
+  height: 4vh;
+  width: 15vw;
+  border: solid 2.5px #454444;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.heart-div {
+  margin-right: 10px;
+}
+
+.heart-p {
+  margin-left: 10px;
+}
+/* .movie-heart {
+  margin-right: 10vw;
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+} */
+
+.movie > div:nth-child(1) {
+  margin-bottom:1vh;
+  display: flex;
+  /* justify-content: space-between; */
+  justify-content: flex-start;
+  align-items: flex-end;
+}
+
+.movie-stars {
+  display: flex;
+}
+
+.fa-star {
+  /* color: yellow; */
+  font-size: 40px;
+}
+
+.fa-heart {
+  color: red;
+  font-size: 1.8rem;
+
+}
+
+.movie > div > img {
+  width: 10vw;
+  border-radius: 5px;
+  border: solid 4px rgb(164, 161, 161);
+}
+
+.review > div:nth-child(1) {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  vertical-align: baseline;
+}
+
+.review {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  padding: 0vh 2.5vw;
+}
+
+.btn-review {
+  height: 2rem;
+} 
+
+.fa-pen-to-square {
+  color: white;
+  font-size: 25px;
+  margin-left: 20px;
+  cursor: pointer;
+}
+
+.review-input {
+  display: flex;
+  margin: 10px 0px 30px 0px;
+  flex-direction: column;
+}
+
+.stars > div > div > .fa-star {
+  font-size: 2rem;
+}
+
+.stars {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.upload {
+  display: flex;
+  justify-content: end;
+  cursor: pointer;
+}
+
+.upload > .fa-upload {
+  font-size: 2rem;
+}
+
+.upload > p {
+  font-size: 1.5rem;
+  margin: 8px 10px 0px 0px;
+}
+
+textarea {
+  width: 100%;
+  margin-bottom: 20px;
+  font-size: 20px;
+}
+
+.movie-title {
+  display: flex;
+  align-items: center;
+}
+
+.movie-title > h1 {
+  font-size: 50px;
+}
+
+/* .movie-title  > div {
+  margin-left: 20px;
+} */
+
+.like-movie {
+  margin-left: 2.5vw;
+  margin-top: 1vh;
 }
 </style>
