@@ -58,10 +58,13 @@ export default {
     clickMenu() {
       this.isClicked = !this.isClicked
     },
-    goTo(routeName) {
-      this.$router.push({ name: routeName })
-      this.isClicked = !this.isClicked
-    }
+    goTo(page) {
+			this.$store.commit('POP_UP', page)
+    },
+    // goTo(routeName) {
+    //   this.$router.push({ name: routeName })
+    //   this.isClicked = !this.isClicked
+    // },
   },
 }
 </script>
@@ -113,6 +116,7 @@ body {
 	position: fixed;
 	bottom:1em;
 	right:1em;
+	z-index: 999;
 }
 
 // this toggles the whole damn thing
@@ -122,7 +126,7 @@ body {
 	box-shadow:4px 4px 2px 1px rgba(#000, 0.2);
 	
 	position: absolute;
-	z-index:5;
+	z-index:999;
 	bottom:0;
 	right:0;
 	display:table;

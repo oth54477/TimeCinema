@@ -6,7 +6,8 @@
         <div class="inner">
           <div class="clock"></div>
         </div>
-        <h1>Loading...</h1>
+        <h1 v-if="isLoading">Loading...</h1>
+        <h1 v-if="!isLoading" @click="goToTime">Click</h1>
       </div>
     </div>
   </div>
@@ -16,8 +17,15 @@
 
 export default {
   name: 'LoadingPage',
+  props: {
+    isLoading: String
+  },
   methods: {
-    
+    goToTime() {
+      this.$router.push({ name: 'time' })
+      this.$emit('isClick', true)
+    },
+
   }
 
 }

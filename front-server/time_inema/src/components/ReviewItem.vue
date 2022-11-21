@@ -1,0 +1,86 @@
+<template>
+  <section class="review-item-body">
+    <div class="review-item">
+      <div>
+        <img :src="this.user.img">
+      </div>
+      <div>
+        <div>
+          <h3>{{ this.user.name }}</h3>
+          <div>
+            <div v-for="index in this.review.score" :key="index" class="fa fa-solid fa-star" style="color:yellow; font-size: 1.1rem;"></div>
+          </div>
+        </div>
+        <p>{{ this.review.content }}</p>
+      </div>
+    </div>
+  </section>
+</template>
+
+<script>
+export default {
+  name: 'ReviewItem',
+  props: {
+    review: Object,
+  },
+  computed: {
+    user() {
+      return this.$store.state.userInfo.find(user => user.id === this.review.userId)
+    }
+  }
+}
+</script>
+
+<style>
+.review-item-body {
+  display: flex;
+  align-items: center;
+}
+
+
+.review-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.review-item > div:nth-child(1) {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.review-item > div:nth-child(1) > img {
+  height: 80px;
+  width: 80px;
+  background-color: rgb(252, 245, 235);
+  border-radius: 10px;
+}
+
+.review-item > div:nth-child(2) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  height: 100%;
+  margin-left: 20px;
+}
+
+.review-item > div:nth-child(2) > p {
+  margin: 0px;
+}
+
+.review-item > div:nth-child(2) > div {
+  display: flex;
+  align-items: center;
+
+}
+
+.review-item > div:nth-child(2) > div > div {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-left: 20px;
+}
+
+</style>

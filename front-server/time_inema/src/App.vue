@@ -1,11 +1,13 @@
 <template>
-  <div id="app">
+  <div id="app"  @mousemove="mouseCircle">
     <!-- <button @click="load">load</button> -->
-    
-    <div class="bigBox" v-if="isLoading">
-      
-      <LoadingPage class="loading" />
+
+    <div class="bigBox" v-if="!isClick">
+    <!-- <div class="bigBox" v-if="isLoading"> -->  
+      <div class="circle" @click="clicked"><span>click</span></div>
+      <LoadingPage class="loading" :is-loading=isLoading @isClick="clicked"/>
     </div>
+    <SignupModal v-if="modalState.signup" @close="closeModal('signup')" />
     <MenuBar class="menuBar"/>
     <transition name="slide-fade" mode="out-in">
       <router-view/>
@@ -17,21 +19,27 @@
 <script>
 import LoadingPage from '@/components/LoadingPage'
 import MenuBar from '@/components/MenuBar'
+import SignupModal from '@/components/SignupModal'
 
 export default {
   name: 'App',
   data() {
     return {
-      cnt: 0
+      cnt: 0,
+      isClick: false
     }
   },
   components: {
     LoadingPage,
     MenuBar,
+    SignupModal,
   },
   computed: {
     isLoading() {
       return this.$store.state.isLoading
+    },
+    modalState() {
+      return this.$store.state.modalState
     }
   },
   methods: {
@@ -45,7 +53,27 @@ export default {
     },
     test() {
       console.log(11)
-    }
+    },
+    clicked() {
+      this.isClick = true
+    },
+    mouseCircle(event) {
+      const now = window.location.href
+      if (now === 'http://localhost:8080/') {
+        console.log(now)
+        const circle = document.querySelector(".circle");
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+        circle.style.left = mouseX + 'px';
+        circle.style.top = mouseY + 'px';
+      }
+      
+    },
+    closeModal(page) {
+      // this.modal = false
+      this.$store.commit('POP_DOWN', page)
+      // this.$store.state.modal = false
+    },
   },
   created() {
     this.start()
@@ -54,7 +82,7 @@ export default {
     isLoading() {
       this.cnt += 1
       if (this.cnt === 2) {
-        this.$router.push({ name: 'time' })
+        // this.$router.push({ name: 'time' })
         this.cnt = 0
       }
     }
@@ -65,13 +93,15 @@ export default {
 <style>
 body {
   /* background-color: rgba(248, 242, 230, 100); */
-  background-color: #1c1c1c;
+  /* background-color: #1c1c1c; */
   /* background-color: #eae9e4; */
   /* background-image: url('https://www.cinecasero.uy/img/old.webp'); */
   
   height: 100%;
   min-height: 100vh;
   position: relative;
+  margin: 0px;
+
 }
 
 /* body::after {
@@ -109,6 +139,9 @@ body::before {
   /* display: grid; */
   /* grid-template-areas: ""; */
   position: relative;
+  background-color: #1c1c1c;
+
+  
 } 
 
 #app::before {
@@ -226,4 +259,44 @@ nav a.router-link-exact-active {
   opacity: 0;
 }
 
+.circle { 
+  --size: 110px;
+  display: block;
+  position: fixed;
+  z-index: 9999;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  will-change: transform;
+  mix-blend-mode: difference;
+  cursor: pointer;
+}
+
+.circle span {
+    border-radius: 50%;
+    width: var(--size);
+    height: var(--size);
+    left: calc(var(--size)/-2);
+    top: calc(var(--size)/-2);
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    text-transform: uppercase;
+    background-color: #eae9e4;
+    color: #1c1c1c;
+    cursor: pointer;
+}
+/* .circle { 
+  position: absolute;
+  top: 0;
+  left: 0; 
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  background-color: #eae9e4;
+  transform: translate(-50%, -50%); 
+  cursor: pointer;
+} */
 </style>

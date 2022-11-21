@@ -1,0 +1,1 @@
+// new VideoBackgrounds('[data-vbg]');

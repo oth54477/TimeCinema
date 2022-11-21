@@ -4,13 +4,7 @@
       <div class="modal-window">
         <div class="modal-content">
           <MovieDetail :id="id" :times="times"/>
-          <slot/>
         </div>
-        <footer class="modal-footer">
-          <slot name="footer">
-            <button @click="$emit('close')">Close</button>
-          </slot>
-        </footer>
       </div>
     </div>
   </transition>
@@ -20,7 +14,7 @@
 import MovieDetail from '@/components/MovieDetail'
 
 export default {
-  name: 'MyModal',
+  name: 'DetailModal',
   props: {
     id: Number,
     times: String,
@@ -47,13 +41,16 @@ export default {
   }
 
   &-window {
-    background: #fff;
+    background: #201f1f;
     border-radius: 4px;
     overflow: hidden;
+    width: 70%;
   }
 
   &-content {
     padding: 10px 20px;
+    padding 0px
+    overflow-y: auto;
   }
 
   &-footer {
@@ -64,8 +61,17 @@ export default {
 }
 
 // 오버레이 트랜지션
-.modal-enter-active, .modal-leave-active {
-  transition: opacity 0.4s;
+.modal-enter-active, {
+  transition: opacity 2.5s;
+
+  // 오버레이에 포함되어 있는 모달 윈도의 트랜지션
+  .modal-window {
+    transition: opacity 0.4s, transform 0.4s;
+  }
+}
+
+.modal-leave-active {
+  transition: opacity 1.5s;
 
   // 오버레이에 포함되어 있는 모달 윈도의 트랜지션
   .modal-window {
@@ -74,16 +80,9 @@ export default {
 }
 
 // 딜레이가 적용된 모달 윈도가 제거된 후에 오버레이가 사라짐
-.modal-leave-active {
-  transition: opacity 0.6s ease 0.4s;
-}
+
 
 .modal-enter, .modal-leave-to {
   opacity: 0;
-
-  .modal-window {
-    opacity: 0;
-    transform: translateY(-20px);
-  }
 }
 </style>
