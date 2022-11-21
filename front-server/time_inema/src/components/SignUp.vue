@@ -1,25 +1,25 @@
 <template>
   <section class="signup-body">
     <div class="signup">
-      <h1>join Cinema Time</h1>
+      <h1>Join Cinema Time</h1>
       <form class="signup-form" @submit.prevent="signUp">
-        <input type="text" id="username" placeholder="Username" v-model="username"><br>
-        <input type="password" id="password1" placeholder="Password" v-model="password1"><br>
-        <input type="password" id="password2" placeholder="Password confirmation" v-model="password2">
-        <button class="btn-signup">Join with Username</button>
-        <button class="btn-google">Join with Google</button>
+        <input type="text" id="username" placeholder="  Username" v-model="username"><br>
+        <input type="password" id="password1" placeholder="  Password" v-model="password1"><br>
+        <input type="password" id="password2" placeholder="  Password confirmation" v-model="password2">
+        <button class="btn-signup" @click="signUp">Join with Username</button>
         <div class="or">
           <hr>
           <h2 style="color:black;">or</h2>
           <hr>
         </div>
+        <button class="btn-google">Join with Google</button>
         <!-- <input class="btn-signup" type="submit" value="SignUp"> -->
       </form>
     </div>
     <div class="signup-foot">
       <div class="go-to-login">
         <h1>Already have an account?</h1>
-        <h1> Log in</h1>
+        <h1  @click="goToLogin"> Log in</h1>
       </div>
       <div class="foot">
         <p class="signup-content">By joining Time cinema, You agree to our Terms of Service, Privacy Plicy and Cookis Policy.</p>
@@ -55,6 +55,10 @@ export default {
 
       this.$store.dispatch('signUp', payload)
 
+    },
+    goToLogin() {
+      this.$store.commit('POP_DOWN', 'signup')
+      this.$store.commit('POP_UP', 'login')
     }
   }
 }
@@ -67,13 +71,18 @@ export default {
   margin-top: 0px;
   flex-direction: column;
   position: fixed;
-  top: 3vh;
+  /* top: 3vh;
   left: 10vw;
   right: 10vw;
-  bottom: 0vh;
+  bottom: 0vh; */
+  top: 15vh;
+  left: 25vw;
+  right: 25vw;    
+  bottom: 15vh;
   overflow: scroll;
   border-radius: 10px;
   background-color: #eae9e4;
+  font-family: 'big-caslon'
 }
 
 .signup {
@@ -130,7 +139,7 @@ export default {
 .btn-google {
   width: 25vw;
   height: 5vh;
-  margin-top: 2.5vh;
+  /* margin-top: 2.5vh; */
   cursor: pointer;
   color: #b8b8b8;
   font-size: 1.2rem;
@@ -151,6 +160,8 @@ export default {
 
 .go-to-login > h1:nth-child(2) {
   font-style: italic;
+  cursor: pointer;
+
 }
 
 .signup-content {
@@ -168,7 +179,9 @@ export default {
 }
 
 hr {
+  height: 0vh;
   width: 10vw;
+  background-color: black;
   border: solid 1.5px black;
   margin: 0px 1vw;
 }

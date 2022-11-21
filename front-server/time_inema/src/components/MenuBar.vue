@@ -26,19 +26,19 @@
       <div class="btn-app">
         <div class="fa fa-video-camera"></div>
       </div>
-      <div class="btn-app">
+      <div class="btn-app" @click="$store.dispatch('getUserProfile')">
         <div class="fa fa-soundcloud"></div>
       </div>
-      <div class="btn-app" @click="goTo('signup')">
+      <div class="btn-app" @click="popUp('signup')">
         <div class="fa fa-graduation-cap"></div>
       </div>
-      <div class="btn-app" @click="goTo('login')" style="color:white">
+      <div class="btn-app" @click="popUp('login')">
         <!-- <div class="fa fa-solid fa-right-to-bracket" style="--fa-primary-color: gold;"></div> -->
-        <div><i class="fa fa-discord"></i></div>
+        <div><i class="fa fa-solid fa-right-to-bracket"></i></div>
       </div>
-      <div class="btn-app" @click="goTo('time')">
+      <div class="btn-app" @click="goTo('profile')">
         <!-- <div class="fa fa-vine"></div> -->
-        <div><i class="fa fa-vine"></i></div>
+        <div><i class="fa fa-solid fa-user"></i></div>
       </div>
     </div>
     
@@ -58,13 +58,13 @@ export default {
     clickMenu() {
       this.isClicked = !this.isClicked
     },
-    goTo(page) {
+    popUp(page) {
 			this.$store.commit('POP_UP', page)
     },
-    // goTo(routeName) {
-    //   this.$router.push({ name: routeName })
-    //   this.isClicked = !this.isClicked
-    // },
+    goTo(routeName) {
+      this.$router.push({ name: routeName })
+      this.isClicked = !this.isClicked
+    },
   },
 }
 </script>

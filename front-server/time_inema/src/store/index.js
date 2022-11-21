@@ -57,6 +57,7 @@ export default new Vuex.Store({
     modalState: {
       signup: false,
       login: false,
+      profile: false,
     },
   },
   getters: {
@@ -102,7 +103,7 @@ export default new Vuex.Store({
       setTimeout(function () {
         state.isLoading = false
         console.log('loading : ', state.isLoading)
-      }, 1000)
+      }, 2500)
     },
     // 회원가입 && 로그인
     SAVE_TOKEN(state, token) {
@@ -187,6 +188,8 @@ export default new Vuex.Store({
       })
         .then((res) => {
           console.log(res)
+          console.log(res.config.data)
+
           context.commit('SAVE_TOKEN', res.data.key)
         })
     },
@@ -208,6 +211,18 @@ export default new Vuex.Store({
             url: trailer.key,
           }))
           context.commit('GET_TRAILER', payload)
+        })
+    },
+    getUserProfile(context) {
+      axios({
+        method: 'get',
+        url: `${DJANGO_API_URL}/accounts/user/`,
+        headers: {
+          Authorization: `Token ${context.state.token}` 
+        }
+      })
+        .then((res) => {
+          console.log(res)
         })
     }
   },

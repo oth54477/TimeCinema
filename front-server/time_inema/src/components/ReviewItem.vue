@@ -83,4 +83,13 @@ export default {
   margin-left: 20px;
 }
 
+#app > section > div > div.profile-review > section > div > div > img {
+ border-radius: 100px;
+ width: 50px;
+ height: 50px;
+}
+
+#app > section > div > div.profile-review > section > div > div {
+  font-size: 0.8rem;
+}
 </style>

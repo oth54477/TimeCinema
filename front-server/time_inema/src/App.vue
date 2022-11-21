@@ -1,13 +1,31 @@
 <template>
-  <div id="app"  @mousemove="mouseCircle">
+  <div id="app"  @mousemove="mouseCircle" @click="goToTime">
     <!-- <button @click="load">load</button> -->
 
-    <div class="bigBox" v-if="!isClick">
+    <div class="bigBox" v-if="isCircle">
+      <!-- <div class="film"> -->
+        <!-- <img src="@/assets/sungbin.png" style="color:white"> -->
+        <!-- <img src="https://www.cinecasero.uy/img/tape.png" style="color:white"> -->
+      <!-- </div> -->
+      <!-- <div class="film"> -->
+        <!-- <img src="@/assets/sungbin.png" style="color:white"> -->
+      <!-- </div> -->
+
+        <div class="tape-box1">
+          <div class="tape -left"></div>
+          <div class="tape -right"></div>
+        </div>
+        <!-- <div class="tape-box2">
+          <div class="tape -left"></div>
+          <div class="tape -right"></div>
+        </div> -->
+      
     <!-- <div class="bigBox" v-if="isLoading"> -->  
-      <div class="circle" @click="clicked"><span>click</span></div>
-      <LoadingPage class="loading" :is-loading=isLoading @isClick="clicked"/>
+      <div class="circle" v-if="!isLoading&&isCircle"  @click="clicked"><span>click</span></div>
+      <LoadingPage class="loading"  @isClick="clicked"/>
     </div>
     <SignupModal v-if="modalState.signup" @close="closeModal('signup')" />
+    <LoginModal v-if="modalState.login" @close="closeModal('login')" />
     <MenuBar class="menuBar"/>
     <transition name="slide-fade" mode="out-in">
       <router-view/>
@@ -20,19 +38,22 @@
 import LoadingPage from '@/components/LoadingPage'
 import MenuBar from '@/components/MenuBar'
 import SignupModal from '@/components/SignupModal'
+import LoginModal from '@/components/LoginModal'
 
 export default {
   name: 'App',
   data() {
     return {
       cnt: 0,
-      isClick: false
+      isClick: false,
+      isCircle: true,
     }
   },
   components: {
     LoadingPage,
     MenuBar,
     SignupModal,
+    LoginModal,
   },
   computed: {
     isLoading() {
@@ -40,7 +61,7 @@ export default {
     },
     modalState() {
       return this.$store.state.modalState
-    }
+    },
   },
   methods: {
     start() {
@@ -74,6 +95,14 @@ export default {
       this.$store.commit('POP_DOWN', page)
       // this.$store.state.modal = false
     },
+    goToTime() {
+      if (location.pathname === '/') {
+        this.isCircle = false
+        this.$router.push({ name: 'time' })
+        this.$emit('isClick', true)
+
+      }
+    },
   },
   created() {
     this.start()
@@ -86,11 +115,27 @@ export default {
         this.cnt = 0
       }
     }
-  }
+  },
+
 }
 </script>
 
 <style>
+@font-face {
+  font-family: 'big-caslon';
+  src: url('@/assets/font/big-caslon.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'futur';
+  src: url('@/assets/font/futur.ttf') format('truetype');
+}
+
+* {
+  font-family: 'big-caslon'
+}
+
+
 body {
   /* background-color: rgba(248, 242, 230, 100); */
   /* background-color: #1c1c1c; */
@@ -101,8 +146,13 @@ body {
   min-height: 100vh;
   position: relative;
   margin: 0px;
-
+  -ms-overflow-style: none;
+  font-family: 'big-caslon'
 }
+
+::-webkit-scrollbar {
+    display: none;
+  }
 
 /* body::after {
   content: "";
@@ -121,7 +171,7 @@ body::before {
   content: "";
   position: fixed;
   background-image: url('https://www.cinecasero.uy/img/noise-full.png');
-  background-repeat: repeat;
+  /* background-repeat: repeat; */
 
   opacity: 0.025;
   top: 0px;
@@ -131,7 +181,7 @@ body::before {
 }
 
 #app {
-  font-family: Avenir, Helvetica, Arial, sans-serif;
+  /* font-family: Avenir, Helvetica, Arial, sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
@@ -174,10 +224,13 @@ body::before {
   width: 100%;
   height: 100%;
   min-height: 100vh;
-  font-family: ivymode, sans-serif;
+  /* font-family: ivymode, sans-serif; */
   font-style: normal;
   font-weight: 600;
-  font-size: 2em;
+  /* font-size: 2em; */
+
+  cursor: pointer;
+
 }
 
 .loading {
@@ -260,7 +313,7 @@ nav a.router-link-exact-active {
 }
 
 .circle { 
-  --size: 110px;
+  --size: 75px;
   display: block;
   position: fixed;
   z-index: 9999;
@@ -287,6 +340,7 @@ nav a.router-link-exact-active {
     background-color: #eae9e4;
     color: #1c1c1c;
     cursor: pointer;
+    font-size: 20px;
 }
 /* .circle { 
   position: absolute;
@@ -299,4 +353,105 @@ nav a.router-link-exact-active {
   transform: translate(-50%, -50%); 
   cursor: pointer;
 } */
+
+.film:nth-child(1) {
+  /* max-width: 100px; */
+  /* overflow: hidden; */
+  /* height: 100%; */
+  /* width: 100%; */
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  color: #1c1c1c;
+  /* display: flex; */
+  /* justify-content: space-between; */
+}
+
+
+.film:nth-child(2) {
+  /* max-width: 100px; */
+  /* overflow: hidden; */
+  /* height: 100%; */
+  /* width: 100%; */
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  color: #1c1c1c;
+  /* display: flex; */
+  /* justify-content: space-between; */
+}
+
+
+
+.film > img {
+  mask-image: white;
+}
+
+.tape-box1 {
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  animation: fadeInDown 70s 2.5s infinite;
+}
+
+/* .tape-box2 {
+  position: relative;
+  height: 100%;
+  width: 100%;
+  top: 0px;
+  left: 0px;
+  right: 0px;
+  bottom: 0px;
+  animation: fadeInDown2 10s infinite;
+} */
+
+@keyframes fadeInDown {
+        0% {
+            opacity: 1;
+            transform: translate3d(0, -300%, 0);
+        }
+        to {
+            opacity: 1;
+            /* transform: translateZ(-100%); */
+            transform: translate3d(0, 0, 0)
+        }
+}
+
+/* @keyframes fadeInDown2 {
+        0% {
+            opacity: 1;
+            transform: translate3d(0, -100%, 0);
+        }
+        to {
+            opacity: 1;
+            transform: translateZ(0);
+            transform: translate3d(0, 0, 0)
+        }
+    } */
+
+.tape.-left {
+  left: 2rem;
+}
+
+.tape.-right {
+  right: 2rem;
+}
+
+.tape {
+  position: absolute;
+  background-image: url('@/assets/tape.png');
+  background-repeat: repeat-y;
+  background-size: contain;
+  background-position: top center;
+  height: 6872px;
+  top: 0;
+  width: 70px;
+}
+
+
+
 </style>
