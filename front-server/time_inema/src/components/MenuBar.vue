@@ -1,263 +1,271 @@
 <template>
   <div class="container">
-		<input type="checkbox" id="ham-menu">
-		<label for="ham-menu">
-			<div class="hide-des">
-				<span class="menu-line"></span>
-				<span class="menu-line"></span>
-				<span class="menu-line"></span>
-				<span class="menu-line"></span>
-				<span class="menu-line"></span>
-				<span class="menu-line"></span>
-			</div>
-
-		</label>
-		<div class="full-page-green"></div>
-		<div class="ham-menu">
-			<ul class="centre-text bold-text">
-				<li>Home</li>
-				<li>Categories</li>
-				<li>Services</li>
-				<li>Shop</li>
-				<li>Support</li>
-				<li>Contact us</li>
-
-			</ul>
-		</div>
+    <div class="menu-toggle" @click="clickMenu" :class="{ open: isClicked }">
+      <span class="fa fa-plus"></span>
+    </div>
+    
+    <div class="menu-round" :class="{ open: isClicked }">
+      <div class="btn-app" @click="openGithub">
+        <div class="fa fa-brands fa-github"></div>
+      </div>
+      <div class="btn-app" @click="goTo('home')">
+        <div class="fa fa-solid fa-house"></div>
+      </div>
+      <div class="btn-app" @click="search">
+        <div class="fa fa-solid fa-magnifying-glass"></div>
+      </div>
+    </div>
+    
+    <div class="menu-line" :class="{ open: isClicked }">
+      <div class="btn-app">
+        <div class="fa fa-map-marker"></div>
+      </div>
+      <div class="btn-app">
+        <div class="fa fa-envelope"></div>
+      </div>
+      <div class="btn-app">
+        <div class="fa fa-video-camera"></div>
+      </div>
+      <div class="btn-app" @click="$store.dispatch('getUserProfile')">
+        <div class="fa fa-soundcloud"></div>
+      </div>
+      <div class="btn-app" @click="popUp('signup')">
+        <div class="fa fa-solid fa-user-plus"></div>
+      </div>
+      <div class="btn-app" @click="popUp('login')" v-if="token == null">
+        <!-- <div class="fa fa-solid fa-right-to-bracket" style="--fa-primary-color: gold;"></div> -->
+        <div><i class="fa fa-solid fa-right-to-bracket"></i></div>
+      </div>
+      <div class="btn-app" @click="logOut" v-if="token">
+        <!-- <div class="fa fa-solid fa-right-to-bracket" style="--fa-primary-color: gold;"></div> -->
+        <div><i class="fa fa-solid fa-right-from-bracket"></i></div>
+      </div>
+      <div class="btn-app" @click="goTo('profile')">
+        <!-- <div class="fa fa-vine"></div> -->
+        <div><i class="fa fa-solid fa-user"></i></div>
+      </div>
+    </div>
+    
+    
   </div>
 </template>
 
 <script>
+import 'animate.css';
+
 export default {
-  name: 'MenuBar',
+  name: 'MenuBar2',
+	computed: {
+		token() {
+			return this.$store.state.token
+		}
+	},
   data() {
     return {
+      isClicked: false,
     }
   },
   methods: {
+    clickMenu() {
+      this.isClicked = !this.isClicked
+    },
+    popUp(page) {
+			this.$store.commit('POP_UP', page)
+    },
+    goTo(routeName) {
+      this.$router.push({ name: routeName })
+      this.isClicked = !this.isClicked
+    },
+		openGithub() {
+			window.open('https://github.com/oth54477/TimeCinema')
+		},
+		search(event) {
+			const tag = event.target
+			tag.class = 
+			console.log(tag)
+		},
+		logOut() {
+			this.$store.commit('LOG_OUT')
+		}
 
   },
 }
 </script>
 
 <style scoped lang="scss">
-.container {
+// style attribute {
+//     --button-hover-background: var(--example-color-alt);
+//     --button-color: var(--white);
+//     --button-background: var(--example-color-alt);
+//     --button-margin-bottom: 0;
+// }
+// .fa-right-to-bracket {
+// 	--fa-inverse:$red
+
+// }
+
+.fa-right-to-bracket:before {
+    content: "\f2f6";
+}
+
+// this -- well, because this.
+* {
+	box-sizing:border-box;
+}
+
+// this makes a basic circle
+@mixin circle($param) {
+	width:$param;
+	height:$param;
+	border-radius:50%;
+}
+
+// Brand Colour Palette
+$purple:#462882;
+// $green:#1ef0a0;
+// $green:#232a28;
+$green:#634141;
+// $blue:#4644fd;
+// $blue:rgb(133, 131, 131);
+$blue:#996633;
+$red:#ff3c4b;
+$brown: #996633;
+$mycolor: #663333;
+
+body {
+	// background-color: $purple;
+	background-color: gray;
+	height:100vh;
+	width:100vw;
 	position: relative;
+}
+
+// this is what I use to place the menu thing wherever I want
+.container {
+	position: fixed;
+	bottom:1em;
+	right:1em;
 	z-index: 999;
 }
 
-:root {
-  --home-bg-color: #f2f3ee;
-  --menu-bg-color: #cbcbc2;
-  --silde-btn-border: #808080;
-  --slide-btn-bg: #ddf2db;
-  --slide-btn-hoverbg: #f1fff1;
-  --alpha-green: rgba(33, 96, 47, 0.51);
-  --icon-hover-color: #344a39;
-  --icon-hover-bg: #709680;
-  --text-color: #616161;
-  --border-color: #709680;
-  --heading-color: #344a39;
-  --box-shadow-color: #b5b5ac;
-  --lightest-green: #86a58d;
-  --light-green: #9ab09a;
-  --dark-green: rgba(52, 74, 57, 0.86);
-  --box-shadow: 0px 0px 3px 5px var(--box-shadow-color);
-  --border-radius: 60px 5px;
-  --fade-green: rgba(57, 87, 64, 0.55);
-}
-*,
-*::before,
-*::after {
-  margin: 0;
-  padding: 0;
-  box-sizing: border-box;
-  list-style: none;
-}
-body,
-html {
-  width: 100%;
-  font-size: 10px;
-  color: var(--text-color);
-  font-weight: normal;
-  font-family: sans-serif;
-  background-color: var(--home-bg-color);
+// this toggles the whole damn thing
+.menu-toggle {
+	@include circle(60px);
+	background-color: $green;
+	box-shadow:4px 4px 2px 1px rgba(#000, 0.2);
+	
+	position: absolute;
+	z-index:999;
+	bottom:0;
+	right:0;
+	display:table;
+	
+	text-align: center;
+	
+	.fa {
+		color:#fff;
+		font-size:2em;
+		display:table-cell;
+		vertical-align:middle;
+		transition:0.4s;
+	}
+	
+	// .fa-right-to-bracket {
+	// 	color:#fff;
+	// 	font-size:2em;
+	// 	display:table-cell;
+	// 	vertical-align:middle;
+	// 	transition:0.4s;
+	// }
+
+	// Twist the plus so it looks like a close 'x'
+	&.open .fa {
+		transform:rotate(135deg);
+	}
 }
 
-#ham-menu {
-  display: none;
+// Single Template buttons
+.btn-app {
+	@include circle(2.5em);
+	position:absolute;
+	
+	background-color: $blue;
+	color:#fff;
+	text-align: center;
+	
+	.fa {
+		line-height:2.5em;
+	}
 }
-label[for="ham-menu"] {
-  display: block;
-  position: fixed;
-  top: 24px;
-  left: 20px;
-  z-index: 999;
-  width: 60px;
-  height: 60px;
-  background-color: var(--home-bg-color);
-  border-radius: 15px;
-  border: 2px solid var(--border-color);
+
+// add shadow only when templates are activated
+.open .btn-app {
+	box-shadow:4px 4px 2px 1px rgba(#000, 0.2);
 }
-.ham-menu {
-  width: 50vw;
-  height: 100%;
-  position: fixed;
-  top: 0;
-  visibility: hidden;
-  transform: translate(-110%);
-  z-index: 998;
-  background-color: var(--lightest-green);
-  transition: 1s;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+
+// The most-popular apps in a circular thingo
+.menu-round {
+	position: absolute;
+	bottom:0;
+	right:0;
+	z-index:3;
+	
+	.btn-app {
+		bottom:0.25em;
+		right:0.25em;
+		transition:0.4s;
+	}
+	
+	// position of templates when activated
+	&.open {
+		.btn-app:nth-of-type(1){
+			right:0.5em;
+			bottom:4.25em;
+			transition-delay:0.2s;
+		}
+		.btn-app:nth-of-type(2){
+			right:3.5em;
+			bottom:3.5em;
+			transition-delay:0.1s;
+		}
+		.btn-app:nth-of-type(3){
+			right:4.25em;
+			bottom:0.5em;
+		}
+	}	
+
 }
-.ham-menu > ul {
-  display: flex;
-  flex-flow: column nowrap;
-  justify-content: space-around;
-  padding: 20px;
-  height: 50%;
-}
-.ham-menu > ul > li {
-  font-size: 5rem;
-  white-space: nowrap;
-  letter-spacing: 0.15em;
-  cursor: pointer;
-  color: rgb(97, 97, 97);
-}
-#ham-menu:checked + label {
-  background-color: transparent;
-  border-color: var(--dark-green);
-}
-#ham-menu:checked ~ div.ham-menu {
-  transform: translate(0px);
-  visibility: visible;
-}
-.full-page-green {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: var(--dark-green);
-  z-index: 997;
-  opacity: 0;
-  visibility: hidden;
-  display: none;
-  transition: 500ms;
-  position: fixed;
-  top: 0;
-  left: 0;
-}
-#ham-menu:checked ~ div.full-page-green {
-  display: block;
-  opacity: 1;
-  visibility: visible;
-}
-[for="ham-menu"] > div {
-  width: 100%;
-  height: 100%;
-  display: flex;
-  flex-flow: column wrap;
-  align-content: center;
-  align-items: center;
-}
+
+// stacked template icons
 .menu-line {
-  display: block;
-  width: 17px;
-  height: 2px;
-  margin: 10px 0 5px;
-  border-top-left-radius: 2px;
-  border-bottom-left-radius: 2px;
-  background-color: var(--border-color);
-  transition: 500ms;
-  transform-origin: right center;
+	position: absolute;
+	z-index:2;
+	
+	.btn-app {
+		bottom:0;
+		right:0.5em;
+		transition:0.3s;
+		transition-delay:0.5s;
+	}
+	
+	&.open {
+		// first one. add 3 to each subsequent template
+		$bottom:4.25em;
+		$templates:7;
+		
+		.btn-app:nth-of-type(1) {
+			bottom:$bottom;
+		}
+		
+		// align each template item on top of the next
+		@for $i from 1 through $templates {
+			.btn-app:nth-of-type(#{$i}) {
+				bottom:$bottom + 3 * $i;
+			}
+		}
+	}	
+	
 }
-[for="ham-menu"] > div > span:nth-child(4),
-[for="ham-menu"] > div > span:nth-child(5),
-[for="ham-menu"] > div > span:nth-child(6) {
-  border-top-left-radius: 0;
-  border-bottom-left-radius: 0;
-  border-top-right-radius: 2px;
-  border-bottom-right-radius: 2px;
-  transform-origin: left center;
-}
-#ham-menu:checked + label span {
-  background-color: var(--dark-green);
-}
-#ham-menu:checked + label span:nth-child(2),
-#ham-menu:checked + label span:nth-child(5) {
-  transform: scale(0);
-}
-#ham-menu:checked + label span:nth-child(1) {
-  transform: translateY(17px) rotate(45deg);
-}
-#ham-menu:checked + label span:nth-child(4) {
-  transform: translateY(17px) rotate(-45deg);
-}
-#ham-menu:checked + label span:nth-child(3) {
-  transform: translateY(-17px) rotate(-45deg);
-}
-#ham-menu:checked + label span:nth-child(6) {
-  transform: translateY(-17px) rotate(45deg);
-}
-p {
-  display: inline;
-  font-size: 1.8rem;
-  line-height: 1.5em;
-  word-spacing: 0.5em;
-  letter-spacing: 0.1em;
-  font-family: "OpenSansCondensed-Light";
-}
-a {
-  font-size: 1.6rem;
-  line-height: 1.5em;
-  word-spacing: 0.5em;
-  letter-spacing: 0.1em;
-  font-family: "OpenSansCondensed-Light";
-  display: inline;
-  font-weight: bold;
-  padding: 7px;
-  color: var(--icon-hover-bg);
-}
-a::after {
-  content: "\e806";
-  display: inline-block;
-  font-family: fontello;
-  padding: 5px;
-  font-size: 1.6rem;
-  transform: rotate(-90deg);
-}
-.text {
-  font-size: 2.5rem;
-  line-height: 1.5em;
-  word-spacing: 0.5em;
-  letter-spacing: 0.1em;
-  font-family: "OpenSansCondensed-Bold", sans-serif;
-}
-.title {
-  font-size: 3rem;
-  line-height: 1.5em;
-  word-spacing: 0.5em;
-  letter-spacing: 0.1em;
-  font-family: "OpenSansCondensed-Bold", sans-serif;
-  color: var(--icon-hover-bg);
-  padding: 10px;
-}
-.heading {
-  font-size: 6rem;
-  line-height: 1.5em;
-  word-spacing: 0.5em;
-  letter-spacing: 0.1em;
-  font-family: "Patua One";
-}
-.centre-text {
-  text-align: center;
-}
-.bold-text {
-  font-weight: bold;
-}
+
 
 </style>

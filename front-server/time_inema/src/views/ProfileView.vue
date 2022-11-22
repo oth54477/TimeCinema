@@ -1,6 +1,6 @@
 <template>
   <section class="profile-body">
-    <div class="profile">
+    <!-- <div class="profile">
       <h1>Profile</h1>
       <div class="profile-back">
         
@@ -23,31 +23,53 @@
         />
       </div>
 
-    </div>
+    </div> -->
   </section>
 </template>
 
 <script>
-import ReviewItem from '@/components/ReviewItem'
+// import ReviewItem from '@/components/ReviewItem'
+import axios from 'axios'
+
+const DJANGO_API_URL = "http://127.0.0.1:8000"
 
 export default {
   name: 'ProfileView',
   components: {
-    ReviewItem,
+    // ReviewItem,
   },
   computed: {
-    user() {
-      return {
-        id: 1,
-        name: '김싸피',
-        img: 'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png'
-      }
-    },
-    reviews() {
-      const reviews = this.$store.state.reviews
-      console.log(reviews.filter(review => review.userId === this.user.id))
-      return reviews.filter(review => review.userId === this.user.id)
+    // user() {
+    //   return 1
+    // },
+    // reviews() {
+    //   const reviews = this.$store.state.reviews
+    //   console.log(reviews.filter(review => review.userId === this.user.id))
+    //   return reviews.filter(review => review.userId === this.user.id)
+    // },
+    token() {
+      return this.$store.state.token
     }
+  },
+  data() {
+    return {
+
+    }
+  },
+  methods: {
+
+  },
+  created() {
+    axios({
+      method: 'get',
+      url: `${DJANGO_API_URL}/accounts/user/`,
+      headers: {
+        Authorization: `Token ${this.token}` 
+      }
+    })
+      .then((res) => {
+        console.log('유저',res)
+      })
   }
 
 }

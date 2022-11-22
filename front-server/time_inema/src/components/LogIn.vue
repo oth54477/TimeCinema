@@ -8,7 +8,7 @@
         <input type="password" id="password" placeholder="  password" v-model="password"><br>
   
         <!-- <input type="submit" value="logIn"> -->
-        <button class="btn-signup" @click="logIn">Login with Username</button>
+        <button class="btn-signup">Login with Username</button>
       </form>
     </div>
   </section>

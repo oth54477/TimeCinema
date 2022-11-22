@@ -19,6 +19,7 @@
     "vue": "^2.6.14",
     "vue-router": "^3.5.1",
     "vuex": "^3.6.2",
+    "vuex-persistedstate": "^4.1.0",
     "youtube-background": "^1.0.14"
   },
   "devDependencies": {

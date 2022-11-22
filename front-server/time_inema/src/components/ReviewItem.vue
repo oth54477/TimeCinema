@@ -2,16 +2,16 @@
   <section class="review-item-body">
     <div class="review-item">
       <div>
-        <img :src="this.user.img">
+        <img :src="this.user?.img">
       </div>
       <div>
         <div>
-          <h3>{{ this.user.name }}</h3>
+          <h3>{{ this.user?.name }}</h3>
           <div>
-            <div v-for="index in this.review.score" :key="index" class="fa fa-solid fa-star" style="color:yellow; font-size: 1.1rem;"></div>
+            <div v-for="index in this.review.star_point" :key="index" class="fa fa-solid fa-star" style="color:yellow; font-size: 1.1rem;"></div>
           </div>
         </div>
-        <p>{{ this.review.content }}</p>
+        <p>{{ this.review.comment_content }}</p>
       </div>
     </div>
   </section>
@@ -25,9 +25,14 @@ export default {
   },
   computed: {
     user() {
+      const userId = this.review.user
+      const test = this.$store.dispatch('getUserProfile', userId)
+      console.log('유저아이디',userId)
+      console.log('엑시오스',test)
       return this.$store.state.userInfo.find(user => user.id === this.review.userId)
     }
-  }
+  },
+  // methods
 }
 </script>
 

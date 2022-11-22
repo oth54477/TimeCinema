@@ -21,11 +21,13 @@ class User(AbstractUser):
         processors=[ResizeToFill(300, 300)],
         format='JPEG',
         options={'quality': 70},
+        null=True,
     )
 
     point = models.IntegerField(
         default=0,
         validators=[MinValueValidator(0)],
+        null=True,
     )
 
     def __str__(self):

@@ -86,9 +86,8 @@ def reply_list(request, movie_pk, comment_pk):
 def comment_create(request, movie_pk):
     print(request.data)
     # article = Article.objects.get(pk=article_pk)
-    movie = get_object_or_404(Movie, pk=movie_pk)
-    print(request.data['user'])
-    user = User.objects.get(pk=request.data['user'])
+    movie = Movie.objects.get(pk=movie_pk)
+    user = User.objects.get(pk=request.user.pk)
     serializer = MovieCommentSerializer(data=request.data)
     print(serializer)
     if serializer.is_valid(raise_exception=True):

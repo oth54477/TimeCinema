@@ -1,7 +1,10 @@
 <template>
   <div id="app"  @mousemove="mouseCircle">
     <!-- <button @click="load">load</button> -->
-
+    <div class="success" v-if="loginCnt === 1">
+      <span>로그인 성공</span><br>
+      <span>{{ loginname }}님 환영합니다.</span>
+    </div>
 
     <SignupModal v-if="modalState.signup" @close="closeModal('signup')" />
     <LoginModal v-if="modalState.login" @close="closeModal('login')" />
@@ -22,7 +25,6 @@ export default {
   name: 'App',
   data() {
     return {
-
     }
   },
   components: {
@@ -33,6 +35,12 @@ export default {
   computed: {
     modalState() {
       return this.$store.state.modalState
+    },
+    loginname() {
+      return this.$store.state.login
+    },
+    loginCnt() {
+      return this.$store.state.loginCnt
     },
   },
   methods: {
@@ -61,6 +69,7 @@ export default {
       this.$store.commit('POP_DOWN', page)
       // this.$store.state.modal = false
     },
+
 
   },
   created() {
@@ -341,5 +350,48 @@ nav a.router-link-exact-active {
 
 
 
+.success {
+  background-color: black;
+  opacity: 0.85;
+  position: absolute;
+  top: 37.5vh;
+  bottom:0px;
+  left:0px;
+  right:0px;
+  height: 25vh;
+  width: 100vw;
+  z-index: 990;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+  animation: pop 3.5s 1 forwards;
+  animation-timing-function: cubic-bezier(0, 1.15, 0.9, 0.98);
+  
+}
 
+.success > span {
+  font-size: 50px;
+  color: #eae9e4
+}
+
+
+
+
+@keyframes pop {
+        0% {
+            opacity: 0;
+            /* transform: translate3d(0, -300%, 0); */
+        }
+
+        40% {
+          opacity: 0.8;
+        }
+
+
+        100% {
+          opacity: 0;
+
+        }
+}
 </style>

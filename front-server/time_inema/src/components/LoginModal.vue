@@ -3,6 +3,7 @@
     <div class="modal modal-overlay" @click.self="$emit('close')">
       <div class="modal-window">
         <div class="modal-content">
+
           <LogIn />
         </div>
       </div>
@@ -30,7 +31,7 @@ export default {
     align-items: center;
     justify-content: center;
     position: fixed;
-    z-index: 31;
+    z-index: 32;
     top: 0;
     left: 0;
     width: 100%;
@@ -83,4 +84,5 @@ export default {
 .modal-enter, .modal-leave-to {
   opacity: 0;
 }
+
 </style>
