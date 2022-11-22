@@ -4,7 +4,7 @@
       <div class="poster-img">
         <!-- <div class="video-box" data-vbg-autoplay="true" :data-vbg="`https://www.youtube.com/embed/${ this.trailers[0].url }?autoplay=1&mute=1`"></div> -->
         <!-- <img :src="`https://www.themoviedb.org/t/p/original${movie.poster_path}`"> -->
-        <iframe class="video" frame  :src="`https://www.youtube.com/embed/${ this.trailers[0].url }?autoplay=1&mute=1&loop=1&controls=0&vq=hd1080&rel=0`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" allowfullscreen></iframe>
+        <iframe class="video" frame  :src="`https://www.youtube.com/embed/${ this.trailers[0]?.url }?autoplay=1&mute=1&loop=1&controls=0&vq=hd1080&rel=0`" title="YouTube video player" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture;" allowfullscreen></iframe>
         <!-- <div data-vbg="https://www.youtube.com/watch?v=eEpEeyqGlxA"></div> -->
 
       </div>
@@ -82,30 +82,30 @@
             <!-- <button class="btn-review" @click="clickReview">리뷰 쓰기</button>  -->
             <div class="fa fa-solid fa-pen-to-square" @click="clickReview"></div>
           </div>
-          <div v-if="reviews.length === 0" style="margin-bottom:30px;">
-              <h1>첫 리뷰를 남겨주세요!</h1>
-          </div>
           <div class="review-input" v-if="this.isclickedReview">
             <div class="stars">
               <div 
-                    v-for="index in 5"
-                    :key="index"
-                    @mouseover="starOver(index)"
-                    @mouseleave="starLeave"
-                    @click="starClick(index)"
-                  >
-                    <div v-if="index < score+1"><div class="fa fa-solid fa-star" style="color:yellow;"></div></div>
-                    <div v-if="index >= score+1"><div class="fa fa-solid fa-star"></div></div>
-              </div>
-            </div>
-            <div>
-              <textarea name="" id="" cols="100%" rows="10"></textarea>
-            </div>
-            <div class="upload" @click="reviewUpload">
-              <p>작성하기</p>
-              <div class="fa fa-solid fa-upload"></div>
+              v-for="index in 5"
+              :key="index"
+              @mouseover="starOver(index)"
+              @mouseleave="starLeave"
+              @click="starClick(index)"
+              >
+              <div v-if="index < score+1"><div class="fa fa-solid fa-star" style="color:yellow;"></div></div>
+              <div v-if="index >= score+1"><div class="fa fa-solid fa-star"></div></div>
             </div>
           </div>
+          <div>
+            <textarea name="" id="" cols="100%" rows="10" v-model="content"></textarea>
+          </div>
+          <div class="upload" @click="createReview">
+            <p>작성하기</p>
+            <div class="fa fa-solid fa-upload"></div>
+          </div>
+        </div>
+        <div v-if="reviews.length === 0" style="margin-bottom:30px;">
+            <h1>첫 리뷰를 남겨주세요!</h1>
+        </div>
           <ReviewList :reviews="reviews"/>  
         </div>
       </div>
@@ -116,8 +116,9 @@
 
 <script>
 import ReviewList from '@/components/ReviewList'
+import axios from 'axios'
 // import VideoBackgrounds from 'https://unpkg.com/youtube-background@1.0.14/jquery.youtube-background.min.js'
-
+const DJANGO_API_URL = "http://127.0.0.1:8000"
 export default {
   name: 'MovieDetail',
   components: {
@@ -151,16 +152,21 @@ export default {
       return trailers
     },
     reviews() {
-      return this.$store.state.reviews.filter(review => review.movieId === this.id)
+      const reviews = this.dataReviews
+      console.log('리뷰 불러옴', reviews)
+      return reviews
+      // return reviews.filter(review => review.id === this.id)
     }
   },
   data() {
     return {
+      dataReviews: null,
       score: 0,
       isheart: false,
       isheartClicked: false,
       isStarClicked: false,
       isclickedReview: false,
+      content: null
     }
   },
   methods: {
@@ -197,12 +203,52 @@ export default {
     clickReview() {
       this.isclickedReview = !this.isclickedReview
     },
-    reviewUpload() {
+    createReview() {
       // 리뷰 업로드
+      const payload = {
+        movieId: this.id, 
+        score: this.score, 
+        content: this.content,
+      }
+      axios({
+        method: 'post',
+        url: `${DJANGO_API_URL}/movies/${payload.movieId}/comment/create`,
+        headers: {
+          Authorization: `Token ${this.$store.state.token}` 
+        },
+        data: {
+          movie: payload.movieId,
+          star_point: payload.score, 
+          comment_content: payload.content,
+        }
+      })
+        .then((res) => {
+          console.log(res)
+          this.getReviews()
+
+        })
+      // this.$store.dispatch('createComment', )
+    },
+    getReviews() {
+      axios({
+        method: 'get',
+        url: `${DJANGO_API_URL}/movies/${this.id}/comment`,
+      })
+        .then((res) => {
+          console.log(res)
+          this.dataReviews = res.data
+        })
+        .catch((error) => {
+          console.log(error)
+        })
     },
   },
   created() {
     this.$store.dispatch('getTrailer', {id: this.id})
+    this.getReviews()
+  },
+  update() {
+    this.getReviews()
   }
 }
 </script>

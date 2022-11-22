@@ -2,7 +2,8 @@ import Vue from 'vue'
 import Vuex from 'vuex'
 import axios from 'axios'
 import _ from 'lodash'
-import router from '@/router'
+// import router from '@/router'
+import createPersistedState from 'vuex-persistedstate'
 
 Vue.use(Vuex)
 
@@ -12,8 +13,16 @@ const TMDB_API_URL = "https://api.themoviedb.org/3/movie"
 const DJANGO_API_URL = "http://127.0.0.1:8000"
 
 export default new Vuex.Store({
+  plugins: [
+    createPersistedState({
+      paths: ['token']
+    })
+  ],
   state: {
     token: null,
+    user: null,
+    login: null,
+    loginCnt: 0,
     movies: null,
     isLoading: false,
     modal: false,
@@ -24,36 +33,6 @@ export default new Vuex.Store({
       future: 3,
     },
     trailers: null,
-    reviews: [
-      {
-        id: 1,
-        movieId: 436270,
-        userId: 1,
-        score: 5,
-        content: '지루하지 않고 킬링 타임으로 좋았다.'
-      },
-      {
-        id: 2,
-        movieId: 436270,
-        userId: 1,
-        score: 4,
-        content: '액션이 시원시원하니 좋았다.'
-      },
-      {
-        id: 3,
-        movieId: 436270,
-        userId: 1,
-        score: 2,
-        content: '지루하지 않고 킬링 타임으로 좋았다.'
-      }
-    ],
-    userInfo: [
-      {
-        id: 1,
-        name: '김싸피',
-        img: 'https://www.freeiconspng.com/thumbs/profile-icon-png/profile-icon-9.png'
-      }
-    ],
     modalState: {
       signup: false,
       login: false,
@@ -106,11 +85,20 @@ export default new Vuex.Store({
       }, 2500)
     },
     // 회원가입 && 로그인
-    SAVE_TOKEN(state, token) {
-      console.log('token',token)
-      state.token = token
+    SAVE_TOKEN(state, payload) {
+      console.log('token', payload.token)
+      state.token = payload.token
+      state.loginCnt ++
       // router.push({ name: 'ArticleView' })
-      router.push({ name: 'time' })
+      // router.push({ name: 'time' })
+      // this.$store.commit('POP_DOWN', 'login')
+      state.modalState.login = false
+      state.modalState.signup = false
+      state.login = payload.username
+    },
+    LOG_OUT(state) {
+      state.token  = null
+      console.log('로그아웃!!')
     },
     MODAL(state, status) {
       state.modal = status
@@ -170,11 +158,12 @@ export default new Vuex.Store({
           username: payload.username,
           password1: payload.password1,
           password2: payload.password2,
+          profile_image: payload.profile_image
         }
       })
         .then((res) => {
           console.log(res)
-          context.commit('SAVE_TOKEN', res.data.key)
+          context.commit('SAVE_TOKEN', {token: res.data.key, username: payload.username})
         })
     },
     logIn(context, payload) {
@@ -189,8 +178,11 @@ export default new Vuex.Store({
         .then((res) => {
           console.log(res)
           console.log(res.config.data)
-
-          context.commit('SAVE_TOKEN', res.data.key)
+          context.commit('SAVE_TOKEN', {token: res.data.key, username: payload.username})
+        })
+        .catch((error) => {
+          console.log('로그인 실패',error)
+          window.alert("로그인에 실패했습니다!")
         })
     },
     getTrailer(context, payload) {
@@ -205,12 +197,37 @@ export default new Vuex.Store({
         .then((res) => {
           console.log('예고편 -> ',res)
           const trailers = res.data.results
-          let payload = []
-          trailers.forEach(trailer => payload.push({
-            titl: trailer.name,
-            url: trailer.key,
-          }))
-          context.commit('GET_TRAILER', payload)
+          if (trailers.length === 0) {
+            axios({
+              method: 'get',
+              url: `${TMDB_API_URL}/${payload.id}/videos`,
+              params: {
+                      api_key: TMDB_API_KEY,
+                      language: 'en-US',
+                      },  
+            })
+              .then((res) => {
+                console.log('영어예고편 -> ',res)
+                const trailers = res.data.results
+
+                let payload = []
+                trailers.forEach(trailer => payload.push({
+                  titl: trailer.name,
+                  url: trailer.key,
+                }))
+      
+                context.commit('GET_TRAILER', payload)
+              })
+          } else {
+            let payload = []
+            trailers.forEach(trailer => payload.push({
+              titl: trailer.name,
+              url: trailer.key,
+            }))
+  
+            context.commit('GET_TRAILER', payload)
+          }
+
         })
     },
     getUserProfile(context) {
@@ -222,9 +239,13 @@ export default new Vuex.Store({
         }
       })
         .then((res) => {
-          console.log(res)
+          console.log('유저',res)
+          // context.getters.userInfo(res)
         })
-    }
+      // console.log('테스트', this.res)
+    },
+
+    
   },
   modules: {
   }

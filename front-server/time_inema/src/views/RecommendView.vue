@@ -137,7 +137,7 @@ body {
   display: grid;
   grid-template-rows: 5fr 1fr 5fr;
   grid-template-columns: 10fr 1fr 10fr 1fr 10fr;
-
+  height: 70vh;
   /* grid-template-areas: "card1 . card2 . card3"
   "none none none none none"
   "card4 . card5 . card6"; */

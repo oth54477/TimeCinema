@@ -5,14 +5,14 @@
     </div>
     
     <div class="menu-round" :class="{ open: isClicked }">
-      <div class="btn-app">
+      <div class="btn-app" @click="openGithub">
         <div class="fa fa-brands fa-github"></div>
       </div>
-      <div class="btn-app">
-        <div class="fa fa-facebook"></div>
+      <div class="btn-app" @click="goTo('home')">
+        <div class="fa fa-solid fa-house"></div>
       </div>
-      <div class="btn-app">
-        <div class="fa fa- fa-wikipedia-w"></div>
+      <div class="btn-app" @click="search">
+        <div class="fa fa-solid fa-magnifying-glass"></div>
       </div>
     </div>
     
@@ -30,11 +30,15 @@
         <div class="fa fa-soundcloud"></div>
       </div>
       <div class="btn-app" @click="popUp('signup')">
-        <div class="fa fa-graduation-cap"></div>
+        <div class="fa fa-solid fa-user-plus"></div>
       </div>
-      <div class="btn-app" @click="popUp('login')">
+      <div class="btn-app" @click="popUp('login')" v-if="token == null">
         <!-- <div class="fa fa-solid fa-right-to-bracket" style="--fa-primary-color: gold;"></div> -->
         <div><i class="fa fa-solid fa-right-to-bracket"></i></div>
+      </div>
+      <div class="btn-app" @click="logOut" v-if="token">
+        <!-- <div class="fa fa-solid fa-right-to-bracket" style="--fa-primary-color: gold;"></div> -->
+        <div><i class="fa fa-solid fa-right-from-bracket"></i></div>
       </div>
       <div class="btn-app" @click="goTo('profile')">
         <!-- <div class="fa fa-vine"></div> -->
@@ -47,8 +51,15 @@
 </template>
 
 <script>
+import 'animate.css';
+
 export default {
-  name: 'MenuBar',
+  name: 'MenuBar2',
+	computed: {
+		token() {
+			return this.$store.state.token
+		}
+	},
   data() {
     return {
       isClicked: false,
@@ -65,6 +76,18 @@ export default {
       this.$router.push({ name: routeName })
       this.isClicked = !this.isClicked
     },
+		openGithub() {
+			window.open('https://github.com/oth54477/TimeCinema')
+		},
+		search(event) {
+			const tag = event.target
+			tag.class = 
+			console.log(tag)
+		},
+		logOut() {
+			this.$store.commit('LOG_OUT')
+		}
+
   },
 }
 </script>
@@ -99,9 +122,15 @@ export default {
 
 // Brand Colour Palette
 $purple:#462882;
-$green:#1ef0a0;
-$blue:#4644fd;
+// $green:#1ef0a0;
+// $green:#232a28;
+$green:#634141;
+// $blue:#4644fd;
+// $blue:rgb(133, 131, 131);
+$blue:#996633;
 $red:#ff3c4b;
+$brown: #996633;
+$mycolor: #663333;
 
 body {
 	// background-color: $purple;
@@ -237,5 +266,6 @@ body {
 	}	
 	
 }
+
 
 </style>

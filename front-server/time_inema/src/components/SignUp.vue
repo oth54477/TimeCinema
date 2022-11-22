@@ -50,10 +50,12 @@ export default {
         // password2,
         username: username,
         password1: password1,
-        password2: password2,
+        password2: password2, 
+        profile_image: '@/assets/smaple_profile.png',
       }
 
       this.$store.dispatch('signUp', payload)
+      this.$store.commit('POP_DOWN', 'signup')
 
     },
     goToLogin() {
