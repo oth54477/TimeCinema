@@ -6,7 +6,7 @@ from accounts.models import User
 from django.http import JsonResponse, HttpResponse
 from rest_framework.response import Response
 from django.core import serializers
-from .serializers import MovieListSerializer, MovieSerializer, MovieCommentSerializer, MovieCommentReplySerializer
+from .serializers import MovieListSerializer, MovieSerializer, MovieCommentSerializer, MovieCommentReplySerializer, MovieLikeSerializer, UserAllSerializer, MovieWatchSerializer
 from rest_framework.decorators import api_view
 from rest_framework import status
 from .forms import CommentForm
@@ -71,6 +71,8 @@ def movie_detail(request, movie_pk):
 def comment_list(request, movie_pk):
     comments = MovieComment.objects.filter(movie=movie_pk)
     print(comments)
+    print(request.user.pk, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    print(User.objects.all())
     serializer = MovieCommentSerializer(comments, many=True)
     return Response(serializer.data)
 
@@ -84,9 +86,11 @@ def reply_list(request, movie_pk, comment_pk):
 
 @api_view(["POST"])
 def comment_create(request, movie_pk):
-    print(request.data)
+    # print(request.data)
     # article = Article.objects.get(pk=article_pk)
     movie = Movie.objects.get(pk=movie_pk)
+    # movie = get_object_or_404(Movie, pk=movie_pk)
+    # print(request.data['user'])
     user = User.objects.get(pk=request.user.pk)
     serializer = MovieCommentSerializer(data=request.data)
     print(serializer)
@@ -102,7 +106,7 @@ def reply_create(request, movie_pk, comment_pk):
     # article = Article.objects.get(pk=article_pk)
     movie = get_object_or_404(Movie, pk=movie_pk)
     comment = get_object_or_404(MovieComment, pk=comment_pk)
-    user = User.objects.get(pk=request.data['user'])
+    user = User.objects.get(pk=request.user.pk)
     serializer = MovieCommentReplySerializer(data=request.data)
     print(serializer)
     if serializer.is_valid(raise_exception=True):
@@ -120,7 +124,7 @@ def recommended(request):
     return redirect("accounts:login")
 
 
-@require_POST
+@api_view(["POST"])
 def movie_like(request, movie_pk):
     if request.user.is_authenticated:
         movie = get_object_or_404(Movie, pk=movie_pk)
@@ -131,27 +135,35 @@ def movie_like(request, movie_pk):
         else:
             movie.like_users.add(user)
             is_like = True
-        context = {
-            "is_like": is_like,
-            "like_user_count": movie.like_users.count(),
-        }
-    return JsonResponse(context)
+        context = MovieLikeSerializer(movie).data
+        context["is_like"] = is_like
+        context["like_user_count"] = movie.like_users.count()
+    else: 
+        context = {}
+    return Response(context)
 
 
-@require_POST
+@api_view(["POST"])
 def movie_watch(request, movie_pk):
     if request.user.is_authenticated:
-        Movie = get_object_or_404(Movie, pk=movie_pk)
+        movie = get_object_or_404(Movie, pk=movie_pk)
         user = request.user
-        if Movie.watch_users.filter(pk=user.pk).exists():
-            Movie.watch_users.remove(user)
+        if movie.watch_users.filter(pk=user.pk).exists():
+            movie.watch_users.remove(user)
             is_watch = False
         else:
-            Movie.watch_users.add(user)
+            movie.watch_users.add(user)
             is_watch = True
-        context = {
-            "is_watch": is_watch,
-            "watch_user_count": Movie.watch_users.count(),
-            "watch_user_list": Movie.watch_users.all(),
-        }
-    return JsonResponse(context)
+        context = MovieWatchSerializer(movie).data
+        context["is_watch"] = is_watch
+        context["watch_user_count"] = movie.watch_users.count()
+    else: 
+        context = {}
+    return Response(context)
+
+
+@api_view(["GET"])
+def user_list(request):
+    users = User.objects.all()
+    serializer = UserAllSerializer(users, many=True)
+    return Response(serializer.data)

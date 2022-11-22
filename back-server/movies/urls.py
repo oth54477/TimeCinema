@@ -13,6 +13,7 @@ urlpatterns = [
     path("recommended/", views.recommended, name="recommended"),
     path("movie_list/", views.movie_list, name="movie_list"),
     path("movie/<int:movie_pk>/", views.movie_detail, name="movie_detail"),
-    path("<int:movie_pk>/watch", views.movie_watch, name="movie_watch"),
     path("<int:movie_pk>/like", views.movie_like, name="movie_like"),
+    path("<int:movie_pk>/watch", views.movie_watch, name="movie_watch"),
+    path("user_list", views.user_list, name="user_list"),
 ]

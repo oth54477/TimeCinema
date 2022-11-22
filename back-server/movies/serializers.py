@@ -1,5 +1,33 @@
 from rest_framework import serializers
 from .models import Movie, Genre, MovieComment, MovieCommentReply
+from accounts.models import User
+from community.models import Article
+
+
+class UserSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = ("username", "profile_image")
+
+
+class UserAllSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = User
+        fields = "__all__"
+
+
+class MovieLikeSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ("like_users",)
+
+
+class MovieWatchSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Movie
+        fields = ("watch_users",)
 
 
 class GenreSerializer(serializers.ModelSerializer):
@@ -18,6 +46,8 @@ class MovieListSerializer(serializers.ModelSerializer):
 
 
 class MovieCommentReplySerializer(serializers.ModelSerializer):
+    user = UserSerializer()
+
     class Meta:
         model = MovieCommentReply
         fields = "__all__"
@@ -26,7 +56,8 @@ class MovieCommentReplySerializer(serializers.ModelSerializer):
 
 
 class MovieCommentSerializer(serializers.ModelSerializer):
-    moviecommentreply_set = MovieCommentReplySerializer(read_only=True, many=True)
+    reply_set = MovieCommentReplySerializer(read_only=True, many=True)
+    user = UserSerializer()
 
     class Meta:
         model = MovieComment
@@ -37,9 +68,11 @@ class MovieCommentSerializer(serializers.ModelSerializer):
 
 class MovieSerializer(serializers.ModelSerializer):
     genre_ids = GenreSerializer(read_only=True, many=True)
-    moviecomment_set = MovieCommentSerializer(read_only=True, many=True)
+    comment_set = MovieCommentSerializer(read_only=True, many=True)
     # comment_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    moviecomment_count = serializers.IntegerField(source="comment_set.count", read_only=True)
+    comment_count = serializers.IntegerField(source="comment_set.count", read_only=True)
+    like_users = UserSerializer()
+    watch_users = UserSerializer()
 
     class Meta:
         model = Movie
