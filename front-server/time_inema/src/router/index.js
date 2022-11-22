@@ -1,5 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
+import HomeView from '@/views/HomeView'
 import TimeLineView from '@/views/TimeLineView'
 import MovieDetailView from '@/views/MovieDetailView'
 import RecommendView from '@/views/RecommendView'
@@ -19,11 +20,11 @@ Vue.config.productionTip = false
 Vue.use(VueRouter)
 
 const routes = [
-  // {
-  //   path: '/',
-  //   name: 'home',
-  //   component: HomeView
-  // },
+  {
+    path: '/',
+    name: 'home',
+    component: HomeView
+  },
   {
     path: '/time',
     name: 'time',

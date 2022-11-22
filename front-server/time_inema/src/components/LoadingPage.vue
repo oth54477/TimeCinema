@@ -249,7 +249,7 @@ export default {
   width: 298px;
   /* font-size: 50px; */
   position: relative;
-  background-image: url('C:\Users\multicampus\Desktop\Final_PJT\TimeCinema\front-server\time_inema\src\assets\TC_white.png');
+  background-image: url('@/assets/TC_white.png');
 
 }
 

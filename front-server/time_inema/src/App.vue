@@ -1,29 +1,8 @@
 <template>
-  <div id="app"  @mousemove="mouseCircle" @click="goToTime">
+  <div id="app"  @mousemove="mouseCircle">
     <!-- <button @click="load">load</button> -->
 
-    <div class="bigBox" v-if="isCircle">
-      <!-- <div class="film"> -->
-        <!-- <img src="@/assets/sungbin.png" style="color:white"> -->
-        <!-- <img src="https://www.cinecasero.uy/img/tape.png" style="color:white"> -->
-      <!-- </div> -->
-      <!-- <div class="film"> -->
-        <!-- <img src="@/assets/sungbin.png" style="color:white"> -->
-      <!-- </div> -->
 
-        <div class="tape-box1">
-          <div class="tape -left"></div>
-          <div class="tape -right"></div>
-        </div>
-        <!-- <div class="tape-box2">
-          <div class="tape -left"></div>
-          <div class="tape -right"></div>
-        </div> -->
-      
-    <!-- <div class="bigBox" v-if="isLoading"> -->  
-      <div class="circle" v-if="!isLoading&&isCircle"  @click="clicked"><span>click</span></div>
-      <LoadingPage class="loading"  @isClick="clicked"/>
-    </div>
     <SignupModal v-if="modalState.signup" @close="closeModal('signup')" />
     <LoginModal v-if="modalState.login" @close="closeModal('login')" />
     <MenuBar class="menuBar"/>
@@ -35,7 +14,6 @@
 </template>
 
 <script>
-import LoadingPage from '@/components/LoadingPage'
 import MenuBar from '@/components/MenuBar'
 import SignupModal from '@/components/SignupModal'
 import LoginModal from '@/components/LoginModal'
@@ -44,21 +22,15 @@ export default {
   name: 'App',
   data() {
     return {
-      cnt: 0,
-      isClick: false,
-      isCircle: true,
+
     }
   },
   components: {
-    LoadingPage,
     MenuBar,
     SignupModal,
     LoginModal,
   },
   computed: {
-    isLoading() {
-      return this.$store.state.isLoading
-    },
     modalState() {
       return this.$store.state.modalState
     },
@@ -72,16 +44,10 @@ export default {
     load() {
       this.isLoaded = !this.isLoaded
     },
-    test() {
-      console.log(11)
-    },
-    clicked() {
-      this.isClick = true
-    },
+
     mouseCircle(event) {
       const now = window.location.href
       if (now === 'http://localhost:8080/') {
-        console.log(now)
         const circle = document.querySelector(".circle");
         const mouseX = event.clientX;
         const mouseY = event.clientY;
@@ -95,27 +61,12 @@ export default {
       this.$store.commit('POP_DOWN', page)
       // this.$store.state.modal = false
     },
-    goToTime() {
-      if (location.pathname === '/') {
-        this.isCircle = false
-        this.$router.push({ name: 'time' })
-        this.$emit('isClick', true)
 
-      }
-    },
   },
   created() {
     this.start()
   },
-  watch: {
-    isLoading() {
-      this.cnt += 1
-      if (this.cnt === 2) {
-        // this.$router.push({ name: 'time' })
-        this.cnt = 0
-      }
-    }
-  },
+
 
 }
 </script>
@@ -387,70 +338,7 @@ nav a.router-link-exact-active {
   mask-image: white;
 }
 
-.tape-box1 {
-  position: relative;
-  height: 100vh;
-  width: 100%;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  animation: fadeInDown 70s 2.5s infinite;
-}
 
-/* .tape-box2 {
-  position: relative;
-  height: 100%;
-  width: 100%;
-  top: 0px;
-  left: 0px;
-  right: 0px;
-  bottom: 0px;
-  animation: fadeInDown2 10s infinite;
-} */
-
-@keyframes fadeInDown {
-        0% {
-            opacity: 1;
-            transform: translate3d(0, -300%, 0);
-        }
-        to {
-            opacity: 1;
-            /* transform: translateZ(-100%); */
-            transform: translate3d(0, 0, 0)
-        }
-}
-
-/* @keyframes fadeInDown2 {
-        0% {
-            opacity: 1;
-            transform: translate3d(0, -100%, 0);
-        }
-        to {
-            opacity: 1;
-            transform: translateZ(0);
-            transform: translate3d(0, 0, 0)
-        }
-    } */
-
-.tape.-left {
-  left: 2rem;
-}
-
-.tape.-right {
-  right: 2rem;
-}
-
-.tape {
-  position: absolute;
-  background-image: url('@/assets/tape.png');
-  background-repeat: repeat-y;
-  background-size: contain;
-  background-position: top center;
-  height: 6872px;
-  top: 0;
-  width: 70px;
-}
 
 
 
