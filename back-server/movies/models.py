@@ -9,6 +9,11 @@ class Genre(models.Model):
     name = models.CharField(max_length=20)
 
 
+class Era(models.Model):
+    era_id = models.CharField(max_length=20, primary_key=True)
+    name = models.CharField(max_length=30)
+
+
 class Movie(models.Model):
     movie_id = models.IntegerField(primary_key=True)
     title = models.CharField(max_length=50)
@@ -25,6 +30,7 @@ class Movie(models.Model):
     vote_count = models.IntegerField(null=True)
     like_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="likeuser_movie")
     watch_users = models.ManyToManyField(settings.AUTH_USER_MODEL, related_name="watchuser_movie")
+    era = models.ManyToManyField(Era, related_name="era_movie")
     
 
 
