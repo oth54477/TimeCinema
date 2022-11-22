@@ -26,7 +26,7 @@ class MovieCommentReplySerializer(serializers.ModelSerializer):
 
 
 class MovieCommentSerializer(serializers.ModelSerializer):
-    moviecommentreply_set = MovieCommentReplySerializer(read_only=True, many=True)
+    reply_set = MovieCommentReplySerializer(read_only=True, many=True)
 
     class Meta:
         model = MovieComment
@@ -37,9 +37,9 @@ class MovieCommentSerializer(serializers.ModelSerializer):
 
 class MovieSerializer(serializers.ModelSerializer):
     genre_ids = GenreSerializer(read_only=True, many=True)
-    moviecomment_set = MovieCommentSerializer(read_only=True, many=True)
+    comment_set = MovieCommentSerializer(read_only=True, many=True)
     # comment_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
-    moviecomment_count = serializers.IntegerField(source="comment_set.count", read_only=True)
+    comment_count = serializers.IntegerField(source="comment_set.count", read_only=True)
 
     class Meta:
         model = Movie
