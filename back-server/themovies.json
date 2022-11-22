@@ -17,7 +17,7 @@
 "title": "블랙 팬서: 와칸다 포에버",
 "vote_average": 7.6}},
 {"model": "movies.movie",
-"pk": 1,
+"pk": 436270,
 "fields": 
 {"adult": false,
 "genre_ids": [
