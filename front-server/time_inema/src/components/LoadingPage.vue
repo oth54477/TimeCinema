@@ -2,11 +2,19 @@
   <div class="container">
     <div class="box">
       <div class="outter">
-        <h1>Time Cinema</h1>
+        <h1 class="title">Time Cinema</h1>
+        <!-- <img src="@/assets/TC_logo.png"> -->
         <div class="inner">
-          <div class="clock"></div>
+          <!-- <div class="clock"></div> -->
+          <div class="bg"></div>
         </div>
-        <h1>Loading...</h1>
+        <h1 v-if="isLoading" class="loading-h1">
+          Loading
+          <span></span>
+          <span></span>
+          <span></span>
+        </h1>
+        <h1 v-if="!isLoading" @click="goToTime"></h1>
       </div>
     </div>
   </div>
@@ -16,8 +24,19 @@
 
 export default {
   name: 'LoadingPage',
+  props: {
+  },
+  computed: {
+    isLoading() {
+      return this.$store.state.isLoading
+    },
+  },
   methods: {
-    
+    goToTime() {
+      this.$router.push({ name: 'time' })
+      this.$emit('isClick', true)
+    },
+
   }
 
 }
@@ -75,9 +94,13 @@ export default {
   /* font-size: 2em; */
   /* height: 100px; */
   color: #eae9e4;
-  font-size: 4vw;
-  font-family: "Ivy Mode",serif;
+  /* font-size: 4vw; */
+  /* font-family: "Ivy Mode",serif; */
   font-weight: 300;
+}
+
+.outter > img {
+  filter: invert(98%) sepia(15%) saturate(258%) hue-rotate(6deg) brightness(103%) contrast(84%);
 }
 
 .inner {
@@ -221,6 +244,63 @@ export default {
     100%{transform:rotate(360deg);}
 }
 
+.bg {
+  height: 145px;
+  width: 298px;
+  /* font-size: 50px; */
+  position: relative;
+  background-image: url('C:\Users\multicampus\Desktop\Final_PJT\TimeCinema\front-server\time_inema\src\assets\TC_white.png');
 
+}
 
+.loading-h1 {
+  font-family: futur;
+  font-size: 30px !important;
+}
+
+.title {
+  font-size: 5rem;
+}
+
+.loading {
+  width: 100vw;
+  margin-top: 100px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.loading span {
+  display: inline-block;
+  width: 5px;
+  height: 5px;
+  background-color: gray;
+  border-radius: 50%;
+  animation: loading 1s linear infinite;
+  background-color: #eae9e4;
+}
+
+.loading-h1 span:nth-child(1) {
+  animation-delay: 0s;
+}
+
+.loading-h1 span:nth-child(2) {
+  animation-delay: 0.2s;
+  margin: 0px 10px
+}
+
+.loading-h1 span:nth-child(3) {
+  animation-delay: 0.4s;
+}
+
+@keyframes loading {
+  0%, 100% {
+    opacity: 0;
+    transform: scale(0.5);
+  }
+  50% {
+    opacity: 1;
+    transform: scale(1.2);
+  }
+}
 </style>
