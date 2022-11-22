@@ -35,6 +35,7 @@ INSTALLED_APPS = [
     "accounts",
     "community",
     "movies",
+    "imagekit",
     "rest_framework",
     "dj_rest_auth",
     "rest_framework.authtoken",
@@ -158,3 +159,11 @@ STATIC_URL = "/static/"
 DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 AUTH_USER_MODEL = "accounts.User"
+
+
+REST_AUTH_REGISTER_SERIALIZERS = {
+    'REGISTER_SERIALIZER': 'accounts.serializers.CustomRegisterSerializer',
+}
+
+
+ACCOUNT_ADAPTER = 'accounts.adapters.CustomAccountAdapter'
