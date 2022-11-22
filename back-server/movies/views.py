@@ -71,6 +71,7 @@ def movie_detail(request, movie_pk):
 def comment_list(request, movie_pk):
     comments = MovieComment.objects.filter(movie=movie_pk)
     print(comments)
+    print(request.user.pk, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
     serializer = MovieCommentSerializer(comments, many=True)
     return Response(serializer.data)
 
@@ -84,11 +85,11 @@ def reply_list(request, movie_pk, comment_pk):
 
 @api_view(["POST"])
 def comment_create(request, movie_pk):
-    print(request.data)
+    # print(request.data)
     # article = Article.objects.get(pk=article_pk)
     movie = get_object_or_404(Movie, pk=movie_pk)
-    print(request.data['user'])
-    user = User.objects.get(pk=request.data['user'])
+    # print(request.data['user'])
+    user = User.objects.get(pk=request.user.pk)
     serializer = MovieCommentSerializer(data=request.data)
     print(serializer)
     if serializer.is_valid(raise_exception=True):
