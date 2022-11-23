@@ -6,7 +6,7 @@ from accounts.models import User
 from django.http import JsonResponse, HttpResponse
 from rest_framework.response import Response
 from django.core import serializers
-from .serializers import MovieListSerializer, MovieSerializer, MovieCommentSerializer, MovieCommentReplySerializer, MovieLikeSerializer, UserAllSerializer, MovieWatchSerializer
+from .serializers import MovieListSerializer, MovieSerializer, MovieCommentSerializer, MovieCommentReplySerializer, MovieLikeSerializer, UserAllSerializer, MovieWatchSerializer, MovieCommentCreateSerializer, MovieCommentUserSerializer, MovieLikeListSerializer
 from rest_framework.decorators import api_view
 from rest_framework import status
 from .forms import CommentForm
@@ -27,24 +27,16 @@ def index(request):
 @api_view(["GET"])
 def movie_list(request):
     movies_list = []
-    start_date = datetime.date(2022, 7, 1)
-    end_date = datetime.date(2022, 7, 31)
-    movies = Movie.objects.filter(release_date__range=(start_date, end_date))
+    movies = Movie.objects.filter(era="period")
     serializer = MovieListSerializer(movies, many=True)
     movies_list.append(serializer.data)
-    start_date = datetime.date(2022, 8, 1)
-    end_date = datetime.date(2022, 8, 31)
-    movies = Movie.objects.filter(release_date__range=(start_date, end_date))
+    movies = Movie.objects.filter(era="1900s")
     serializer = MovieListSerializer(movies, many=True)
     movies_list.append(serializer.data)
-    start_date = datetime.date(2022, 9, 1)
-    end_date = datetime.date(2022, 9, 30)
-    movies = Movie.objects.filter(release_date__range=(start_date, end_date))
+    movies = Movie.objects.filter(era="2000s")
     serializer = MovieListSerializer(movies, many=True)
     movies_list.append(serializer.data)
-    start_date = datetime.date(2022, 10, 1)
-    end_date = datetime.date(2022, 10, 31)
-    movies = Movie.objects.filter(release_date__range=(start_date, end_date))
+    movies = Movie.objects.filter(era="future")
     serializer = MovieListSerializer(movies, many=True)
     movies_list.append(serializer.data)
     return Response(movies_list)
@@ -70,7 +62,18 @@ def movie_detail(request, movie_pk):
 @api_view(["GET"])
 def user_comment(request, user_pk):
     comments = MovieComment.objects.filter(user=user_pk)
-    serializer = MovieCommentSerializer(comments, many=True)
+    print(comments)
+    serializer = MovieCommentUserSerializer(comments, many=True)
+    return Response(serializer.data)
+
+
+
+@api_view(["GET"])
+def user_like(request, user_pk):
+    user = User.objects.get(pk=user_pk)
+    comments = user.likeuser_movie.all()
+    print(comments)
+    serializer = MovieLikeListSerializer(comments, many=True)
     return Response(serializer.data)
 
 
@@ -78,9 +81,9 @@ def user_comment(request, user_pk):
 @api_view(["GET"])
 def comment_list(request, movie_pk):
     comments = MovieComment.objects.filter(movie=movie_pk)
-    print(comments)
-    print(request.user.pk, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    print(User.objects.all())
+    # print(comments)
+    # print(request.user.pk, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
+    # print(User.objects.all())
     serializer = MovieCommentSerializer(comments, many=True)
     return Response(serializer.data)
 
@@ -100,8 +103,9 @@ def comment_create(request, movie_pk):
     # movie = get_object_or_404(Movie, pk=movie_pk)
     # print(request.data['user'])
     user = User.objects.get(pk=request.user.pk)
-    serializer = MovieCommentSerializer(data=request.data)
-    print(serializer)
+    # print(request.data)
+    serializer = MovieCommentCreateSerializer(data=request.data)
+    # print(serializer)
     if serializer.is_valid(raise_exception=True):
         serializer.save(movie=movie, user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -116,7 +120,7 @@ def reply_create(request, movie_pk, comment_pk):
     comment = get_object_or_404(MovieComment, pk=comment_pk)
     user = User.objects.get(pk=request.user.pk)
     serializer = MovieCommentReplySerializer(data=request.data)
-    print(serializer)
+    # print(serializer)
     if serializer.is_valid(raise_exception=True):
         serializer.save(comment=comment, movie=movie, user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
@@ -156,6 +160,7 @@ def movie_watch(request, movie_pk):
     if request.user.is_authenticated:
         movie = get_object_or_404(Movie, pk=movie_pk)
         user = request.user
+        print(user)
         if movie.watch_users.filter(pk=user.pk).exists():
             movie.watch_users.remove(user)
             is_watch = False

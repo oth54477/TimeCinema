@@ -8,7 +8,7 @@ class UserSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ("username", "profile_image")
+        fields = ("id", "username", "profile_image")
 
 
 class UserAllSerializer(serializers.ModelSerializer):
@@ -45,8 +45,17 @@ class MovieListSerializer(serializers.ModelSerializer):
         fields = "__all__"
 
 
+class MovieLikeListSerializer(serializers.ModelSerializer):
+    genre_ids = GenreSerializer(read_only=True, many=True)
+
+    class Meta:
+        model = Movie
+        # fields = ('movie_id', 'title','poster_path', 'genre_ids', 'release_date')
+        fields = "__all__"
+
+
 class MovieCommentReplySerializer(serializers.ModelSerializer):
-    user = UserSerializer()
+    user = UserSerializer(read_only=True, many=True)
 
     class Meta:
         model = MovieCommentReply
@@ -57,7 +66,28 @@ class MovieCommentReplySerializer(serializers.ModelSerializer):
 
 class MovieCommentSerializer(serializers.ModelSerializer):
     reply_set = MovieCommentReplySerializer(read_only=True, many=True)
-    user = UserSerializer()
+    user = UserSerializer(read_only=True)
+    # , many=True
+
+    class Meta:
+        model = MovieComment
+        fields = "__all__"
+        read_only_fields = ("movie", "user")
+
+
+class MovieCommentUserSerializer(serializers.ModelSerializer):
+    reply_set = MovieCommentReplySerializer(read_only=True, many=True)
+    user = UserSerializer(read_only=True)
+
+    class Meta:
+        model = MovieComment
+        fields = "__all__"
+        read_only_fields = ("movie", "user")
+
+
+
+class MovieCommentCreateSerializer(serializers.ModelSerializer):
+    reply_set = MovieCommentReplySerializer(read_only=True, many=True)
 
     class Meta:
         model = MovieComment
@@ -71,8 +101,8 @@ class MovieSerializer(serializers.ModelSerializer):
     comment_set = MovieCommentSerializer(read_only=True, many=True)
     # comment_set = serializers.PrimaryKeyRelatedField(many=True, read_only=True)
     comment_count = serializers.IntegerField(source="comment_set.count", read_only=True)
-    like_users = UserSerializer()
-    watch_users = UserSerializer()
+    like_users = UserSerializer(read_only=True, many=True)
+    watch_users = UserSerializer(read_only=True, many=True)
 
     class Meta:
         model = Movie
