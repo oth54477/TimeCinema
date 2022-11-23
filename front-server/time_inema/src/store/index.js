@@ -8,19 +8,26 @@ import createPersistedState from 'vuex-persistedstate'
 Vue.use(Vuex)
 
 const TMDB_API_KEY = process.env.VUE_APP_TMDB_API_KEY
-const TMDB_API_URL = "https://api.themoviedb.org/3/movie"
+const TMDB_API_URL = process.env.VUE_APP_TMDB_API_URL
+// const TMDB_API_URL = "https://api.themoviedb.org/3/movie"
 
-const DJANGO_API_URL = "http://127.0.0.1:8000"
+
+// const DJANGO_API_URL = "http://127.0.0.1:8000"
+const DJANGO_API_URL = "http://192.168.212.86:8000"
+// const DJANGO_API_URL = process.env.VUE_APP_DJANGO_API_URL
 
 export default new Vuex.Store({
   plugins: [
     createPersistedState({
-      paths: ['token']
+      paths: ['token', 'user', 'movies', 'userList']
     })
   ],
   state: {
     token: null,
-    user: null,
+    user: {
+      id: null,
+      username: null,
+    },
     login: null,
     loginCnt: 0,
     movies: null,
@@ -99,6 +106,7 @@ export default new Vuex.Store({
       state.modalState.login = false
       state.modalState.signup = false
       state.login = payload.username
+      this.dispatch('getUserProfile')
     },
     LOG_OUT(state) {
       state.token  = null
@@ -145,7 +153,7 @@ export default new Vuex.Store({
       context.commit('LOADING_START')
       axios({
         method: 'get',
-        url: `${DJANGO_API_URL}/movies/movie_list/`,
+        url: `${DJANGO_API_URL}/movies/movie_list`,
       })
         .then((response) => {
           console.log(response)
@@ -259,8 +267,10 @@ export default new Vuex.Store({
         }
       })
         .then((res) => {
-          console.log('유저',res)
-          context.getters.userInfo(res.data)
+          // console.log('유저',res)
+          // context.getters.userInfo(res.data)
+          context.state.user.id = res.data.pk
+          context.state.user.username = res.data.username
         })
       // console.log('테스트', this.res)
     },

@@ -202,6 +202,21 @@ export default {
   height: 5vh;
 }
 
+.photo-input-btn:hover {
+  animation: fileInput 1s forwards;
+}
+
+@keyframes fileInput {
+  0% {
+
+  }
+  100% {
+    background-color: #8b4e4e;
+    color: #eae9e4;
+  }
+
+}
+
 .photo-input-btn > div {
   display: flex;
   justify-content: space-between;

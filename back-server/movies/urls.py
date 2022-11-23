@@ -20,3 +20,5 @@ urlpatterns = [
     path("comment/<int:user_pk>", views.user_comment, name="user_comment"),
     path("like/<int:user_pk>", views.user_like, name="user_like"),
 ]
+
+

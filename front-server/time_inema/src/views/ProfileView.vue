@@ -6,17 +6,25 @@
         
       </div>
       <div class="profile-user">
-        <img :src="user.profile_image">
+        <img :src="`http://192.168.212.86:8000${user.profile_image}`">
+        <!-- <img :src="`${process.env.VUE_APP_DJANGO_API_URL}${user.profile_image}`"> -->
         <h2>{{ user.username }}</h2>
       </div>
       <div class="profile-like">
         <h2>좋아요한 영화</h2>
-        <p>좋아요한 영화가 없어요...</p>
+        <p v-if="reviews?.length === 0">좋아요한 영화가 없어요...</p>
+        <div class="like-box">
+          <ProfileLike 
+            v-for="like in likes"
+            :key="like.id"
+            :like="like"
+          />
+        </div>
       </div>
       <div class="profile-review">
         <h2>내가 남긴 리뷰</h2>
-        <p v-if="reviews.length === 0">아직 리뷰가 없어요...</p>
-        <ReviewItem 
+        
+        <ProfileReview 
           v-for="review in reviews"
           :key="review.id"
           :review="review"
@@ -28,15 +36,16 @@
 </template>
 
 <script>
-// import ReviewItem from '@/components/ReviewItem'
+import ProfileReview from '@/components/ProfileReview'
+import ProfileLike from '@/components/ProfileLike'
 import axios from 'axios'
 
-const DJANGO_API_URL = "http://127.0.0.1:8000"
 
 export default {
   name: 'ProfileView',
   components: {
-    // ReviewItem,
+    ProfileReview,
+    ProfileLike,
   },
   computed: {
     // user() {
@@ -58,15 +67,19 @@ export default {
     return {
       id: null,
       user: null,
+      reviews: null,
+      likes: null,
     }
   },
   methods: {
     findUserInfo() {
       const user = this.userList.find(user => user.id === this.id)
+      console.log('현재 유저', user)
       this.user = user
     },
   },
   created() {
+    const DJANGO_API_URL = "http://192.168.212.86:8000"
     axios({
       method: 'get',
       url: `${DJANGO_API_URL}/accounts/user/`,
@@ -77,8 +90,30 @@ export default {
       .then((res) => {
         this.id = res.data.pk
         this.findUserInfo()
-
+        axios({
+          method: 'get',
+          url: `${DJANGO_API_URL}/movies/comment/${this.user.id}`,
+        })
+          .then((res) => {
+            console.log('리뷰',res)
+            this.reviews = res.data
+          })
+          .catch((error) => {
+            console.log(error)
+          })
+        axios({
+          method: 'get',
+          url: `${DJANGO_API_URL}/movies/like/${this.user.id}`,
+        })
+          .then((res) => {
+            console.log('좋아요',res)
+            this.likes = res.data
+          })
+          .catch((error) => {
+            console.log(error)
+          })
       })
+
   }
 
 }
@@ -107,6 +142,12 @@ body {
   border-radius: 10px;
   background-color: #eae9e4;
 }
+
+
+
+
+
+
 
 .profile > h1 {
   font-size: 50px;
@@ -151,4 +192,21 @@ body {
 
 }
 
+
+
+
+.profile > h1 {
+  text-align: center;
+}
+
+.profile-like {
+  text-align: center;
+}
+.like-box {
+  display: flex;
+  align-content: center;
+  justify-content: center;
+  flex-wrap: wrap;
+  width: 45vw;
+}
 </style>

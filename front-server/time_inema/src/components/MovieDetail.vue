@@ -36,6 +36,7 @@
                   @click="heartClick"
                 >
                   <div
+                    @click="like"
                     @mouseover="heartOver"
                     @mouseleave="heartLeave"
                     v-if="!isheartClicked"
@@ -46,6 +47,7 @@
                     <p class="geart-p">좋아하는 항목에 추가</p>
                   </div>
                   <div
+                  @click="like"
                   class="movieHeart" 
                   v-if="isheartClicked" 
                   >
@@ -118,7 +120,8 @@
 import ReviewList from '@/components/ReviewList'
 import axios from 'axios'
 // import VideoBackgrounds from 'https://unpkg.com/youtube-background@1.0.14/jquery.youtube-background.min.js'
-const DJANGO_API_URL = "http://127.0.0.1:8000"
+// const DJANGO_API_URL = "http://127.0.0.1:8000"
+const DJANGO_API_URL = "http://192.168.212.86:8000"
 export default {
   name: 'MovieDetail',
   components: {
@@ -138,15 +141,15 @@ export default {
     movies() {
       return this.$store.state.movies
     },
-    movie() {
-      const payload = {
-        id: this.id,
-        times: this.times
-      }
-      const movie =  this.$store.getters.movieDetail(payload)
-      console.log('영화 디테일', movie)
-      return movie
-    },
+    // movie() {
+    //   const payload = {
+    //     id: this.id,
+    //     times: this.times
+    //   }
+    //   const movie =  this.$store.getters.movieDetail(payload)
+    //   console.log('영화 디테일', movie)
+    //   return movie
+    // },
     trailers() {
       const trailers = this.$store.state.trailers
       return trailers
@@ -156,10 +159,14 @@ export default {
       console.log('리뷰 불러옴', reviews)
       return reviews
       // return reviews.filter(review => review.id === this.id)
+    },
+    user() {
+      return this.$store.state.user
     }
   },
   data() {
     return {
+      movie: null,
       dataReviews: null,
       score: 0,
       isheart: false,
@@ -201,10 +208,17 @@ export default {
       }
     },
     clickReview() {
-      this.isclickedReview = !this.isclickedReview
+      console.log('리뷰리뷰', this.dataReviews)
+      console.log('리뷰리뷰', this.user.id)
+      if (this.dataReviews.find(review => review.user.id === this.user.id)) {
+        window.alert('이미 리뷰를 작성했습니다!')
+      } else {
+        this.isclickedReview = !this.isclickedReview
+      }
     },
     createReview() {
       // 리뷰 업로드
+  
       const payload = {
         movieId: this.id, 
         score: this.score, 
@@ -224,6 +238,7 @@ export default {
       })
         .then((res) => {
           console.log(res)
+          this.isclickedReview = false
           this.getReviews()
 
         })
@@ -235,15 +250,57 @@ export default {
         url: `${DJANGO_API_URL}/movies/${this.id}/comment`,
       })
         .then((res) => {
-          console.log(res)
+          console.log('리뷰 불러옴',res)
           this.dataReviews = res.data
+          const userReview = res.data.find(review => review.user.id === this.user.id)
+          if (userReview) {
+            this.isStarClicked = true
+            this.score = userReview.star_point
+          }
         })
         .catch((error) => {
           console.log(error)
         })
     },
+    like() {
+      axios({
+        method: 'post',
+        url: `${DJANGO_API_URL}/movies/${this.id}/like`,
+        headers: {
+          Authorization: `Token ${this.$store.state.token}` 
+        },
+      })
+        .then((res) => {
+          console.log('like', res)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    getDetail() {
+      axios({
+        method: 'get',
+        url: `${DJANGO_API_URL}/movies/${this.id}`,
+        headers: {
+          Authorization: `Token ${this.$store.state.token}` 
+        },
+      })
+        .then((res) => {
+          console.log('영화 디테일', res)
+          this.movie = res.data
+          if (res.data.like_users.find(likeUser => likeUser.id === this.user.id)) {
+            this.isheartClicked = true
+          } else {
+            this.isheartClicked = false
+          }
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    }
   },
   created() {
+    this.getDetail()
     this.$store.dispatch('getTrailer', {id: this.id})
     this.getReviews()
   },
