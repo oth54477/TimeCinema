@@ -203,7 +203,9 @@
       "vote_average": 7.5,
       "vote_count": 855,
       "movie_id": 505642,
-      "era": ["2000s"]
+      "era": [
+        "2000s"
+      ]
     }
   },
   {
@@ -226,7 +228,9 @@
       "vote_average": 7.8,
       "vote_count": 853,
       "movie_id": 49046,
-      "era": ["1900s"]
+      "era": [
+        "1900s"
+      ]
     }
   },
   {
@@ -248,7 +252,9 @@
       "vote_average": 6.9,
       "vote_count": 80,
       "movie_id": 732459,
-      "era": ["period"]
+      "era": [
+        "period"
+      ]
     }
   },
   {
@@ -270,7 +276,9 @@
       "vote_average": 6.8,
       "vote_count": 1310,
       "movie_id": 760161,
-      "era": ["2000s"]
+      "era": [
+        "2000s"
+      ]
     }
   },
   {
@@ -293,7 +301,9 @@
       "vote_average": 6.7,
       "vote_count": 4697,
       "movie_id": 616037,
-      "era": ["2000s"]
+      "era": [
+        "2000s"
+      ]
     }
   },
   {
@@ -314,7 +324,9 @@
       "vote_average": 5.7,
       "vote_count": 169,
       "movie_id": 575322,
-      "era": ["future"]
+      "era": [
+        "future"
+      ]
     }
   },
   {
@@ -337,7 +349,9 @@
       "vote_average": 7,
       "vote_count": 4493,
       "movie_id": 21208,
-      "era": ["2000s"]
+      "era": [
+        "2000s"
+      ]
     }
   },
   {
@@ -359,7 +373,9 @@
       "vote_average": 7.9,
       "vote_count": 21789,
       "movie_id": 597,
-      "era": ["1900s"]
+      "era": [
+        "1900s"
+      ]
     }
   },
   {
@@ -382,7 +398,9 @@
       "vote_average": 7.7,
       "vote_count": 27782,
       "movie_id": 24428,
-      "era": ["2000s"]
+      "era": [
+        "2000s"
+      ]
     }
   },
   {
@@ -404,7 +422,9 @@
       "vote_average": 7.3,
       "vote_count": 93,
       "movie_id": 619803,
-      "era": ["2000s"]
+      "era": [
+        "2000s"
+      ]
     }
   },
   {
@@ -426,7 +446,9 @@
       "vote_average": 5.5,
       "vote_count": 11,
       "movie_id": 860623,
-      "era": "future"
+      "era": [
+        "future"
+      ]
     }
   },
   {
@@ -448,7 +470,9 @@
       "vote_average": 7.5,
       "vote_count": 9875,
       "movie_id": 138843,
-      "era": ["1900s"]
+      "era": [
+        "1900s"
+      ]
     }
   },
   {
