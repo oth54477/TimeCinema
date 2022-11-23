@@ -27,6 +27,7 @@ DEBUG = True
 
 ALLOWED_HOSTS = [
     '192.168.212.85'
+    '192.168.212.86'
 ]
 
 
@@ -81,6 +82,7 @@ MIDDLEWARE = [
 
 CORS_ALLOWED_ORIGINS = [
     "http://localhost:8080",
+    "http://192.168.212.85:8080"
 ]
 
 CORS_ALLOW_ALL_ORIGINS = True

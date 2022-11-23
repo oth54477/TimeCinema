@@ -56,7 +56,7 @@ def create_movie_data():
     with open('genres.json', 'r+', encoding="utf8") as f:
         movie_data = json.load(f)
 
-    for page in range(1, 31):
+    for page in range(61, 91):
         raw_data = requests.get(url.get_movie_url(page=page))
         json_data = raw_data.json()
         movies = json_data.get('results')
