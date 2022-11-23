@@ -137,7 +137,7 @@ body {
   display: grid;
   grid-template-rows: 5fr 1fr 5fr;
   grid-template-columns: 10fr 1fr 10fr 1fr 10fr;
-  height: 70vh;
+  /* height: 70vh; */
   /* grid-template-areas: "card1 . card2 . card3"
   "none none none none none"
   "card4 . card5 . card6"; */
@@ -186,7 +186,8 @@ body {
   grid-column-end: 4;
   grid-row-start: 3;
   grid-row-end: 4;
-  transform: translate3d(3.6715px, 43.4502px, 0px) rotate(-4.83002deg);
+  /* transform: translate3d(3.6715px, 43.4502px, 0px) rotate(-4.83002deg); */
+  transform: translate3d(3.6715px, 0px, 0px) rotate(-4.83002deg);
 }
 
 .recommend-body div:nth-child(6) {
@@ -206,6 +207,19 @@ img {
 .movie-card:hover img {
   filter: grayscale(0) brightness(1);
 
+}
+
+.movie-card:hover {
+  animation: card 2s forwards;
+}
+
+@keyframes card {
+  0%{
+
+  }
+  100%{
+    transform: ranslate3d(2.1978px, -48.4001px, 0px) rotate(2.59983deg);
+  }
 }
 
 .movie-card{

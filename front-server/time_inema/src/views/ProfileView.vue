@@ -1,13 +1,13 @@
 <template>
   <section class="profile-body">
-    <!-- <div class="profile">
+    <div class="profile">
       <h1>Profile</h1>
       <div class="profile-back">
         
       </div>
       <div class="profile-user">
-        <img :src="user.img">
-        <h2>{{ user.name }}</h2>
+        <img :src="user.profile_image">
+        <h2>{{ user.username }}</h2>
       </div>
       <div class="profile-like">
         <h2>좋아요한 영화</h2>
@@ -23,7 +23,7 @@
         />
       </div>
 
-    </div> -->
+    </div>
   </section>
 </template>
 
@@ -49,15 +49,22 @@ export default {
     // },
     token() {
       return this.$store.state.token
+    },
+    userList() {
+      return this.$store.state.userList
     }
   },
   data() {
     return {
-
+      id: null,
+      user: null,
     }
   },
   methods: {
-
+    findUserInfo() {
+      const user = this.userList.find(user => user.id === this.id)
+      this.user = user
+    },
   },
   created() {
     axios({
@@ -68,7 +75,9 @@ export default {
       }
     })
       .then((res) => {
-        console.log('유저',res)
+        this.id = res.data.pk
+        this.findUserInfo()
+
       })
   }
 

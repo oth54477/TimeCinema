@@ -1,5 +1,5 @@
 <template>
-  <div id="app"  @mousemove="mouseCircle">
+  <div id="app" >
     <!-- <button @click="load">load</button> -->
     <div class="success" v-if="loginCnt === 1">
       <span>로그인 성공</span><br>
@@ -46,6 +46,7 @@ export default {
   methods: {
     start() {
       this.$store.dispatch('getTopRateMovies', 1)
+      this.$store.dispatch('getUserList')
       // if (this.)
       // this.$router.push({ name: 'time' })
     },
@@ -53,17 +54,6 @@ export default {
       this.isLoaded = !this.isLoaded
     },
 
-    mouseCircle(event) {
-      const now = window.location.href
-      if (now === 'http://localhost:8080/') {
-        const circle = document.querySelector(".circle");
-        const mouseX = event.clientX;
-        const mouseY = event.clientY;
-        circle.style.left = mouseX + 'px';
-        circle.style.top = mouseY + 'px';
-      }
-      
-    },
     closeModal(page) {
       // this.modal = false
       this.$store.commit('POP_DOWN', page)
@@ -74,6 +64,7 @@ export default {
   },
   created() {
     this.start()
+    
   },
 
 
