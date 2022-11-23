@@ -312,7 +312,7 @@ export default {
   justify-content: center;
 }
 
-hr {
+.or > hr {
   height: 0vh;
   width: 10vw;
   background-color: black;

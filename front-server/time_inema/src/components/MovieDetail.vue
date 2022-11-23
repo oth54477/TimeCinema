@@ -67,11 +67,27 @@
             </div>
           </div>
           <div class="movie-info">
-            <div>
+            <div class="main-detail">
               <p class="content">{{ movie.overview }}</p>
+              <div class="crew">
+                <CrewList 
+                  :casts="casts"
+                />
+              </div>
             </div>
-            <div>
-              <p class="genre">장르: <span v-for="(a, index) in movie.genre_ids.map(genre => genre.name)" :key="index">{{ a }} </span></p>
+            <div class="movie-infos">
+              <div class="subContent">
+                <p>{{ movie.release_date.split('-')[0] }}</p>
+                <p class="genre"><span v-for="(a, index) in movie.genre_ids.map(genre => genre.name)" :key="index">{{ a }} </span></p>
+                <hr>
+              </div>
+              <div class="people">
+                <p>같이볼 사람 {{ movie.watch_users.length }}명</p>
+                <div class="fa fa-solid fa-user-plus" @click="watchClick" :class="{ 'watch-user-color': isWatch }"></div>
+              </div>
+              <div class="watch-users">
+                <WatchUserList :watchUsers="movie.watch_users"/>
+              </div>
             </div>
           </div>
         </div>
@@ -118,14 +134,25 @@
 
 <script>
 import ReviewList from '@/components/ReviewList'
+import CrewList from '@/components/CrewList'
+import WatchUserList from '@/components/WatchUserList'
+
 import axios from 'axios'
+import SERVER from '@/api/drf.js'
 // import VideoBackgrounds from 'https://unpkg.com/youtube-background@1.0.14/jquery.youtube-background.min.js'
 // const DJANGO_API_URL = "http://127.0.0.1:8000"
-const DJANGO_API_URL = "http://192.168.212.86:8000"
+// const DJANGO_API_URL = "http://192.168.212.86:8000"
+
+const DJANGO_API_URL = SERVER.URL
+const TMDB_API_KEY = process.env.VUE_APP_TMDB_API_KEY
+const TMDB_API_URL = process.env.VUE_APP_TMDB_API_URL
+
 export default {
   name: 'MovieDetail',
   components: {
     ReviewList,
+    CrewList,
+    WatchUserList,
   },
   props: {
     id: Number,
@@ -173,7 +200,12 @@ export default {
       isheartClicked: false,
       isStarClicked: false,
       isclickedReview: false,
-      content: null
+      content: null,
+      casts: null,
+      isWatch: false,
+      watchUser: {
+        color: '#288ce1'
+      },
     }
   },
   methods: {
@@ -293,9 +325,47 @@ export default {
           } else {
             this.isheartClicked = false
           }
+          if (res.data.watch_users.find(user => user.id === this.user.id)) {
+            this.isWatch = true
+          } else {
+            this.isWatch = false
+          }
+
         })
         .catch((error) => {
           console.log(error)
+        })
+    },
+    getCrews() {
+      axios({
+        method: 'get',
+        url: `${TMDB_API_URL}/${this.id}/credits`,
+        params: {
+                api_key: TMDB_API_KEY,
+                language: 'ko-KR',
+                },    
+      })
+        .then((res) => {
+          console.log('스탭', res.data)
+          this.casts = res.data.cast
+          // this.crew = res.data.crew
+        })
+    },
+    watchClick() {
+      this.isWatch = !this.isWatch
+      axios({
+        method: 'post',
+        url: `${DJANGO_API_URL}/movies/${this.id}/watch`,
+        headers: {
+          Authorization: `Token ${this.$store.state.token}` 
+        },
+      })
+        .then((res) => {
+          console.log(res)
+          this.getDetail()
+        })
+        .catch((error) => {
+          console.log('같이볼 유저', error)
         })
     }
   },
@@ -303,6 +373,14 @@ export default {
     this.getDetail()
     this.$store.dispatch('getTrailer', {id: this.id})
     this.getReviews()
+    this.getCrews()
+    // const content = document.querySelector('.content')
+    // const contentH = content.offsetHeight
+
+    // const 
+
+    // const docStyle = document.documentElement.style;
+    //   docStyle.setProperty('--mouse-x1', event.clientX);
   },
   update() {
     this.getReviews()
@@ -619,5 +697,75 @@ textarea {
 .like-movie {
   margin-left: 2.5vw;
   margin-top: 1vh;
+}
+
+/* .movie-info > div > p {
+  text-overflow: ellipsis;
+  height: 25vh;
+  width: 45vw;
+  overflow: hidden;
+  white-space: nowrap;
+} */
+
+.movie-infos {
+  font-size: 20px;
+  margin-top: 3vh;
+  border: solid 1px #ffffff75;
+  padding: 0px 10px;
+  border-radius: 10px;
+}
+
+.subContent> hr {
+  height: 0vh;
+  width: 20.9vw;
+  background-color: #ffffff36;
+  border: solid 0.1px #ffffff75;
+  margin: 3vh 0vw;
+}
+
+.subContent > p:nth-child(1) {
+  font-size: 30px;
+  margin-bottom: 0;
+  margin-top: 0px;
+}
+
+.watch-users {
+  padding: 20px;
+  border: solid 2.5px #454444;
+  border-radius: 10px;
+  height: 39vh;
+}
+
+.crew {
+  margin-top: 5vh;
+}
+
+.fa-user-plus {
+  margin: 0px 10px;
+  font-size: 25px;
+
+}
+
+.fa-user-plus:hover {
+  animation: human 1s forwards;
+}
+
+@keyframes human {
+  0% {
+
+  }
+  100% {
+    color: #288ce1;
+  }
+}
+
+.people {
+  display: flex;
+  align-items: center;
+  
+}
+
+.watch-user-color {
+  color: #288ce1;
 }
 </style>

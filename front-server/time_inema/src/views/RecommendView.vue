@@ -417,7 +417,7 @@ img {
 }
 
 .rerecommend {
-  background-color: #e9e9e9;
+  background-color: #e9e9e97a;
   color: #1f1f1f;
   width: 8vh;
   height: 8vh;

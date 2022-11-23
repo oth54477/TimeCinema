@@ -22,33 +22,33 @@ export default {
       const itemInfos = [
         {
           id: 1,
-          times: '~1800',
+          times: '시대극',
           title: 'period movie',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.',
+          content: '다양한 시대를 배경으로 한 영화들을 보고 싶으신가요?',
           routerName: 'period',
           posterUrl: posters.period
         },
         {
           id: 2,
-          times: '1801~2000',
+          times: '1900년대 배경',
           title: 'old movie',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.',
+          content: '1990년대의 분위기를 느낄 수 있는 영화들을 보고 싶으신가요?',
           routerName: 'past',
           posterUrl: posters.past
         },
         {
           id: 3,
-          times: '2001~2022',
+          times: '2000년대 배경',
           title: 'modern movie',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.',
+          content: '현재를 배경으로 한 영화들을 보고 싶으신가요?',
           routerName: 'now',
           posterUrl: posters.now
         },
         {
           id: 4,
-          times: '2023~',
+          times: '미래 배경',
           title: 'future movie',
-          content: 'Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit.',
+          content: '상상력을 자극할 수 있는 미래를 배경으로 한 영화를 보고 싶으신가요?',
           routerName: 'future',
           posterUrl: posters.future
         },
@@ -68,6 +68,9 @@ export default {
 </script>
 
 <style scoped lang="scss">
+.tl-content > h1 {
+  
+}
 #timeline {
   display: flex;
   background-color: #031625;

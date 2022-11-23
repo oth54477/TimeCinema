@@ -14,7 +14,9 @@
 <script>
 import UserListItem from '@/components/UserListItem'
 import axios from 'axios'
+import SERVER from '@/api/drf.js'
 
+const DJANGO_API_URL = SERVER.URL
 
 export default {
   name: 'UserListView',
@@ -29,7 +31,8 @@ export default {
   created() {
     axios({
       method: 'get',
-      url: `http://192.168.212.86:8000/movies/user_list`
+      // url: `http://192.168.212.86:8000/movies/user_list`
+      url: `${DJANGO_API_URL}/movies/user_list`
     })
       .then((res) => {
         console.log(res.data)

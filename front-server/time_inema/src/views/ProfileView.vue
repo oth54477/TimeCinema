@@ -39,7 +39,9 @@
 import ProfileReview from '@/components/ProfileReview'
 import ProfileLike from '@/components/ProfileLike'
 import axios from 'axios'
+import SERVER from '@/api/drf.js'
 
+const DJANGO_API_URL = SERVER.URL
 
 export default {
   name: 'ProfileView',
@@ -79,7 +81,7 @@ export default {
     },
   },
   created() {
-    const DJANGO_API_URL = "http://192.168.212.86:8000"
+    // const DJANGO_API_URL = "http://192.168.212.86:8000"
     axios({
       method: 'get',
       url: `${DJANGO_API_URL}/accounts/user/`,

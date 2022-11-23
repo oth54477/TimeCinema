@@ -5,15 +5,18 @@ import _ from 'lodash'
 // import router from '@/router'
 import createPersistedState from 'vuex-persistedstate'
 
+import SERVER from '@/api/drf.js'
+
 Vue.use(Vuex)
+
 
 const TMDB_API_KEY = process.env.VUE_APP_TMDB_API_KEY
 const TMDB_API_URL = process.env.VUE_APP_TMDB_API_URL
+const DJANGO_API_URL = SERVER.URL
+console.log(TMDB_API_URL)
 // const TMDB_API_URL = "https://api.themoviedb.org/3/movie"
-
-
 // const DJANGO_API_URL = "http://127.0.0.1:8000"
-const DJANGO_API_URL = "http://192.168.212.86:8000"
+// const DJANGO_API_URL = "http://192.168.212.86:8000"
 // const DJANGO_API_URL = process.env.VUE_APP_DJANGO_API_URL
 
 export default new Vuex.Store({
