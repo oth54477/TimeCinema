@@ -1,6 +1,5 @@
 <template>
   <div class="tl-item" @click="goToRecommend(itemInfo.routerName)">
-    <h1>HI</h1>
     <!-- <div class="tl-bg" style="background-image: url(https://mblogthumb-phinf.pstatic.net/20150914_28/shdudtn1234_1442232589804UsVv8_JPEG/%BB%E7%B1%D8_%BF%B5%C8%AD_%C3%DF%C3%B5_BEST_10%A2%BE_%C7%D1%B1%B9%C0%C7_%B8%C5%B7%C2%C0%FB%C0%CE_%B0%FA%B0%C5_%BB%E7%B1%D8%BF%B5%C8%AD%B8%A6_%BE%CB%BE%C6%BA%B8%C0%DA_%282%29.jpg?type=w2)"></div> -->
     <div class="tl-bg" :style="posterObject"></div>
     <div class="tl-year">
@@ -108,7 +107,7 @@ export default {
   opacity: 0;
   
   h1 {
-    font-family: 'Pathway Gothic One',Helvetica Neue,Helvetica,Arial,sans-serif;
+    // font-family: 'Pathway Gothic One',Helvetica Neue,Helvetica,Arial,sans-serif;
     text-transform: uppercase;
     color: #1779cf;
     font-size: 1.44rem;
@@ -126,7 +125,7 @@ export default {
   border-bottom: 1px solid #fff;
   
   p {
-    font-family: 'Pathway Gothic One',Helvetica Neue,Helvetica,Arial,sans-serif;
+    // font-family: 'Pathway Gothic One',Helvetica Neue,Helvetica,Arial,sans-serif;
     font-size: 1.728rem;
     line-height: 0;
   }

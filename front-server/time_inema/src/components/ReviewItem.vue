@@ -2,7 +2,7 @@
   <section class="review-item-body">
     <div class="review-item">
       <div>
-        <img :src="`http://192.168.212.86:8000${review.user?.profile_image}`">
+        <img class="profile-review-img" :src="`${DJANGO_API_URL}${review.user?.profile_image}`">
       </div>
       <div>
         <div>
@@ -18,6 +18,8 @@
 </template>
 
 <script>
+import SERVER from '@/api/drf.js'
+
 export default {
   name: 'ReviewItem',
   props: {
@@ -31,6 +33,10 @@ export default {
     //   console.log('엑시오스',test)
     //   return this.$store.state.userInfo.find(user => user.id === this.review.userId)
     // }
+    DJANGO_API_URL() {
+      return SERVER.URL
+    }
+
   },
   // methods
 }
@@ -56,7 +62,7 @@ export default {
   align-items: center;
 }
 
-.review-item > div:nth-child(1) > img {
+.profile-review-img {
   height: 80px;
   width: 80px;
   background-color: rgb(252, 245, 235);
