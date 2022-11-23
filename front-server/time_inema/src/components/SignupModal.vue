@@ -30,7 +30,7 @@ export default {
     align-items: center;
     justify-content: center;
     position: fixed;
-    z-index: 31;
+    z-index: 33;
     top: 0;
     left: 0;
     width: 100%;

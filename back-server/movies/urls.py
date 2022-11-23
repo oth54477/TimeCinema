@@ -1,6 +1,7 @@
 from django.urls import path
 from . import views
 
+
 app_name = "movies"
 
 urlpatterns = [
@@ -18,3 +19,5 @@ urlpatterns = [
     path("user_list", views.user_list, name="user_list"),
     path("comment/<int:user_pk>", views.user_comment, name="user_comment"),
 ]
+
+

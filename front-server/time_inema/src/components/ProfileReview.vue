@@ -19,7 +19,7 @@
 
 <script>
 export default {
-  name: 'ReviewItem',
+  name: 'ProfileReview',
   props: {
     review: Object,
   },
@@ -60,7 +60,7 @@ export default {
   height: 80px;
   width: 80px;
   background-color: rgb(252, 245, 235);
-  border-radius: 100px;
+  border-radius: 10px;
 }
 
 .review-item > div:nth-child(2) {

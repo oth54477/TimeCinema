@@ -51,11 +51,14 @@ export default {
       this.isClick = true
     },
     goToTime() {
-      if (location.pathname === '/') {
-        this.isCircle = false
-        this.$router.push({ name: 'time' })
-        this.$emit('isClick', true)
-
+      if (!this.$store.state.token) {
+        this.$store.commit('POP_UP', 'login')
+      } else {
+        if (location.pathname === '/') {
+          this.isCircle = false
+          this.$router.push({ name: 'time' })
+          this.$emit('isClick', true)
+        }
       }
     },
     mouseCircle(event) {
