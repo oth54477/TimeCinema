@@ -56,7 +56,7 @@ const routes = [
     component: LogInView
   },
   {
-    path: '/profile/:userId',
+    path: '/profile',
     name: 'profile',
     component: ProfileView
   },

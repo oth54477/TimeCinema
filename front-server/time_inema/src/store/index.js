@@ -26,6 +26,7 @@ export default new Vuex.Store({
     movies: null,
     isLoading: false,
     modal: false,
+    userList: null,
     timesTable: {
       period: 0,
       past: 1,
@@ -68,7 +69,10 @@ export default new Vuex.Store({
       const movie = movies.find(movie => movie.movie_id === payload.id)
       console.log('movie!!', movie)
       return movie
-    }
+    },
+    userInfo(state, user) {
+      return user
+    },
 
   },
   mutations: {
@@ -111,7 +115,10 @@ export default new Vuex.Store({
     },
     POP_DOWN(state, page) {
       state.modalState[page] = false
-    }
+    },
+    GET_USER_LIST(state, userList) {
+      state.userList = userList
+    },
   },
   actions: {
     // getTopRateMovies(context, page) {
@@ -151,20 +158,33 @@ export default new Vuex.Store({
         })
     },
     signUp(context, payload) {
-      axios({
-        method: 'post',
-        url: `${DJANGO_API_URL}/accounts/signup/`,
-        data: {
-          username: payload.username,
-          password1: payload.password1,
-          password2: payload.password2,
-          profile_image: payload.profile_image
+      axios.post(`${DJANGO_API_URL}/accounts/signup/`, payload, {
+        headers: {
+          'Content-Type': 'multipart/form-data'
         }
       })
         .then((res) => {
           console.log(res)
           context.commit('SAVE_TOKEN', {token: res.data.key, username: payload.username})
         })
+        .catch((error => {
+          console.log(error)
+        }))
+    // signUp(context, payload) {
+    //   axios({
+    //     method: 'post',
+    //     url: `${DJANGO_API_URL}/accounts/signup/`,
+    //     data: {
+    //       username: payload.username,
+    //       password1: payload.password1,
+    //       password2: payload.password2,
+    //       profile_image: payload.profile_image
+    //     }
+    //   })
+    //     .then((res) => {
+    //       console.log(res)
+    //       context.commit('SAVE_TOKEN', {token: res.data.key, username: payload.username})
+    //     })
     },
     logIn(context, payload) {
       axios({
@@ -240,13 +260,23 @@ export default new Vuex.Store({
       })
         .then((res) => {
           console.log('유저',res)
-          // context.getters.userInfo(res)
+          context.getters.userInfo(res.data)
         })
       // console.log('테스트', this.res)
     },
+    getUserList(context) {
+      axios({
+        method: 'get',
+        url: `${DJANGO_API_URL}/movies/user_list`,
+      })
+        .then((res) => {
+          context.commit('GET_USER_LIST', res.data)
+        })
+    }
 
     
   },
   modules: {
   }
 })
+

@@ -1,6 +1,6 @@
 <template>
   <section class="home-body" @click="goToTime">
-    <div class="bigBox" v-if="isCircle">
+    <div class="bigBox" v-if="isCircle"  @mousemove="mouseCircle">
       <!-- <div class="film"> -->
         <!-- <img src="@/assets/sungbin.png" style="color:white"> -->
         <!-- <img src="https://www.cinecasero.uy/img/tape.png" style="color:white"> -->
@@ -56,6 +56,16 @@ export default {
         this.$router.push({ name: 'time' })
         this.$emit('isClick', true)
 
+      }
+    },
+    mouseCircle(event) {
+      const now = window.location.pathname
+      if (now === '/' && !this.isLoading) {
+        const circle = document.querySelector(".circle");
+        const mouseX = event.clientX;
+        const mouseY = event.clientY;
+        circle.style.left = mouseX + 'px';
+        circle.style.top = mouseY + 'px';
       }
     },
   },

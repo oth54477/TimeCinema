@@ -271,7 +271,9 @@ export default {
   right: 10vw;
   bottom: 0vh;
   overflow: scroll;
-  border-radius: 10px;
+  /* border-radius: 10px; */
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
   background-color: #201f1f;
 }
 
