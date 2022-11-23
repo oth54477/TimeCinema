@@ -68,6 +68,14 @@ def movie_detail(request, movie_pk):
 
 
 @api_view(["GET"])
+def user_comment(request, user_pk):
+    comments = MovieComment.objects.filter(user=user_pk)
+    serializer = MovieCommentSerializer(comments, many=True)
+    return Response(serializer.data)
+
+
+
+@api_view(["GET"])
 def comment_list(request, movie_pk):
     comments = MovieComment.objects.filter(movie=movie_pk)
     print(comments)
