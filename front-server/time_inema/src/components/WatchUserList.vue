@@ -1,5 +1,5 @@
 <template>
-  <section>
+  <section class="watch-user-list-body">
     <WatchUserItem 
       v-for="watchUser in watchUsers"
       :key="watchUser.id"
@@ -23,5 +23,7 @@ export default {
 </script>
 
 <style>
-
+.watch-user-list-body {
+  display: flex;
+}
 </style>

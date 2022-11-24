@@ -352,6 +352,10 @@ export default {
     color:#eae9e4;
   }
 }
+
+.signup > h1 {
+  text-align: center;
+}
 </style>
 
 
