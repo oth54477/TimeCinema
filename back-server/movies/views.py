@@ -18,7 +18,6 @@ import datetime
 # Create your views here.
 @require_safe
 def index(request):
-    # movies = get_list_or_404(Movie)
     movies = Movie.objects.all()
     context = {"movies": movies}
     return render(request, "movies/index.html", context)
@@ -54,7 +53,6 @@ def detail(request, movie_pk):
 def movie_detail(request, movie_pk):
     movie = get_object_or_404(Movie, pk=movie_pk)
     serializer = MovieSerializer(movie)
-    # print(serializer['comment_set'].value())
     return Response(serializer.data)
 
 
@@ -62,7 +60,6 @@ def movie_detail(request, movie_pk):
 @api_view(["GET"])
 def user_comment(request, user_pk):
     comments = MovieComment.objects.filter(user=user_pk)
-    print(comments)
     serializer = MovieCommentUserSerializer(comments, many=True)
     return Response(serializer.data)
 
@@ -72,7 +69,6 @@ def user_comment(request, user_pk):
 def user_like(request, user_pk):
     user = User.objects.get(pk=user_pk)
     comments = user.likeuser_movie.all()
-    print(comments)
     serializer = MovieLikeListSerializer(comments, many=True)
     return Response(serializer.data)
 
@@ -81,9 +77,6 @@ def user_like(request, user_pk):
 @api_view(["GET"])
 def comment_list(request, movie_pk):
     comments = MovieComment.objects.filter(movie=movie_pk)
-    # print(comments)
-    # print(request.user.pk, "!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-    # print(User.objects.all())
     serializer = MovieCommentSerializer(comments, many=True)
     return Response(serializer.data)
 
@@ -97,34 +90,25 @@ def reply_list(request, movie_pk, comment_pk):
 
 @api_view(["POST"])
 def comment_create(request, movie_pk):
-    print(request.data)
-    print(request.user.pk)
-    # article = Article.objects.get(pk=article_pk)
+
     movie = Movie.objects.get(pk=movie_pk)
-    # movie = get_object_or_404(Movie, pk=movie_pk)
-    # print(request.data['user'])
     user = User.objects.get(pk=request.user.pk)
 
-    # print(request.data)
     serializer = MovieCommentCreateSerializer(data=request.data)
-    # print(serializer)
     if serializer.is_valid(raise_exception=True):
         print('왔어?')
         serializer.save(movie=movie, user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
-    print(serializer.errors)
-    print(serializer['user'])
+
 
 
 
 @api_view(["POST"])
 def reply_create(request, movie_pk, comment_pk):
-    # article = Article.objects.get(pk=article_pk)
     movie = get_object_or_404(Movie, pk=movie_pk)
     comment = get_object_or_404(MovieComment, pk=comment_pk)
     user = User.objects.get(pk=request.user.pk)
     serializer = MovieCommentReplySerializer(data=request.data)
-    # print(serializer)
     if serializer.is_valid(raise_exception=True):
         serializer.save(comment=comment, movie=movie, user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
