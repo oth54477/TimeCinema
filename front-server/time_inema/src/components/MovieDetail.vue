@@ -83,7 +83,7 @@
               </div>
               <div class="people">
                 <p>같이볼 사람 {{ movie.watch_users.length }}명</p>
-                <div class="fa fa-solid fa-user-plus" @click="watchClick" :class="{ 'watch-user-color': isWatch }"></div>
+                <div class="fa fa-solid fa-user-plus watch-class" @click="watchClick" :class="{ 'watch-user-color': isWatch }"></div>
               </div>
               <div class="watch-users">
                 <WatchUserList :watchUsers="movie.watch_users"/>
@@ -109,7 +109,7 @@
               @mouseleave="starLeave"
               @click="starClick(index)"
               >
-              <div v-if="index < score+1"><div class="fa fa-solid fa-star" style="color:yellow;"></div></div>
+              <div v-if="index < score+1"><div class="fa fa-solid fa-star" style="color:#ffeb00;"></div></div>
               <div v-if="index >= score+1"><div class="fa fa-solid fa-star"></div></div>
             </div>
           </div>
@@ -125,6 +125,7 @@
             <h1>첫 리뷰를 남겨주세요!</h1>
         </div>
           <ReviewList :reviews="reviews"/>  
+          <div class="footer_space"></div>
         </div>
       </div>
     </div>
@@ -353,6 +354,7 @@ export default {
     },
     watchClick() {
       this.isWatch = !this.isWatch
+      console.log(this.isWatch)
       axios({
         method: 'post',
         url: `${DJANGO_API_URL}/movies/${this.id}/watch`,
@@ -740,13 +742,13 @@ textarea {
   margin-top: 5vh;
 }
 
-.fa-user-plus {
+.watch-class {
   margin: 0px 10px;
   font-size: 25px;
 
 }
 
-.fa-user-plus:hover {
+.watch-class:hover {
   animation: human 1s forwards;
 }
 
@@ -768,4 +770,9 @@ textarea {
 .watch-user-color {
   color: #288ce1;
 }
+
+.footer_space {
+  height: 10vh;
+}
+
 </style>

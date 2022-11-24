@@ -49,6 +49,8 @@ export default new Vuex.Store({
       login: false,
       profile: false,
     },
+    OSTs: [
+    ]
   },
   getters: {
     wait(sec) {

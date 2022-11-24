@@ -24,11 +24,12 @@ export default {
 
 <style scoped>
 .user-img {
-  width: 5vw;
-  height: 5vw;
+  width: 3vw;
+  height: 3vw;
   border-radius: 100px;
   background-size:cover;
   position: relative;
+  margin: 0px 0.3vw;
 }
 
 .user-img  > img {
@@ -51,8 +52,8 @@ export default {
 }
 
 .cover {
-  width: 5vw;
-  height: 5vw;
+  width: 3vw;
+  height: 3vw;
   border-radius: 100px;
 
   /* background-color: black; */
@@ -71,5 +72,6 @@ export default {
 .cover > span {
   margin-top: 5vw;
   margin-bottom: 0.7vw;
+  font-size: 15px;;
 }
 </style>

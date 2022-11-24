@@ -6,7 +6,7 @@
       <span>로그인 성공</span><br>
       <span>{{ user.username }}님 환영합니다.</span>
     </div>
-
+    <MusicPlayer />
     <SignupModal v-if="modalState.signup" @close="closeModal('signup')" />
     <LoginModal v-if="modalState.login" @close="closeModal('login')" />
     <MenuBar class="menuBar"/>
@@ -21,6 +21,7 @@
 import MenuBar from '@/components/MenuBar'
 import SignupModal from '@/components/SignupModal'
 import LoginModal from '@/components/LoginModal'
+import MusicPlayer from '@/components/MusicPlayer'
 
 export default {
   name: 'App',
@@ -34,6 +35,7 @@ export default {
     MenuBar,
     SignupModal,
     LoginModal,
+    MusicPlayer,
   },
   computed: {
     modalState() {
