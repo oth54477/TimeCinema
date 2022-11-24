@@ -2,11 +2,11 @@
   <section class="review-item-body">
     <div class="review-item">
       <div>
-        <img :src="this.user?.img">
+        <img class="profile-review-img" :src="`${DJANGO_API_URL}${review.user?.profile_image}`">
       </div>
       <div>
         <div>
-          <h3>{{ this.user?.name }}</h3>
+          <h3>{{ review.user?.username }}</h3>
           <div>
             <div v-for="index in this.review.star_point" :key="index" class="fa fa-solid fa-star" style="color:yellow; font-size: 1.1rem;"></div>
           </div>
@@ -18,19 +18,25 @@
 </template>
 
 <script>
+import SERVER from '@/api/drf.js'
+
 export default {
   name: 'ReviewItem',
   props: {
     review: Object,
   },
   computed: {
-    user() {
-      const userId = this.review.user
-      const test = this.$store.dispatch('getUserProfile', userId)
-      console.log('유저아이디',userId)
-      console.log('엑시오스',test)
-      return this.$store.state.userInfo.find(user => user.id === this.review.userId)
+    // user() {
+    //   const userId = this.review.user
+    //   const test = this.$store.dispatch('getUserProfile', userId)
+    //   console.log('유저아이디',userId)
+    //   console.log('엑시오스',test)
+    //   return this.$store.state.userInfo.find(user => user.id === this.review.userId)
+    // }
+    DJANGO_API_URL() {
+      return SERVER.URL
     }
+
   },
   // methods
 }
@@ -56,11 +62,11 @@ export default {
   align-items: center;
 }
 
-.review-item > div:nth-child(1) > img {
+.profile-review-img {
   height: 80px;
   width: 80px;
   background-color: rgb(252, 245, 235);
-  border-radius: 10px;
+  border-radius: 50% !important;
 }
 
 .review-item > div:nth-child(2) {

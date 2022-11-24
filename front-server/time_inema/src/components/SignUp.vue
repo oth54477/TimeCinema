@@ -202,6 +202,21 @@ export default {
   height: 5vh;
 }
 
+.photo-input-btn:hover {
+  animation: fileInput 1s forwards;
+}
+
+@keyframes fileInput {
+  0% {
+
+  }
+  100% {
+    background-color: #8b4e4e;
+    color: #eae9e4;
+  }
+
+}
+
 .photo-input-btn > div {
   display: flex;
   justify-content: space-between;
@@ -297,7 +312,7 @@ export default {
   justify-content: center;
 }
 
-hr {
+.or > hr {
   height: 0vh;
   width: 10vw;
   background-color: black;
@@ -336,6 +351,10 @@ hr {
     background-color: #8b4e4e;
     color:#eae9e4;
   }
+}
+
+.signup > h1 {
+  text-align: center;
 }
 </style>
 

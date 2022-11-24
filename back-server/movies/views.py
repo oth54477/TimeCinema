@@ -90,12 +90,16 @@ def reply_list(request, movie_pk, comment_pk):
 
 @api_view(["POST"])
 def comment_create(request, movie_pk):
+
     movie = Movie.objects.get(pk=movie_pk)
     user = User.objects.get(pk=request.user.pk)
+
     serializer = MovieCommentCreateSerializer(data=request.data)
     if serializer.is_valid(raise_exception=True):
+        print('왔어?')
         serializer.save(movie=movie, user=user)
         return Response(serializer.data, status=status.HTTP_201_CREATED)
+
 
 
 

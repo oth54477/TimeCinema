@@ -36,6 +36,7 @@
                   @click="heartClick"
                 >
                   <div
+                    @click="like"
                     @mouseover="heartOver"
                     @mouseleave="heartLeave"
                     v-if="!isheartClicked"
@@ -46,6 +47,7 @@
                     <p class="geart-p">좋아하는 항목에 추가</p>
                   </div>
                   <div
+                  @click="like"
                   class="movieHeart" 
                   v-if="isheartClicked" 
                   >
@@ -65,11 +67,27 @@
             </div>
           </div>
           <div class="movie-info">
-            <div>
+            <div class="main-detail">
               <p class="content">{{ movie.overview }}</p>
+              <div class="crew">
+                <CrewList 
+                  :casts="casts"
+                />
+              </div>
             </div>
-            <div>
-              <p class="genre">장르: <span v-for="(a, index) in movie.genre_ids.map(genre => genre.name)" :key="index">{{ a }} </span></p>
+            <div class="movie-infos">
+              <div class="subContent">
+                <p>{{ movie.release_date.split('-')[0] }}</p>
+                <p class="genre"><span v-for="(a, index) in movie.genre_ids.map(genre => genre.name)" :key="index">{{ a }} </span></p>
+                <hr>
+              </div>
+              <div class="people">
+                <p>같이볼 사람 {{ movie.watch_users.length }}명</p>
+                <div class="fa fa-solid fa-user-plus watch-class" @click="watchClick" :class="{ 'watch-user-color': isWatch }"></div>
+              </div>
+              <div class="watch-users">
+                <WatchUserList :watchUsers="movie.watch_users"/>
+              </div>
             </div>
           </div>
         </div>
@@ -91,7 +109,7 @@
               @mouseleave="starLeave"
               @click="starClick(index)"
               >
-              <div v-if="index < score+1"><div class="fa fa-solid fa-star" style="color:yellow;"></div></div>
+              <div v-if="index < score+1"><div class="fa fa-solid fa-star" style="color:#ffeb00;"></div></div>
               <div v-if="index >= score+1"><div class="fa fa-solid fa-star"></div></div>
             </div>
           </div>
@@ -107,6 +125,7 @@
             <h1>첫 리뷰를 남겨주세요!</h1>
         </div>
           <ReviewList :reviews="reviews"/>  
+          <div class="footer_space"></div>
         </div>
       </div>
     </div>
@@ -116,13 +135,25 @@
 
 <script>
 import ReviewList from '@/components/ReviewList'
+import CrewList from '@/components/CrewList'
+import WatchUserList from '@/components/WatchUserList'
+
 import axios from 'axios'
+import SERVER from '@/api/drf.js'
 // import VideoBackgrounds from 'https://unpkg.com/youtube-background@1.0.14/jquery.youtube-background.min.js'
-const DJANGO_API_URL = "http://127.0.0.1:8000"
+// const DJANGO_API_URL = "http://127.0.0.1:8000"
+// const DJANGO_API_URL = "http://192.168.212.86:8000"
+
+const DJANGO_API_URL = SERVER.URL
+const TMDB_API_KEY = process.env.VUE_APP_TMDB_API_KEY
+const TMDB_API_URL = process.env.VUE_APP_TMDB_API_URL
+
 export default {
   name: 'MovieDetail',
   components: {
     ReviewList,
+    CrewList,
+    WatchUserList,
   },
   props: {
     id: Number,
@@ -138,15 +169,15 @@ export default {
     movies() {
       return this.$store.state.movies
     },
-    movie() {
-      const payload = {
-        id: this.id,
-        times: this.times
-      }
-      const movie =  this.$store.getters.movieDetail(payload)
-      console.log('영화 디테일', movie)
-      return movie
-    },
+    // movie() {
+    //   const payload = {
+    //     id: this.id,
+    //     times: this.times
+    //   }
+    //   const movie =  this.$store.getters.movieDetail(payload)
+    //   console.log('영화 디테일', movie)
+    //   return movie
+    // },
     trailers() {
       const trailers = this.$store.state.trailers
       return trailers
@@ -156,17 +187,26 @@ export default {
       console.log('리뷰 불러옴', reviews)
       return reviews
       // return reviews.filter(review => review.id === this.id)
+    },
+    user() {
+      return this.$store.state.user
     }
   },
   data() {
     return {
+      movie: null,
       dataReviews: null,
       score: 0,
       isheart: false,
       isheartClicked: false,
       isStarClicked: false,
       isclickedReview: false,
-      content: null
+      content: null,
+      casts: null,
+      isWatch: false,
+      watchUser: {
+        color: '#288ce1'
+      },
     }
   },
   methods: {
@@ -201,10 +241,17 @@ export default {
       }
     },
     clickReview() {
-      this.isclickedReview = !this.isclickedReview
+      console.log('리뷰리뷰', this.dataReviews)
+      console.log('리뷰리뷰', this.user.id)
+      if (this.dataReviews.find(review => review.user.id === this.user.id)) {
+        window.alert('이미 리뷰를 작성했습니다!')
+      } else {
+        this.isclickedReview = !this.isclickedReview
+      }
     },
     createReview() {
       // 리뷰 업로드
+  
       const payload = {
         movieId: this.id, 
         score: this.score, 
@@ -224,6 +271,7 @@ export default {
       })
         .then((res) => {
           console.log(res)
+          this.isclickedReview = false
           this.getReviews()
 
         })
@@ -235,17 +283,106 @@ export default {
         url: `${DJANGO_API_URL}/movies/${this.id}/comment`,
       })
         .then((res) => {
-          console.log(res)
+          console.log('리뷰 불러옴',res)
           this.dataReviews = res.data
+          const userReview = res.data.find(review => review.user.id === this.user.id)
+          if (userReview) {
+            this.isStarClicked = true
+            this.score = userReview.star_point
+          }
         })
         .catch((error) => {
           console.log(error)
         })
     },
+    like() {
+      axios({
+        method: 'post',
+        url: `${DJANGO_API_URL}/movies/${this.id}/like`,
+        headers: {
+          Authorization: `Token ${this.$store.state.token}` 
+        },
+      })
+        .then((res) => {
+          console.log('like', res)
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    getDetail() {
+      axios({
+        method: 'get',
+        url: `${DJANGO_API_URL}/movies/${this.id}`,
+        headers: {
+          Authorization: `Token ${this.$store.state.token}` 
+        },
+      })
+        .then((res) => {
+          console.log('영화 디테일', res)
+          this.movie = res.data
+          if (res.data.like_users.find(likeUser => likeUser.id === this.user.id)) {
+            this.isheartClicked = true
+          } else {
+            this.isheartClicked = false
+          }
+          if (res.data.watch_users.find(user => user.id === this.user.id)) {
+            this.isWatch = true
+          } else {
+            this.isWatch = false
+          }
+
+        })
+        .catch((error) => {
+          console.log(error)
+        })
+    },
+    getCrews() {
+      axios({
+        method: 'get',
+        url: `${TMDB_API_URL}/${this.id}/credits`,
+        params: {
+                api_key: TMDB_API_KEY,
+                language: 'ko-KR',
+                },    
+      })
+        .then((res) => {
+          console.log('스탭', res.data)
+          this.casts = res.data.cast
+          // this.crew = res.data.crew
+        })
+    },
+    watchClick() {
+      this.isWatch = !this.isWatch
+      console.log(this.isWatch)
+      axios({
+        method: 'post',
+        url: `${DJANGO_API_URL}/movies/${this.id}/watch`,
+        headers: {
+          Authorization: `Token ${this.$store.state.token}` 
+        },
+      })
+        .then((res) => {
+          console.log(res)
+          this.getDetail()
+        })
+        .catch((error) => {
+          console.log('같이볼 유저', error)
+        })
+    }
   },
   created() {
+    this.getDetail()
     this.$store.dispatch('getTrailer', {id: this.id})
     this.getReviews()
+    this.getCrews()
+    // const content = document.querySelector('.content')
+    // const contentH = content.offsetHeight
+
+    // const 
+
+    // const docStyle = document.documentElement.style;
+    //   docStyle.setProperty('--mouse-x1', event.clientX);
   },
   update() {
     this.getReviews()
@@ -563,4 +700,79 @@ textarea {
   margin-left: 2.5vw;
   margin-top: 1vh;
 }
+
+/* .movie-info > div > p {
+  text-overflow: ellipsis;
+  height: 25vh;
+  width: 45vw;
+  overflow: hidden;
+  white-space: nowrap;
+} */
+
+.movie-infos {
+  font-size: 20px;
+  margin-top: 3vh;
+  border: solid 1px #ffffff75;
+  padding: 0px 10px;
+  border-radius: 10px;
+}
+
+.subContent> hr {
+  height: 0vh;
+  width: 20.9vw;
+  background-color: #ffffff36;
+  border: solid 0.1px #ffffff75;
+  margin: 3vh 0vw;
+}
+
+.subContent > p:nth-child(1) {
+  font-size: 30px;
+  margin-bottom: 0;
+  margin-top: 0px;
+}
+
+.watch-users {
+  padding: 20px;
+  border: solid 2.5px #454444;
+  border-radius: 10px;
+  height: 39vh;
+}
+
+.crew {
+  margin-top: 5vh;
+}
+
+.watch-class {
+  margin: 0px 10px;
+  font-size: 25px;
+
+}
+
+.watch-class:hover {
+  animation: human 1s forwards;
+}
+
+@keyframes human {
+  0% {
+
+  }
+  100% {
+    color: #288ce1;
+  }
+}
+
+.people {
+  display: flex;
+  align-items: center;
+  
+}
+
+.watch-user-color {
+  color: #288ce1;
+}
+
+.footer_space {
+  height: 10vh;
+}
+
 </style>

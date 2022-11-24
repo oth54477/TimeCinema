@@ -8,6 +8,7 @@ import ArticleView from '@/views/ArticleView'
 import LogInView from '@/views/LogInView'
 import SignUpView from '@/views/SignUpView'
 import ProfileView from '@/views/ProfileView'
+import UserListView from '@/views/UserListView'
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faUserSecret } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'
@@ -59,6 +60,11 @@ const routes = [
     path: '/profile',
     name: 'profile',
     component: ProfileView
+  },
+  {
+    path: '/userList',
+    name: 'userList',
+    component: UserListView
   },
 ]
 

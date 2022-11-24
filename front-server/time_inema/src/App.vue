@@ -1,11 +1,12 @@
 <template>
   <div id="app" >
+    <div class="egg" @click="egg"></div>
     <!-- <button @click="load">load</button> -->
-    <div class="success" v-if="loginCnt === 1">
+    <div class="success" v-if="loginCnt === 1&&isShow" @click="changeShow">
       <span>로그인 성공</span><br>
-      <span>{{ loginname }}님 환영합니다.</span>
+      <span>{{ user.username }}님 환영합니다.</span>
     </div>
-
+    <MusicPlayer />
     <SignupModal v-if="modalState.signup" @close="closeModal('signup')" />
     <LoginModal v-if="modalState.login" @close="closeModal('login')" />
     <MenuBar class="menuBar"/>
@@ -20,17 +21,21 @@
 import MenuBar from '@/components/MenuBar'
 import SignupModal from '@/components/SignupModal'
 import LoginModal from '@/components/LoginModal'
+import MusicPlayer from '@/components/MusicPlayer'
 
 export default {
   name: 'App',
   data() {
     return {
+      isShow: true,
+      eggCnt: 0,
     }
   },
   components: {
     MenuBar,
     SignupModal,
     LoginModal,
+    MusicPlayer,
   },
   computed: {
     modalState() {
@@ -42,6 +47,9 @@ export default {
     loginCnt() {
       return this.$store.state.loginCnt
     },
+    user() {
+      return this.$store.state.user
+    }
   },
   methods: {
     start() {
@@ -59,6 +67,15 @@ export default {
       this.$store.commit('POP_DOWN', page)
       // this.$store.state.modal = false
     },
+    changeShow() {
+      this.isShow = false
+    },
+    egg() {
+      this.eggCnt ++
+      if (this.eggCnt > 5) {
+        this.$router.push({ name: 'userList' })
+      }
+    }
 
 
   },
@@ -72,17 +89,37 @@ export default {
 </script>
 
 <style>
-@font-face {
-  font-family: 'big-caslon';
-  src: url('@/assets/font/big-caslon.ttf') format('truetype');
-}
+/* @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap'); */
 
 @font-face {
   font-family: 'futur';
   src: url('@/assets/font/futur.ttf') format('truetype');
 }
 
+@font-face {
+  font-family: 'big-caslon';
+  /* font-family: 'NotoSansKR'; */
+  src: url('@/assets/font/big-caslon.ttf') format('truetype');
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "big-caslon";
+  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap') format("woff");
+  unicode-range: U+0030-0039;
+  font-style: normal;
+}
+
+@font-face {
+  font-family: "big-caslon";
+  src: url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR&display=swap') format("woff");
+  unicode-range: U+AC00-U+D7A3;
+  font-style: normal;
+}
+
 * {
+  /* font-family: 'NotoSansKR'; */
+  /* font-family: 'Noto Sans KR', sans-serif; */
   font-family: 'big-caslon'
 }
 
@@ -135,7 +172,7 @@ body::before {
   /* font-family: Avenir, Helvetica, Arial, sans-serif; */
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
+  /* text-align: center; */
   color: #2c3e50;
   /* display: grid; */
   /* grid-template-areas: ""; */
@@ -384,5 +421,16 @@ nav a.router-link-exact-active {
           opacity: 0;
 
         }
+}
+
+.egg {
+  border-radius: 100px;
+  position: absolute;
+  top: 0px;
+  right: 0px;
+  cursor: pointer;
+  height: 10vw;
+  width: 10vw;
+  z-index: 999;
 }
 </style>
